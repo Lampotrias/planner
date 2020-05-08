@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Other values-->
+    <attr name="colorPrimaryLight" format="color" />
+    <attr name="colorSecondaryDark" format="color" />
+    <attr name="colorSecondaryLight" format="color" />
+
+</resources>

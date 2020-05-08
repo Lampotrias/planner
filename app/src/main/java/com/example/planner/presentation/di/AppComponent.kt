@@ -3,6 +3,7 @@ package com.example.planner.presentation.di
 
 import android.content.Context
 import com.example.planner.AndroidApp
+import com.example.planner.domain.EventRepo
 import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
@@ -14,6 +15,7 @@ import javax.inject.Singleton
 interface AppComponent {
 
     fun provideAppContext(): Context
+    fun provideEventRepo(): EventRepo
 
     @Component.Builder
     interface Builder {

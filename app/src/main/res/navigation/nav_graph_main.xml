@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_main.xml"
-    app:startDestination="@id/plannerListFragment">
+    app:startDestination="@id/my_day">
 
     <fragment
-        android:id="@+id/plannerListFragment"
-        android:name="com.example.planner.presentation.planner_list.PlannerListFragment"
+        android:id="@+id/my_day"
+        tools:layout="@layout/my_day"
+        android:name="com.example.planner.presentation.my_day.MyDayFragment"
         android:label="PlannerListFragment" />
 </navigation>

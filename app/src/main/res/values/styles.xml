@@ -1,11 +1,32 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryLight">@color/colorPrimaryLight</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+
+        <item name="colorSecondaryDark">@color/colorSecondaryDark</item>
+        <item name="colorSecondaryLight">@color/colorSecondaryLight</item>
+
+
+        <item name="textInputStyle">@style/Widget.AppTheme.TextInputLayout</item>
+
+    </style>
+
+    <style name="Widget.AppTheme.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+    </style>
+
+    <style name="back_secondary">
+        <item name="android:background">@color/colorSecondary</item>
+    </style>
+
+    <style name="popup_window_animation_slide">
+        <item name="android:windowEnterAnimation">@anim/slide_from_right</item>
+        <item name="android:windowExitAnimation">@anim/slide_to_right</item>
     </style>
 
 </resources>
