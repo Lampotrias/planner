@@ -1,131 +1,60 @@
 package com.example.planner.presentation.my_day
 
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import com.example.planner.AndroidApp
-import com.example.planner.R
 import com.example.planner.databinding.MyDayBinding
-import com.example.planner.presentation.base.BaseFragment
-import com.example.planner.presentation.base.ViewModelFactory
-import com.example.planner.presentation.di.scope.PerFragment
+import com.example.planner.di.scope.PerFragment
+import com.example.planner.presentation.event_dialog.EventDialog
 import com.example.planner.presentation.my_day.di.DaggerMyDayComponent
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import java.util.*
+import moxy.MvpAppCompatFragment
+import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
 @PerFragment
-class MyDayFragment : BaseFragment() {
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory<MayDayViewModel>
+class MyDayFragment : MvpAppCompatFragment(), MyDayView {
 
-    private lateinit var viewModel: MayDayViewModel
-    private lateinit var sheetBehavior: BottomSheetBehavior<LinearLayout>
     private lateinit var binding: MyDayBinding
+
+    @Inject
+    lateinit var presenterProvider: MyDayPresenter
+    private val mPresenter by moxyPresenter { presenterProvider }
+
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        onInitDependencyInjection()
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MayDayViewModel::class.java)
-        binding =
-            DataBindingUtil.inflate(inflater, R.layout.my_day, container, false)
-        initBottom()
-        binding.viewModel = viewModel
+        binding = MyDayBinding.inflate(inflater, container, false)
+        binding.fab.setOnClickListener{mPresenter.showPopupDialog()}
+
         return binding.root
     }
 
-    private fun initBottom() {
-//        binding.bottomSheetInclude.view = this
-//        binding.bottomSheetInclude.viewModel = viewModel
-//
-//        viewModel.dateField.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-//            binding.bottomSheetInclude.datePicker.text = it
-//        })
-//
-//        viewModel.timeField.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-//            binding.bottomSheetInclude.timePicker.text = it
-//        })
-//
-//        viewModel.error.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-//            Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
-//        })
-//
-//        sheetBehavior = BottomSheetBehavior.from(binding.bottomSheetInclude.bottomSheet)
-//        sheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-//            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
-//            override fun onStateChanged(bottomSheet: View, newState: Int) {
-////                when (newState) {
-////                    BottomSheetBehavior.STATE_HIDDEN -> {
-////                    }
-////                    BottomSheetBehavior.STATE_EXPANDED -> binding.btBottomSheet.text =
-////                        "Close Bottom Sheet"
-////                    BottomSheetBehavior.STATE_COLLAPSED -> binding.btBottomSheet.text =
-////                        "Expand Bottom Sheet"
-////                    BottomSheetBehavior.STATE_DRAGGING -> {
-////                    }
-////                    BottomSheetBehavior.STATE_SETTLING -> {
-////                    }
-////                    BottomSheetBehavior.STATE_HALF_EXPANDED -> {
-////                    }
-////                }
-//            }
-//        })
-//
-//        binding.fab.setOnClickListener { sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED }
-    }
-
-    fun showTimePicker() {
-        val calendar = Calendar.getInstance()
-
-        val tDialog = TimePickerDialog(
-            activity,
-            TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                //viewModel.setTime(hourOfDay, minute)
-            },
-            calendar.get(Calendar.HOUR_OF_DAY),
-            calendar.get(Calendar.MINUTE),
-            true
-        )
-        tDialog.show()
-    }
-
-    fun showDatePicker() {
-        val calendar = Calendar.getInstance()
-        val tDialog = DatePickerDialog(
-            requireActivity(),
-            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                run {
-                    //viewModel.setDate(year, month, dayOfMonth)
-                    showTimePicker()
-                }
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-        tDialog.show()
-    }
-
-    /*private fun setUpToolbar(view: View) {
-        //val toolbar: Toolbar = view.findViewById(R.id.app_bar)
-        //val activity = activity as AppCompatActivity
-        //activity.setSupportActionBar(toolbar)
-        //val actionBar = activity.supportActionBar
-        // actionBar?.title = "sdf"
-    }*/
-
-    override fun onInitDependencyInjection() {
+    private fun onInitDependencyInjection() {
         DaggerMyDayComponent.builder()
             .appComponent((requireContext().applicationContext as AndroidApp).getComponent())
             .build()
             .inject(this)
+    }
+
+    override fun showAnimationFab(offset: Float) {
+        binding.fab.rotation = offset * 180
+    }
+
+    override fun showAddEventPopupDialog() {
+
+        var event = EventDialog()
+        //ff.onCreateAnimation(R.anim.slide_from_right, true, R.anim.slide_to_right)
+        event.show(childFragmentManager, "eventAdd")
     }
 }

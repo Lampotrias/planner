@@ -1,7 +1,7 @@
 package com.example.planner.presentation.main_screen.di
 
-import com.example.planner.presentation.di.AppComponent
-import com.example.planner.presentation.di.scope.PerFragment
+import com.example.planner.di.AppComponent
+import com.example.planner.di.scope.PerFragment
 import com.example.planner.presentation.main_screen.MainScreenFragment
 import dagger.Component
 

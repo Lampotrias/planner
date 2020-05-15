@@ -1,6 +1,6 @@
 package com.example.planner.data.database
 
-import com.example.planner.domain.EventRepo
+import com.example.planner.domain.repositories.EventRepo
 import timber.log.Timber
 
 class RepoImpl: EventRepo {

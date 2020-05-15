@@ -1,9 +1,11 @@
-package com.example.planner.presentation.di
+package com.example.planner.di
 
 import android.content.Context
 import com.example.planner.AndroidApp
+import com.example.planner.data.database.GlobalRepoImpl
 import com.example.planner.data.database.RepoImpl
-import com.example.planner.domain.EventRepo
+import com.example.planner.domain.repositories.EventRepo
+import com.example.planner.domain.repositories.GlobalRepo
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -19,5 +21,9 @@ class AppModule {
         @Singleton
         @Provides
         fun provideEventRepo(): EventRepo = RepoImpl()
+
+        @Singleton
+        @Provides
+        fun provideGlobalRepo(): GlobalRepo = GlobalRepoImpl()
     }
 }

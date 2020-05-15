@@ -1,4 +1,4 @@
-package com.example.planner.domain
+package com.example.planner.domain.repositories
 
 import com.example.planner.data.database.EventEntity
 

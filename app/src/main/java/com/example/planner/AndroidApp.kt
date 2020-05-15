@@ -1,7 +1,7 @@
 package com.example.planner
 
 import android.app.Application
-import com.example.planner.presentation.di.AppComponent
+import com.example.planner.di.AppComponent
 import timber.log.Timber
 
 class AndroidApp: Application() {

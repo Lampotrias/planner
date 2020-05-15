@@ -10,7 +10,6 @@
         <item name="colorSecondaryDark">@color/colorSecondaryDark</item>
         <item name="colorSecondaryLight">@color/colorSecondaryLight</item>
 
-
         <item name="textInputStyle">@style/Widget.AppTheme.TextInputLayout</item>
 
     </style>
@@ -20,6 +19,10 @@
         <item name="boxStrokeWidthFocused">0dp</item>
     </style>
 
+
+    <style name="AppTheme.img_alpha">
+        <item name="alpha">0.4</item>
+    </style>
     <style name="back_secondary">
         <item name="android:background">@color/colorSecondary</item>
     </style>

@@ -1,4 +1,4 @@
-package com.example.planner.presentation.di.scope
+package com.example.planner.di.scope
 
 import javax.inject.Scope
 
