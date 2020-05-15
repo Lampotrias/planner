@@ -18,8 +18,7 @@
         <item name="boxStrokeWidth">0dp</item>
         <item name="boxStrokeWidthFocused">0dp</item>
     </style>
-
-
+    
     <style name="AppTheme.img_alpha">
         <item name="alpha">0.4</item>
     </style>

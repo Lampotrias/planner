@@ -1,16 +1,17 @@
 package com.example.planner.presentation.calendar_detail
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.view.*
+import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentResultListener
+import androidx.fragment.app.setFragmentResult
 import com.example.planner.AndroidApp
 import com.example.planner.databinding.CalendarFragmentBinding
 import com.example.planner.presentation.base.BaseDialog
 import com.example.planner.presentation.calendar_detail.di.DaggerCalendarComponent
 
 import moxy.ktx.moxyPresenter
+import timber.log.Timber
 import javax.inject.Inject
 
 class CalendarDialog @Inject constructor() : BaseDialog(), CalendarView{
@@ -21,9 +22,19 @@ class CalendarDialog @Inject constructor() : BaseDialog(), CalendarView{
     lateinit var presenterProvider: CalendarPresenter
     private val mPresenter by moxyPresenter { presenterProvider }
 
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         onInitDependencyInjection()
         super.onCreate(savedInstanceState)
+        parentFragmentManager.setFragmentResultListener("requestToCalendar", this, FragmentResultListener{
+                _: String, result: Bundle ->
+            val value = result["key"]
+            Timber.e(value.toString())
+        })
     }
 
     override fun onCreateView(
@@ -45,6 +56,7 @@ class CalendarDialog @Inject constructor() : BaseDialog(), CalendarView{
     }
 
     override fun close() {
+        setFragmentResult("responseToCalendar", bundleOf("key" to "value"))
         this.dialog?.dismiss()
     }
 

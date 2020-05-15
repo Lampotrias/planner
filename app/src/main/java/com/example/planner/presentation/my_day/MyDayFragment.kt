@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentResultListener
 import com.example.planner.AndroidApp
 import com.example.planner.databinding.MyDayBinding
 import com.example.planner.di.scope.PerFragment
@@ -11,6 +12,7 @@ import com.example.planner.presentation.event_dialog.EventDialog
 import com.example.planner.presentation.my_day.di.DaggerMyDayComponent
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
+import timber.log.Timber
 import javax.inject.Inject
 
 @PerFragment
@@ -27,6 +29,11 @@ class MyDayFragment : MvpAppCompatFragment(), MyDayView {
     override fun onCreate(savedInstanceState: Bundle?) {
         onInitDependencyInjection()
         super.onCreate(savedInstanceState)
+        childFragmentManager.setFragmentResultListener("requestToEvent", this, FragmentResultListener{
+                _: String, result: Bundle ->
+            val value = result["key"]
+            Timber.e(value.toString())
+        })
     }
 
     override fun onCreateView(
@@ -53,7 +60,7 @@ class MyDayFragment : MvpAppCompatFragment(), MyDayView {
 
     override fun showAddEventPopupDialog() {
 
-        var event = EventDialog()
+        val event = EventDialog()
         //ff.onCreateAnimation(R.anim.slide_from_right, true, R.anim.slide_to_right)
         event.show(childFragmentManager, "eventAdd")
     }

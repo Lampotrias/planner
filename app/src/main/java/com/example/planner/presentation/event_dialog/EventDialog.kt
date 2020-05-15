@@ -1,10 +1,10 @@
 package com.example.planner.presentation.event_dialog
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.view.*
+import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentResultListener
+import androidx.fragment.app.setFragmentResult
 import com.example.planner.AndroidApp
 import com.example.planner.databinding.AddEventFragmentBinding
 import com.example.planner.presentation.base.BaseDialog
@@ -12,6 +12,7 @@ import com.example.planner.presentation.calendar_detail.CalendarDialog
 import com.example.planner.presentation.event_dialog.di.DaggerEventDialogComponent
 
 import moxy.ktx.moxyPresenter
+import timber.log.Timber
 import javax.inject.Inject
 
 class EventDialog @Inject constructor() : BaseDialog(), EventView {
@@ -25,6 +26,12 @@ class EventDialog @Inject constructor() : BaseDialog(), EventView {
     override fun onCreate(savedInstanceState: Bundle?) {
         onInitDependencyInjection()
         super.onCreate(savedInstanceState)
+
+        parentFragmentManager.setFragmentResultListener("responseToCalendar", this, FragmentResultListener{
+                _: String, result: Bundle ->
+            val value = result["key"]
+            Timber.e(value.toString())
+        })
     }
 
     override fun onCreateView(
@@ -35,7 +42,9 @@ class EventDialog @Inject constructor() : BaseDialog(), EventView {
         binding = AddEventFragmentBinding.inflate(inflater, container, false)
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
+
         binding.submitButton.setOnClickListener{
+            setFragmentResult("requestToEvent", bundleOf("key" to "value1"))
             mPresenter.Log("sss")
         }
 
@@ -45,10 +54,16 @@ class EventDialog @Inject constructor() : BaseDialog(), EventView {
 
         binding.timeEvent.setOnClickListener{
             val calendarDialog = CalendarDialog()
-            calendarDialog.show(childFragmentManager, "calendar")
+            setFragmentResult("requestToCalendar", bundleOf("key" to "value"))
+            calendarDialog.show(parentFragmentManager, "calendar")
         }
 
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
     }
 
     private fun onInitDependencyInjection() {

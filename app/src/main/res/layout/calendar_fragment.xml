@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:padding="10dp"
+    android:layout_height="wrap_content">
 
     <CalendarView
         android:id="@+id/calendar"
@@ -75,7 +76,7 @@
         android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:src="@drawable/ic_radio_button_unchecked_black_24dp"
         app:layout_constraintTop_toBottomOf="@+id/separator2"
         app:layout_constraintStart_toStartOf="parent"
