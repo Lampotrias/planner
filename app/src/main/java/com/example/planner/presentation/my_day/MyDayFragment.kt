@@ -4,10 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentResultListener
+import androidx.navigation.NavDirections
 import com.example.planner.AndroidApp
+import com.example.planner.R
 import com.example.planner.databinding.MyDayBinding
 import com.example.planner.di.scope.PerFragment
+import com.example.planner.extention.navigate
 import com.example.planner.presentation.event_dialog.EventDialog
 import com.example.planner.presentation.my_day.di.DaggerMyDayComponent
 import moxy.MvpAppCompatFragment
@@ -24,15 +28,13 @@ class MyDayFragment : MvpAppCompatFragment(), MyDayView {
     lateinit var presenterProvider: MyDayPresenter
     private val mPresenter by moxyPresenter { presenterProvider }
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         onInitDependencyInjection()
         super.onCreate(savedInstanceState)
-        childFragmentManager.setFragmentResultListener("requestToEvent", this, FragmentResultListener{
+
+        parentFragmentManager.setFragmentResultListener(EventDialog.EVENT_DIALOG_RESULT, this, FragmentResultListener{
                 _: String, result: Bundle ->
-            val value = result["key"]
-            Timber.e(value.toString())
+            mPresenter.saveEvent(result[EventDialog.EVENT_DIALOG_PARAM_OBJ] as EventTransferObject)
         })
     }
 
@@ -58,10 +60,10 @@ class MyDayFragment : MvpAppCompatFragment(), MyDayView {
         binding.fab.rotation = offset * 180
     }
 
-    override fun showAddEventPopupDialog() {
-
-        val event = EventDialog()
-        //ff.onCreateAnimation(R.anim.slide_from_right, true, R.anim.slide_to_right)
-        event.show(childFragmentManager, "eventAdd")
+    override fun showAddEventPopupDialog(navDirections: NavDirections) {
+//        val event = EventDialog()
+//        childFragmentManager.setFragmentResult(EventDialog.EVENT_DIALOG_REQUEST, bundleOf(EventDialog.EVENT_DIALOG_PARAM_OBJ to "EVENT_DIALOG_REQUEST"))
+//        event.show(childFragmentManager, "eventAdd")
+        this.navigate(navDirections)
     }
 }

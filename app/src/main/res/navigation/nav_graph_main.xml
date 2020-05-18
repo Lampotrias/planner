@@ -9,5 +9,33 @@
         android:id="@+id/my_day"
         tools:layout="@layout/my_day"
         android:name="com.example.planner.presentation.my_day.MyDayFragment"
-        android:label="PlannerListFragment" />
+        android:label="PlannerListFragment" >
+        <action
+            android:id="@+id/action_my_day_to_eventDialog"
+            app:destination="@id/eventDialog" />
+    </fragment>
+    <dialog
+        android:id="@+id/calendarDialog"
+        tools:layout="@layout/calendar_fragment"
+        android:name="com.example.planner.presentation.calendar_detail.CalendarDialog"
+        android:label="CalendarDialog" >
+        <argument
+            android:name="eventObj"
+            app:argType="com.example.planner.presentation.my_day.EventTransferObject" />
+
+    </dialog>
+    <dialog
+        android:id="@+id/eventDialog"
+        tools:layout="@layout/add_event_fragment"
+        android:name="com.example.planner.presentation.event_dialog.EventDialog"
+        android:label="EventDialog" >
+        <action
+            android:id="@+id/action_eventDialog_to_calendarDialog"
+            app:destination="@id/calendarDialog" />
+        <argument
+            android:name="eventObj"
+            app:argType="com.example.planner.presentation.my_day.EventTransferObject"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </dialog>
 </navigation>

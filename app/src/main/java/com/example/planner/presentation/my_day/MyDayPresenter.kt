@@ -1,5 +1,6 @@
 package com.example.planner.presentation.my_day
 
+import androidx.core.os.bundleOf
 import com.example.planner.domain.Subscriber
 import com.example.planner.domain.interactors.GlobalInteractor
 import com.example.planner.presentation.base.BasePresenter
@@ -7,6 +8,10 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class MyDayPresenter @Inject constructor(private var globalInteractor: GlobalInteractor): BasePresenter<MyDayView>(), Subscriber {
+
+    fun setResultFromDialogEventAdd(event: EventTransferObject){
+
+    }
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -28,7 +33,13 @@ class MyDayPresenter @Inject constructor(private var globalInteractor: GlobalInt
     }
 
     fun showPopupDialog(){
-        viewState.showAddEventPopupDialog()
+        val directions = MyDayFragmentDirections.actionMyDayToEventDialog(null)
+        viewState.showAddEventPopupDialog(directions)
     }
+
+    fun saveEvent(event: EventTransferObject) {
+        Timber.tag("result").e(event.toString())
+    }
+
 
 }
