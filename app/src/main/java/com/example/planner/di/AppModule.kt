@@ -1,11 +1,14 @@
 package com.example.planner.di
 
+import android.app.AlarmManager
 import android.content.Context
 import com.example.planner.AndroidApp
-import com.example.planner.data.database.GlobalRepoImpl
-import com.example.planner.data.database.RepoImpl
+import com.example.planner.data.GlobalRepoImpl
+import com.example.planner.data.RepoImpl
+import com.example.planner.data.database.AppDatabase
 import com.example.planner.domain.repositories.EventRepo
 import com.example.planner.domain.repositories.GlobalRepo
+import com.example.planner.presentation.background.alarm.AlarmTaskManager
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -20,10 +23,23 @@ class AppModule {
 
         @Singleton
         @Provides
-        fun provideEventRepo(): EventRepo = RepoImpl()
+        fun provideEventRepo(appDatabase: AppDatabase): EventRepo = RepoImpl(appDatabase)
 
         @Singleton
         @Provides
         fun provideGlobalRepo(): GlobalRepo = GlobalRepoImpl()
+
+        @Singleton
+        @Provides
+        fun provideDatabase(context: Context): AppDatabase = AppDatabase.getDatabase(context)
+
+        @Singleton
+        @Provides
+        fun provideAlarmManager(context: Context): AlarmTaskManager {
+            return AlarmTaskManager(
+                context,
+                context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            )
+        }
     }
 }

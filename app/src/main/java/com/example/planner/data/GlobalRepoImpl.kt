@@ -1,4 +1,4 @@
-package com.example.planner.data.database
+package com.example.planner.data
 
 import com.example.planner.domain.Subscriber
 import com.example.planner.domain.repositories.GlobalRepo

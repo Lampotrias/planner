@@ -19,9 +19,10 @@ import moxy.presenter.ProvidePresenter
 import javax.inject.Inject
 import javax.inject.Provider
 
-open class MainScreenFragment: MvpAppCompatFragment(), MainScreenView {
+open class MainScreenFragment : MvpAppCompatFragment(), MainScreenView {
 
-    @Inject lateinit var presenterProvider: MainScreenPresenter
+    @Inject
+    lateinit var presenterProvider: MainScreenPresenter
     private val mPresenter by moxyPresenter { presenterProvider }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,13 +39,14 @@ open class MainScreenFragment: MvpAppCompatFragment(), MainScreenView {
         savedInstanceState: Bundle?
     ): View? {
         binding = MainScreenBinding.inflate(inflater, container, false)
+        binding.btnMyDay.setOnClickListener { mPresenter.clickBtnMyDay() }
         initBottom()
         return binding.root
     }
 
     private fun initBottom() {
         sheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
-        sheetBehavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
+        sheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 mPresenter.setOffset(slideOffset)
             }
@@ -65,6 +67,9 @@ open class MainScreenFragment: MvpAppCompatFragment(), MainScreenView {
     }
 
     private fun onInitDependencyInjection() {
-        DaggerMainScreenComponent.builder().appComponent((requireContext().applicationContext as AndroidApp).getComponent()).build().inject(this)
+        DaggerMainScreenComponent
+            .builder()
+            .appComponent((requireContext().applicationContext as AndroidApp).getComponent())
+            .build().inject(this)
     }
 }

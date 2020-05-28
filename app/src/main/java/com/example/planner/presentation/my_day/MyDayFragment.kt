@@ -4,23 +4,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentResultListener
 import androidx.navigation.NavDirections
-import com.example.planner.AndroidApp
-import com.example.planner.R
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.planner.databinding.MyDayBinding
 import com.example.planner.di.scope.PerFragment
+import com.example.planner.domain.excetion.Failure
 import com.example.planner.extention.navigate
+import com.example.planner.presentation.base.BaseFragment
 import com.example.planner.presentation.event_dialog.EventDialog
+import com.example.planner.presentation.my_day.adapter.EventListAdapter
+import com.example.planner.presentation.my_day.adapter.EventModel
 import com.example.planner.presentation.my_day.di.DaggerMyDayComponent
-import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import timber.log.Timber
 import javax.inject.Inject
 
 @PerFragment
-class MyDayFragment : MvpAppCompatFragment(), MyDayView {
+class MyDayFragment : BaseFragment(), MyDayView {
 
     private lateinit var binding: MyDayBinding
 
@@ -32,10 +32,12 @@ class MyDayFragment : MvpAppCompatFragment(), MyDayView {
         onInitDependencyInjection()
         super.onCreate(savedInstanceState)
 
-        parentFragmentManager.setFragmentResultListener(EventDialog.EVENT_DIALOG_RESULT, this, FragmentResultListener{
-                _: String, result: Bundle ->
-            mPresenter.saveEvent(result[EventDialog.EVENT_DIALOG_PARAM_OBJ] as EventTransferObject)
-        })
+        parentFragmentManager.setFragmentResultListener(
+            EventDialog.EVENT_DIALOG_RESULT,
+            this,
+            FragmentResultListener { _: String, result: Bundle ->
+                mPresenter.processSaveEvent(result[EventDialog.EVENT_DIALOG_PARAM_OBJ] as EventTransferObject)
+            })
     }
 
     override fun onCreateView(
@@ -44,14 +46,15 @@ class MyDayFragment : MvpAppCompatFragment(), MyDayView {
         savedInstanceState: Bundle?
     ): View? {
         binding = MyDayBinding.inflate(inflater, container, false)
-        binding.fab.setOnClickListener{mPresenter.showPopupDialog()}
-
+        binding.fab.setOnClickListener { mPresenter.showPopupDialog() }
+        binding.btnStart.setOnClickListener { mPresenter.btnStartClick() }
+        binding.btnStop.setOnClickListener { mPresenter.btnStopClick() }
         return binding.root
     }
 
-    private fun onInitDependencyInjection() {
+    override fun onInitDependencyInjection() {
         DaggerMyDayComponent.builder()
-            .appComponent((requireContext().applicationContext as AndroidApp).getComponent())
+            .appComponent(appComponent)
             .build()
             .inject(this)
     }
@@ -61,9 +64,18 @@ class MyDayFragment : MvpAppCompatFragment(), MyDayView {
     }
 
     override fun showAddEventPopupDialog(navDirections: NavDirections) {
-//        val event = EventDialog()
-//        childFragmentManager.setFragmentResult(EventDialog.EVENT_DIALOG_REQUEST, bundleOf(EventDialog.EVENT_DIALOG_PARAM_OBJ to "EVENT_DIALOG_REQUEST"))
-//        event.show(childFragmentManager, "eventAdd")
         this.navigate(navDirections)
+    }
+
+    override fun handleFailure(failure: Failure?) {
+        hFailure(failure)
+    }
+
+    override fun showEventList(list: List<EventModel>) {
+        val eventListAdapter = EventListAdapter(list)
+        binding.listView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = eventListAdapter
+        }
     }
 }

@@ -2,6 +2,10 @@ package com.example.planner.presentation.my_day
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.example.planner.domain.Event
+import java.time.LocalDateTime
+import java.time.Month
+import java.util.*
 
 data class EventTransferObject(
     var name: String,
@@ -11,7 +15,7 @@ data class EventTransferObject(
     var hours: Int,
     var minutes: Int,
     var strDate: String
-) : Parcelable{
+) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readInt(),
@@ -45,5 +49,11 @@ data class EventTransferObject(
         override fun newArray(size: Int): Array<EventTransferObject?> {
             return arrayOfNulls(size)
         }
+    }
+
+    fun toEvent(): Event {
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, day, hours, minutes)
+        return Event(0, name, calendar.time.time, TimeZone.getDefault().rawOffset)
     }
 }

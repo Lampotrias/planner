@@ -19,12 +19,12 @@ class CalendarPresenter @Inject constructor(): BasePresenter<CalendarView>() {
     }
 
     private fun setCalendarControl() {
-        viewState.initCalendarControl(eventObj.year, eventObj.month - 1, eventObj.day)
+        viewState.initCalendarControl(eventObj.year, eventObj.month, eventObj.day)
     }
 
     fun setDate(year: Int, month: Int, day: Int) {
         eventObj.year = year
-        eventObj.month = month + 1
+        eventObj.month = month
         eventObj.day = day
         updateDateTimeArea()
     }

@@ -42,7 +42,7 @@ class EventPresenter @Inject constructor(): BasePresenter<EventView>() {
         val calendar: Calendar = Calendar.getInstance()
         return EventTransferObject("",
             calendar.get(Calendar.DAY_OF_MONTH),
-            calendar.get(Calendar.MONTH) + 1,
+            calendar.get(Calendar.MONTH),
             calendar.get(Calendar.YEAR),
             9,0,"Today")
     }

@@ -6,4 +6,6 @@
     <string name="all_day">На весь день</string>
     <string name="enter_name_hint">Enter name</string>
     <string name="default_group_name">Входящие</string>
+    <string name="channel_def_notify_name">Напоминания</string>
+    <string name="channel_def_notify_description">Любые уведомления о событиях</string>
 </resources>

@@ -13,10 +13,6 @@ class MainScreenPresenter @Inject constructor(private val repo: EventRepo): Base
     @Inject lateinit var globalInteractor: GlobalInteractor
 
     override fun onFirstViewAttach() {
-        val event = EventEntity(1,"2", 1,1,1,1,1)
-        repo.save(event)
-
-        viewState.openBottomSheet()
         super.onFirstViewAttach()
     }
 
@@ -26,5 +22,9 @@ class MainScreenPresenter @Inject constructor(private val repo: EventRepo): Base
 
     fun setSlidingState(state: Int){
         globalInteractor.setSlidingState(state)
+    }
+
+    fun clickBtnMyDay(){
+        viewState.openBottomSheet()
     }
 }
