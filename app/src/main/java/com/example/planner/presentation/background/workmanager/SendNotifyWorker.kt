@@ -32,13 +32,13 @@ class SendNotifyWorker @AssistedInject constructor(
     }
 
     private fun successGetById(event: Event){
-        notificationHelper.sendShortNotify(event.id.toInt(), event.name, "Входящие задачи")
+        notificationHelper.sendShortNotify(event.id.toInt(), event.time, event.name, "Входящие задачи")
         Timber.tag("test111work").e(Date().toString())
         Timber.tag("test111work").e(event.toString())
     }
 
     private fun handleError(failure: Failure){
-        Timber.tag("test111work").e("error")
+        Timber.tag("test111work").e(failure.toString())
     }
 
     @AssistedInject.Factory

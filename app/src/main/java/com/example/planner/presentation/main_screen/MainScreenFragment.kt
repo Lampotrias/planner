@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.planner.AndroidApp
+import com.example.planner.R
 import com.example.planner.databinding.MainScreenBinding
 import com.example.planner.domain.interactors.GlobalInteractor
 import com.example.planner.presentation.main_screen.di.DaggerMainScreenComponent
@@ -39,7 +40,11 @@ open class MainScreenFragment : MvpAppCompatFragment(), MainScreenView {
         savedInstanceState: Bundle?
     ): View? {
         binding = MainScreenBinding.inflate(inflater, container, false)
+
         binding.btnMyDay.setOnClickListener { mPresenter.clickBtnMyDay() }
+        binding.btnMyDay.setImageResource(R.drawable.my_day_icon)
+
+
         initBottom()
         return binding.root
     }

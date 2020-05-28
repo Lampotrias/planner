@@ -9,6 +9,7 @@ import androidx.room.RoomDatabase
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun eventDao(): EventDao
+    abstract fun groupDao(): GroupDao
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null

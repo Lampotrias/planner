@@ -33,7 +33,7 @@ class MyDayPresenter @Inject constructor(
     }
 
     fun btnStartClick(){
-        notificationHelper.sendShortNotify(1, "title", "body")
+        notificationHelper.sendShortNotify(1, 0L, "title", "body")
     }
 
     fun btnStopClick(){

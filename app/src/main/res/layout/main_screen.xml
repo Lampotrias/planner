@@ -39,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_marginHorizontal="23dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/my_day_icon" />
+                    />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

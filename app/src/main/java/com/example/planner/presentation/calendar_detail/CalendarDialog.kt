@@ -58,7 +58,7 @@ class CalendarDialog @Inject constructor() : BaseDialog(), CalendarView {
         binding = CalendarFragmentBinding.inflate(inflater, container, false)
 
         binding.submitButton.setOnClickListener { mPresenter.clickSubmit() }
-        binding.calendar.setOnDateChangeListener { calendarView, year, month, day ->
+        binding.calendar.setOnDateChangeListener { _, year, month, day ->
             mPresenter.setDate(
                 year,
                 month,
