@@ -53,15 +53,13 @@ class NotificationHelper @Inject constructor(private val context: Context) : Con
 
     fun sendShortNotify(
         id: Int,
+        time: Long,
         textTitle: String,
         textContent: String,
         channelId: String = DEFAULT_NOTIFY_CHANNEL_ID
     ) {
-        val calendar = Calendar.getInstance()
-        calendar.add(Calendar.MINUTE, 50)
-
         val intent = Intent(this, NotifyBroadcast::class.java).apply {
-            putExtra("test", "tewre")
+
         }
         val pendingIntent: PendingIntent =
             PendingIntent.getBroadcast(context, id, intent, FLAG_UPDATE_CURRENT)
@@ -72,7 +70,7 @@ class NotificationHelper @Inject constructor(private val context: Context) : Con
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
             .setCategory(NotificationCompat.CATEGORY_REMINDER)
-            .setWhen(calendar.timeInMillis)
+            .setWhen(time)
             .setContentTitle(textTitle)
             .setContentText(textContent)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
