@@ -1,16 +1,13 @@
 package com.example.planner.presentation.background.workmanager
 
 import android.content.Context
-import android.util.Log
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.planner.domain.Constants
 import com.example.planner.domain.Event
 import com.example.planner.domain.excetion.Failure
 import com.example.planner.domain.interactors.GetEventByIdInteractor
-import com.example.planner.presentation.NotificationHelper
-import com.example.planner.presentation.background.alarm.AlarmTaskManager
-import com.example.planner.presentation.background.workmanager.ChildWorkerFactory
+import com.example.planner.presentation.background.NotificationHelper
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import timber.log.Timber

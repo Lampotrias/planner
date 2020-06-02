@@ -7,13 +7,12 @@ data class Event(
     var id: Long,
     var name: String,
     var time: Long,
-    var zoneOffset: Int
+    var zoneOffset: Int,
+    val groupId: Long
 ) {
 
     val localTime: Long
         get() = time + zoneOffset
 
-    fun toEventEntity(): EventEntity {
-        return EventEntity(id, name, time, zoneOffset)
-    }
+    fun toEventEntity() = EventEntity(id, name, time, zoneOffset, groupId)
 }

@@ -42,10 +42,10 @@ abstract class BaseFragment: MvpAppCompatFragment() {
         }
     }
 
-    fun hFailure(failure: Failure?) {
+    fun prepareFailure(failure: Failure?) {
         when (failure) {
             is Failure.ServerError -> notify("Error server connect");
-            is Failure.DatabaseErrorQuery -> notify("Error database query");
+            is Failure.DatabaseErrorQuery -> notify("Error database query ${failure.message}");
         }
     }
 

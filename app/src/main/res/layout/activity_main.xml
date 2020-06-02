@@ -13,6 +13,6 @@
     android:id="@+id/main_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:name="com.example.planner.presentation.main_screen.MainScreenFragment"/>
+    android:name="com.example.planner.presentation.features.main_screen.MainScreenFragment"/>
 
 </LinearLayout>

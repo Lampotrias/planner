@@ -4,7 +4,7 @@ package com.example.planner.di
 import android.content.Context
 import com.example.planner.AndroidApp
 import com.example.planner.data.database.AppDatabase
-import com.example.planner.domain.repositories.EventRepo
+import com.example.planner.domain.repositories.RepoDb
 import com.example.planner.domain.repositories.GlobalRepo
 import com.example.planner.presentation.background.alarm.AlarmTaskManager
 import com.example.planner.presentation.background.workmanager.AppWorkerFactory
@@ -19,7 +19,7 @@ import javax.inject.Singleton
 interface AppComponent {
 
     fun provideAppContext(): Context
-    fun provideEventRepo(): EventRepo
+    fun provideEventRepo(): RepoDb
     fun provideGlobalRepo(): GlobalRepo
     fun provideDatabase(): AppDatabase
     fun provideAlarmManager(): AlarmTaskManager

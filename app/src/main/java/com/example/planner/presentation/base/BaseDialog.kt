@@ -3,7 +3,7 @@ package com.example.planner.presentation.base
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import com.example.planner.presentation.calendar_detail.CalendarDialog
+import com.example.planner.presentation.features.calendar_detail.CalendarDialog
 import moxy.MvpDelegate
 import moxy.MvpDelegateHolder
 

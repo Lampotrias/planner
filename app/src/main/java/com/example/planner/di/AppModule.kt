@@ -4,9 +4,9 @@ import android.app.AlarmManager
 import android.content.Context
 import com.example.planner.AndroidApp
 import com.example.planner.data.GlobalRepoImpl
-import com.example.planner.data.RepoImpl
+import com.example.planner.data.RepoDbImpl
 import com.example.planner.data.database.AppDatabase
-import com.example.planner.domain.repositories.EventRepo
+import com.example.planner.domain.repositories.RepoDb
 import com.example.planner.domain.repositories.GlobalRepo
 import com.example.planner.presentation.background.alarm.AlarmTaskManager
 import dagger.Module
@@ -23,7 +23,7 @@ class AppModule {
 
         @Singleton
         @Provides
-        fun provideEventRepo(appDatabase: AppDatabase): EventRepo = RepoImpl(appDatabase)
+        fun provideEventRepo(appDatabase: AppDatabase): RepoDb = RepoDbImpl(appDatabase)
 
         @Singleton
         @Provides
