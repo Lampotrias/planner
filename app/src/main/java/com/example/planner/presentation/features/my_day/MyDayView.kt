@@ -1,10 +1,9 @@
 package com.example.planner.presentation.features.my_day
 
-import android.os.Bundle
 import androidx.navigation.NavDirections
-import com.example.planner.domain.Event
 import com.example.planner.domain.excetion.Failure
-import com.example.planner.presentation.features.my_day.adapter.EventModel
+import com.example.planner.presentation.DisplayableItem
+import com.example.planner.presentation.adapters.Manager
 import moxy.MvpView
 import moxy.viewstate.strategy.alias.AddToEnd
 import moxy.viewstate.strategy.alias.AddToEndSingle
@@ -21,5 +20,5 @@ interface MyDayView: MvpView {
     fun handleFailure(failure: Failure?)
 
     @AddToEnd
-    fun showEventList(list: List<EventModel>)
+    fun showEventList(manager: Manager<DisplayableItem>, list: List<DisplayableItem>)
 }

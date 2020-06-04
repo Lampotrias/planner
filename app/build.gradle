@@ -73,4 +73,6 @@ dependencies {
     def dagger_assist_version = '0.5.2'
     compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$dagger_assist_version"
     kapt "com.squareup.inject:assisted-inject-processor-dagger2:$dagger_assist_version"
+
+    implementation 'com.hannesdorfmann:adapterdelegates4:4.3.0'
 }
