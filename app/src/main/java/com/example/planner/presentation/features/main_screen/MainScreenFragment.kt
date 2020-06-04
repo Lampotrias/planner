@@ -12,18 +12,14 @@ import com.example.planner.R
 import com.example.planner.databinding.MainScreenBinding
 import com.example.planner.domain.Group
 import com.example.planner.domain.excetion.Failure
-import com.example.planner.domain.interactors.GlobalInteractor
+import com.example.planner.presentation.adapters.CompositeAdapter
+import com.example.planner.presentation.adapters.Manager
 import com.example.planner.presentation.base.BaseFragment
-import com.example.planner.presentation.features.main_screen.adapter.GroupListAdapter
+import com.example.planner.presentation.features.main_screen.adapter.GroupDelegateAdapter
 import com.example.planner.presentation.features.main_screen.di.DaggerMainScreenComponent
-import com.example.planner.presentation.features.main_screen.di.MainScreenComponent
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import moxy.presenter.InjectPresenter
-import moxy.presenter.ProvidePresenter
 import javax.inject.Inject
-import javax.inject.Provider
 
 open class MainScreenFragment : BaseFragment(),
     MainScreenView {
@@ -44,9 +40,14 @@ open class MainScreenFragment : BaseFragment(),
         prepareFailure(failure)
     }
 
-    override fun showGroups(groups: List<Group>) {
+    override fun showGroups(
+        manager: Manager<Group>,
+        groups: List<Group>
+    ) {
+        val groupAdapter = CompositeAdapter(manager)
+        groupAdapter.setItemList(groups)
         binding.groupList.apply {
-            adapter = GroupListAdapter(groups)
+            adapter = groupAdapter
             layoutManager = GridLayoutManager(requireContext(), 5)
         }
     }

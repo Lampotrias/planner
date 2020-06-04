@@ -4,8 +4,9 @@ import com.example.planner.R
 import com.example.planner.domain.Group
 import com.example.planner.domain.excetion.Failure
 import com.example.planner.domain.interactors.*
-import com.example.planner.domain.repositories.RepoDb
+import com.example.planner.presentation.adapters.Manager
 import com.example.planner.presentation.base.BasePresenter
+import com.example.planner.presentation.features.main_screen.adapter.GroupDelegateAdapter
 import moxy.InjectViewState
 import javax.inject.Inject
 
@@ -49,7 +50,9 @@ class MainScreenPresenter @Inject constructor(
                 createGroupInteractor(group2){id -> id.fold(viewState::handleFailure, {})}
                 getGroups()
             }
-            viewState.showGroups(it)
+            val manager = Manager<Group>()
+            manager.addDelegate(GroupDelegateAdapter())
+            viewState.showGroups(manager, it)
         }
         getGroupsInteractor(None()){it.fold(viewState::handleFailure, successExec)}
     }

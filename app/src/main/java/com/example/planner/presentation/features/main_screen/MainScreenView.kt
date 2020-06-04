@@ -2,6 +2,7 @@ package com.example.planner.presentation.features.main_screen
 
 import com.example.planner.domain.Group
 import com.example.planner.domain.excetion.Failure
+import com.example.planner.presentation.adapters.Manager
 import moxy.MvpView
 import moxy.viewstate.strategy.alias.AddToEnd
 import moxy.viewstate.strategy.alias.AddToEndSingle
@@ -18,5 +19,8 @@ interface MainScreenView: MvpView {
     fun handleFailure(failure: Failure?)
 
     @AddToEnd
-    fun showGroups(groups: List<Group>)
+    fun showGroups(
+        manager: Manager<Group>,
+        groups: List<Group>
+    )
 }
