@@ -3,22 +3,27 @@ package com.example.planner.presentation.features.event_dialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.navArgs
 import com.example.planner.AndroidApp
+import com.example.planner.R
 import com.example.planner.databinding.AddEventFragmentBinding
 import com.example.planner.domain.Group
+import com.example.planner.domain.excetion.Failure
 import com.example.planner.extention.navigate
 import com.example.planner.presentation.base.BaseDialog
 import com.example.planner.presentation.features.calendar_detail.CalendarDialog
 import com.example.planner.presentation.features.calendar_detail.CalendarDialog.Companion.CALENDAR_DIALOG_PARAM_OBJ
 import com.example.planner.presentation.features.event_dialog.di.DaggerEventDialogComponent
+import com.example.planner.presentation.features.group_list_dialog.GroupListDialog
 import com.example.planner.presentation.features.my_day.EventTransferObject
-
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
@@ -40,23 +45,30 @@ class EventDialog @Inject constructor() : BaseDialog(),
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        onInitDependencyInjection()
         super.onCreate(savedInstanceState)
-        //!!
+        //in parent
         mPresenter.setInputNavArgs(args)
-        //Back stack form calendar
+        //Back stack from calendar
         parentFragmentManager.setFragmentResultListener(
             CalendarDialog.CALENDAR_DIALOG_RESULT,
             this,
             FragmentResultListener { _: String, result: Bundle ->
-                mPresenter.setArgsFromBackStack(result[CALENDAR_DIALOG_PARAM_OBJ] as EventTransferObject)
+                mPresenter.setArgsFromCalendar(result[CALENDAR_DIALOG_PARAM_OBJ] as EventTransferObject)
+                this.dialog?.show()
             })
+
+        //Back stack from groups
+        parentFragmentManager.setFragmentResultListener(
+            GroupListDialog.GROUPS_DIALOG_RESULT,
+            this,
+            FragmentResultListener { _, result ->
+                mPresenter.setArgsFromGroupsDialog(result[GroupListDialog.GROUPS_DIALOG_PARAM_OBJ] as Group)
+                this.dialog?.show()
+            }
+        )
+
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        //mPresenter.setInputNavArgs(args)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,10 +86,12 @@ class EventDialog @Inject constructor() : BaseDialog(),
 
             customIcon.setOnClickListener {}
 
-            timeEvent.text = "TODAY \n All day"
+            timeEvent.text = getString(R.string.dialog_event_format_time)
             timeEvent.setOnClickListener {
                 mPresenter.onTimeClick()
             }
+
+            groupEvent.setOnClickListener { mPresenter.onGroupSelectClick() }
 
             nameEvent.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(p0: Editable?) {}
@@ -97,7 +111,7 @@ class EventDialog @Inject constructor() : BaseDialog(),
         )
     }
 
-    private fun onInitDependencyInjection() {
+    override fun onInitDependencyInjection() {
         DaggerEventDialogComponent.builder()
             .appComponent((requireActivity().applicationContext as AndroidApp).getComponent())
             .build().inject(this)
@@ -113,10 +127,17 @@ class EventDialog @Inject constructor() : BaseDialog(),
 
     override fun showCalendarPopupDialog(navDirections: NavDirections) {
         this.navigate(navDirections)
+        this.dialog?.hide()
+    }
+
+    override fun showGroupsPopupDialog(navDirections: NavDirections) {
+        this.navigate(navDirections)
+        this.dialog?.hide()
     }
 
     override fun showFormattedTime(year: Int, month: Int, day: Int, hours: Int, minutes: Int) {
-        binding.timeEvent.text = "$day-$month-$year \n $hours:$minutes"
+        binding.timeEvent.text =
+            getString(R.string.format_date_time, day, month, year, hours, minutes)
     }
 
     override fun setEnableSubmit(enable: Boolean) {
@@ -127,5 +148,9 @@ class EventDialog @Inject constructor() : BaseDialog(),
 
     override fun showGroups(groupName: String) {
         binding.groupEvent.text = groupName
+    }
+
+    override fun handleFailure(failure: Failure?) {
+
     }
 }

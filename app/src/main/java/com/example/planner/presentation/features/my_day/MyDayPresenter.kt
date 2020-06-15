@@ -9,7 +9,7 @@ import com.example.planner.domain.interactors.None
 import com.example.planner.domain.interactors.SaveAndReturnEventInteractor
 import com.example.planner.domain.utils.CalendarUtils
 import com.example.planner.presentation.DisplayableItem
-import com.example.planner.presentation.adapters.Manager
+import com.example.planner.presentation.adapters.ManagerImpl
 import com.example.planner.presentation.background.NotificationHelper
 import com.example.planner.presentation.background.alarm.AlarmTaskManager
 import com.example.planner.presentation.base.BasePresenter
@@ -18,7 +18,6 @@ import com.example.planner.presentation.features.my_day.adapter.EventModel
 import com.example.planner.presentation.features.my_day.adapter.TimeEventDelegateAdapter
 import com.example.planner.presentation.features.my_day.adapter.TimeEventModel
 import timber.log.Timber
-import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
@@ -98,10 +97,10 @@ class MyDayPresenter @Inject constructor(
 
     private fun successGetEventList(list: List<Event>) {
         val eventsModel: MutableList<EventModel> = mutableListOf()
-        val format = SimpleDateFormat("d MMMM, HH:mm", Locale.getDefault())
+        //val format = SimpleDateFormat("d MMMM, HH:mm", Locale.getDefault())
 
         list.map {
-            val date: Date = Date(it.time)
+//            val date: Date = Date(it.time)
             eventsModel.add(
                 EventModel(
                     it.id,
@@ -111,7 +110,7 @@ class MyDayPresenter @Inject constructor(
             )
         }
 
-        val manager = Manager<DisplayableItem>()
+        val manager = ManagerImpl<DisplayableItem>()
         manager.addDelegate(EventItemDelegateAdapter())
         manager.addDelegate(TimeEventDelegateAdapter())
 

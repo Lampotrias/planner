@@ -1,6 +1,5 @@
 package com.example.planner.presentation.features.my_day.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +20,8 @@ class TimeEventDelegateAdapter : DelegateAdapter<DisplayableItem> {
     override fun onBindViewHolder(
         items: List<DisplayableItem>,
         position: Int,
-        holder: RecyclerView.ViewHolder
+        holder: RecyclerView.ViewHolder,
+        isSelected: Boolean
     ) {
         if (holder is TimeHolder){
             val item = items[position] as TimeEventModel

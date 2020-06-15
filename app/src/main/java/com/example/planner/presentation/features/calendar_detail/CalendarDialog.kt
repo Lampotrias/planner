@@ -10,7 +10,9 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.navArgs
 import com.example.planner.AndroidApp
+import com.example.planner.R
 import com.example.planner.databinding.CalendarFragmentBinding
+import com.example.planner.domain.excetion.Failure
 import com.example.planner.presentation.base.BaseDialog
 import com.example.planner.presentation.features.calendar_detail.di.DaggerCalendarComponent
 import com.example.planner.presentation.features.my_day.EventTransferObject
@@ -70,7 +72,7 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
         return binding.root
     }
 
-    private fun onInitDependencyInjection() {
+    override fun onInitDependencyInjection() {
         DaggerCalendarComponent.builder()
             .appComponent((requireActivity().applicationContext as AndroidApp).getComponent())
             .build().inject(this)
@@ -86,7 +88,8 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
 
 
     override fun showDate(hours: Int, minutes: Int, title: String) {
-        binding.textToTime.text = "$title \n $hours:$minutes"
+        binding.textToTime.text =
+            getString(R.string.dialog_calendar_format_time, title, hours, minutes)
     }
 
     override fun initTimeControl(hours: Int, minutes: Int) {
@@ -109,5 +112,9 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
         calendar.set(Calendar.MONTH, month)
         calendar.set(Calendar.DAY_OF_MONTH, day)
         binding.calendar.date = calendar.timeInMillis
+    }
+
+    override fun handleFailure(failure: Failure?) {
+
     }
 }

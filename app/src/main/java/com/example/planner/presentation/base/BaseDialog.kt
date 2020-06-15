@@ -1,17 +1,21 @@
 package com.example.planner.presentation.base
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import com.example.planner.presentation.features.calendar_detail.CalendarDialog
+import com.example.planner.AndroidApp
+import com.example.planner.domain.excetion.Failure
 import moxy.MvpDelegate
 import moxy.MvpDelegateHolder
 
 abstract class BaseDialog:  DialogFragment(), MvpDelegateHolder {
     private val mvpDelegate: MvpDelegate<out BaseDialog> = MvpDelegate(this)
+    protected val appContext by lazy { (requireActivity().applicationContext as AndroidApp).getComponent() }
     private var stateSaved = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        onInitDependencyInjection()
         super.onCreate(savedInstanceState)
         getMvpDelegate().onCreate(savedInstanceState)
     }
@@ -24,9 +28,9 @@ abstract class BaseDialog:  DialogFragment(), MvpDelegateHolder {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        stateSaved = true;
-        getMvpDelegate().onSaveInstanceState(outState);
-        getMvpDelegate().onDetach();
+        stateSaved = true
+        getMvpDelegate().onSaveInstanceState(outState)
+        getMvpDelegate().onDetach()
     }
 
     override fun onStop() {
@@ -43,8 +47,8 @@ abstract class BaseDialog:  DialogFragment(), MvpDelegateHolder {
     override fun onDestroy() {
         super.onDestroy()
         if (stateSaved) {
-            stateSaved = false;
-            return;
+            stateSaved = false
+            return
         }
         var anyParentIsRemoving = false
         var parent: Fragment? = parentFragment
@@ -59,4 +63,18 @@ abstract class BaseDialog:  DialogFragment(), MvpDelegateHolder {
     }
 
     override fun getMvpDelegate() = mvpDelegate
+
+    abstract fun onInitDependencyInjection()
+
+    fun prepareFailure(failure: Failure?): String {
+        return when (failure) {
+            is Failure.ServerError -> "Error server connect"
+            is Failure.DatabaseErrorQuery -> "Error database query ${failure.message}"
+            else -> "Unknown error"
+        }
+    }
+
+    fun notify(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
 }

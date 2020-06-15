@@ -1,6 +1,6 @@
 package com.example.planner.presentation.features.calendar_detail
 
-import android.os.Bundle
+import com.example.planner.domain.excetion.Failure
 import com.example.planner.presentation.features.my_day.EventTransferObject
 import moxy.MvpView
 import moxy.viewstate.strategy.alias.AddToEnd
@@ -19,4 +19,6 @@ interface CalendarView: MvpView {
     @AddToEnd
     fun initCalendarControl(year: Int, month: Int, day: Int)
 
+    @Skip
+    fun handleFailure(failure: Failure?)
 }

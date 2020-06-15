@@ -7,18 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentResultListener
 import androidx.navigation.NavDirections
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.planner.databinding.EventTimeListHolderBinding
 import com.example.planner.databinding.MyDayBinding
 import com.example.planner.di.scope.PerFragment
 import com.example.planner.domain.excetion.Failure
 import com.example.planner.extention.navigate
 import com.example.planner.presentation.DisplayableItem
 import com.example.planner.presentation.adapters.CompositeAdapter
-import com.example.planner.presentation.adapters.Manager
+import com.example.planner.presentation.adapters.ManagerImpl
 import com.example.planner.presentation.base.BaseFragment
 import com.example.planner.presentation.features.event_dialog.EventDialog
-import com.example.planner.presentation.features.my_day.adapter.EventItemDelegateAdapter
-import com.example.planner.presentation.features.my_day.adapter.TimeEventDelegateAdapter
 import com.example.planner.presentation.features.my_day.di.DaggerMyDayComponent
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
@@ -73,11 +70,14 @@ class MyDayFragment : BaseFragment(),
     }
 
     override fun handleFailure(failure: Failure?) {
-        prepareFailure(failure)
+        notify(prepareFailure(failure))
     }
 
-    override fun showEventList(manager: Manager<DisplayableItem>, list: List<DisplayableItem>) {
-        val eventListAdapter = CompositeAdapter(manager)
+    override fun showEventList(
+        managerImpl: ManagerImpl<DisplayableItem>,
+        list: List<DisplayableItem>
+    ) {
+        val eventListAdapter = CompositeAdapter(managerImpl)
         eventListAdapter.setItemList(list)
         binding.listView.apply {
             layoutManager = LinearLayoutManager(requireContext())

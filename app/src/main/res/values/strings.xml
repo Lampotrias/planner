@@ -8,4 +8,7 @@
     <string name="default_group_name">Входящие</string>
     <string name="channel_def_notify_name">Напоминания</string>
     <string name="channel_def_notify_description">Любые уведомления о событиях</string>
+    <string name="dialog_calendar_format_time">%1$s\n%2$d:%3$d</string>
+    <string name="dialog_event_format_time">TODAY \n All day</string>
+    <string name="format_date_time">%1$d-%2$d-%3$d \n %4$d:%5$d</string>
 </resources>

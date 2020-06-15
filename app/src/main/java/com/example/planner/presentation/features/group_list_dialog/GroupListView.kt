@@ -1,26 +1,23 @@
-package com.example.planner.presentation.features.main_screen
+package com.example.planner.presentation.features.group_list_dialog
 
 import com.example.planner.domain.Group
 import com.example.planner.domain.excetion.Failure
 import com.example.planner.presentation.adapters.ManagerImpl
 import moxy.MvpView
 import moxy.viewstate.strategy.alias.AddToEnd
-import moxy.viewstate.strategy.alias.AddToEndSingle
 import moxy.viewstate.strategy.alias.Skip
 
-interface MainScreenView: MvpView {
-    @AddToEndSingle
-    fun showMessage(message: String)
-
-    @AddToEnd
-    fun openBottomSheet()
-
+interface GroupListView : MvpView {
     @Skip
-    fun handleFailure(failure: Failure?)
+    fun close(group: Group)
 
     @AddToEnd
     fun showGroups(
         managerImpl: ManagerImpl<Group>,
-        groups: List<Group>
+        groups: List<Group>,
+        position: Int
     )
+
+    @Skip
+    fun handleFailure(failure: Failure?)
 }

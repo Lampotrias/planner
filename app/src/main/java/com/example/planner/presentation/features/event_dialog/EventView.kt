@@ -1,8 +1,7 @@
 package com.example.planner.presentation.features.event_dialog
 
-import android.os.Bundle
 import androidx.navigation.NavDirections
-import com.example.planner.domain.Group
+import com.example.planner.domain.excetion.Failure
 import com.example.planner.presentation.features.my_day.EventTransferObject
 import moxy.MvpView
 import moxy.viewstate.strategy.alias.AddToEnd
@@ -16,6 +15,9 @@ interface EventView: MvpView {
     fun showCalendarPopupDialog(navDirections: NavDirections)
 
     @AddToEnd
+    fun showGroupsPopupDialog(navDirections: NavDirections)
+
+    @AddToEnd
     fun showFormattedTime(year: Int, month: Int, day: Int, hours: Int, minutes: Int)
 
     @AddToEnd
@@ -23,4 +25,7 @@ interface EventView: MvpView {
 
     @AddToEnd
     fun showGroups(groupName: String)
+
+    @Skip
+    fun handleFailure(failure: Failure?)
 }

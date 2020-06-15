@@ -13,9 +13,8 @@ import com.example.planner.databinding.MainScreenBinding
 import com.example.planner.domain.Group
 import com.example.planner.domain.excetion.Failure
 import com.example.planner.presentation.adapters.CompositeAdapter
-import com.example.planner.presentation.adapters.Manager
+import com.example.planner.presentation.adapters.ManagerImpl
 import com.example.planner.presentation.base.BaseFragment
-import com.example.planner.presentation.features.main_screen.adapter.GroupDelegateAdapter
 import com.example.planner.presentation.features.main_screen.di.DaggerMainScreenComponent
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import moxy.ktx.moxyPresenter
@@ -41,10 +40,10 @@ open class MainScreenFragment : BaseFragment(),
     }
 
     override fun showGroups(
-        manager: Manager<Group>,
+        managerImpl: ManagerImpl<Group>,
         groups: List<Group>
     ) {
-        val groupAdapter = CompositeAdapter(manager)
+        val groupAdapter = CompositeAdapter(managerImpl)
         groupAdapter.setItemList(groups)
         binding.groupList.apply {
             adapter = groupAdapter
