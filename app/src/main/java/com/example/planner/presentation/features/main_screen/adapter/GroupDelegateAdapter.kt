@@ -1,9 +1,9 @@
 package com.example.planner.presentation.features.main_screen.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.planner.R
 import com.example.planner.databinding.GroupListHolderBinding
 import com.example.planner.domain.Group
 import com.example.planner.presentation.adapters.DelegateAdapter
@@ -49,12 +49,11 @@ class GroupDelegateAdapter : DelegateAdapter<Group> {
 
         var groupLogo: Int = 0
             set(value) {
-                binding.groupLogo.setImageResource(R.drawable.group_default)
-                field = value
+                binding.groupLogo.setImageResource(value)
             }
 
         fun setSelected(selected: Boolean) {
-            binding.groupLogo.alpha = if (selected) 1f else 0.3f
+            binding.groupLogo.setColorFilter(Color.MAGENTA)
         }
     }
 }
