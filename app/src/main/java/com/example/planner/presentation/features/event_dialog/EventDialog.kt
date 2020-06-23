@@ -102,8 +102,11 @@ class EventDialog @Inject constructor() : BaseDialog(),
 
     override fun onStart() {
         super.onStart()
+
+        dialog?.window?.setBackgroundDrawableResource(R.drawable.dialog_rounded_bg)
+
         dialog?.window?.setLayout(
-            WindowManager.LayoutParams.MATCH_PARENT,
+            get90Width(),
             WindowManager.LayoutParams.WRAP_CONTENT
         )
     }

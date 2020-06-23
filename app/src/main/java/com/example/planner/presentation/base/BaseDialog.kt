@@ -1,6 +1,8 @@
 package com.example.planner.presentation.base
 
+import android.graphics.Point
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -9,7 +11,7 @@ import com.example.planner.domain.excetion.Failure
 import moxy.MvpDelegate
 import moxy.MvpDelegateHolder
 
-abstract class BaseDialog:  DialogFragment(), MvpDelegateHolder {
+abstract class BaseDialog : DialogFragment(), MvpDelegateHolder {
     private val mvpDelegate: MvpDelegate<out BaseDialog> = MvpDelegate(this)
     protected val appContext by lazy { (requireActivity().applicationContext as AndroidApp).getComponent() }
     private var stateSaved = false
@@ -18,6 +20,15 @@ abstract class BaseDialog:  DialogFragment(), MvpDelegateHolder {
         onInitDependencyInjection()
         super.onCreate(savedInstanceState)
         getMvpDelegate().onCreate(savedInstanceState)
+    }
+
+    protected fun get90Width(): Int {
+        var width = WindowManager.LayoutParams.WRAP_CONTENT
+        val size = Point()
+        dialog?.context?.display?.getRealSize(size).let {
+            width = (size.x * 0.9).toInt()
+        }
+        return width
     }
 
     override fun onResume() {
