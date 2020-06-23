@@ -38,7 +38,6 @@ class EventDialog @Inject constructor() : BaseDialog(),
     lateinit var presenterProvider: EventPresenter
     private val mPresenter by moxyPresenter { presenterProvider }
 
-
     companion object {
         const val EVENT_DIALOG_RESULT = "EVENT_DIALOG_RESULT"
         const val EVENT_DIALOG_PARAM_OBJ = "EVENT_DIALOG_PARAM_OBJ"
@@ -46,9 +45,9 @@ class EventDialog @Inject constructor() : BaseDialog(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //in parent
+        // in parent
         mPresenter.setInputNavArgs(args)
-        //Back stack from calendar
+        // Back stack from calendar
         parentFragmentManager.setFragmentResultListener(
             CalendarDialog.CALENDAR_DIALOG_RESULT,
             this,
@@ -57,7 +56,7 @@ class EventDialog @Inject constructor() : BaseDialog(),
                 this.dialog?.show()
             })
 
-        //Back stack from groups
+        // Back stack from groups
         parentFragmentManager.setFragmentResultListener(
             GroupListDialog.GROUPS_DIALOG_RESULT,
             this,
@@ -66,9 +65,7 @@ class EventDialog @Inject constructor() : BaseDialog(),
                 this.dialog?.show()
             }
         )
-
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -106,7 +103,7 @@ class EventDialog @Inject constructor() : BaseDialog(),
     override fun onStart() {
         super.onStart()
         dialog?.window?.setLayout(
-            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT
         )
     }
@@ -143,7 +140,6 @@ class EventDialog @Inject constructor() : BaseDialog(),
     override fun setEnableSubmit(enable: Boolean) {
         binding.submitButton.setOnClickListener { if (enable) mPresenter.clickSubmit() }
         binding.submitButton.alpha = if (enable) 1f else 0.2f
-
     }
 
     override fun showGroups(groupName: String) {
@@ -151,6 +147,5 @@ class EventDialog @Inject constructor() : BaseDialog(),
     }
 
     override fun handleFailure(failure: Failure?) {
-
     }
 }

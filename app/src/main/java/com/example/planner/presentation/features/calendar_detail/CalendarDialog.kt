@@ -43,7 +43,7 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
     override fun onStart() {
         super.onStart()
         dialog?.window?.setLayout(
-            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.WRAP_CONTENT
         )
     }
@@ -86,7 +86,6 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
         dialog?.dismiss()
     }
 
-
     override fun showDate(hours: Int, minutes: Int, title: String) {
         binding.textToTime.text =
             getString(R.string.dialog_calendar_format_time, title, hours, minutes)
@@ -115,6 +114,5 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
     }
 
     override fun handleFailure(failure: Failure?) {
-
     }
 }
