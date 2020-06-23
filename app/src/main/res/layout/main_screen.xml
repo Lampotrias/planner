@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainContent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <ScrollView
@@ -23,13 +23,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:contentDescription="@string/cd_logo_my_day_top"
                 app:srcCompat="@mipmap/ic_launcher" />
 
             <LinearLayout
                 android:id="@+id/topMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="50dp"
+                android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -38,59 +39,64 @@
                 <ImageView
                     android:id="@+id/btnMyDay"
                     android:layout_width="wrap_content"
-                    android:layout_marginHorizontal="23dp"
                     android:layout_height="wrap_content"
-                    />
+                    android:layout_marginHorizontal="23dp"
+                    android:contentDescription="@string/cd_my_day_click_logo"
+                    app:srcCompat="@drawable/my_day_icon" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="23dp"
-                    android:src="@drawable/my_day_icon" />
+                    android:contentDescription="@string/todo"
+                    app:srcCompat="@drawable/my_day_icon" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="23dp"
-                    android:src="@drawable/my_day_icon" />
+                    android:contentDescription="@string/todo"
+                    app:srcCompat="@drawable/my_day_icon" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="23dp"
-                    android:src="@drawable/my_day_icon" />
+                    android:contentDescription="@string/todo"
+                    app:srcCompat="@drawable/my_day_icon" />
 
             </LinearLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/groupList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/topMenu"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:paddingHorizontal="50dp"
+                android:layout_marginHorizontal="50dp"
                 android:layout_marginTop="50dp"
-                />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/topMenu" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:elevation="20dp"
-        android:orientation="vertical"
+        android:background="?attr/colorSurface"
+        android:elevation="5dp"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="25dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        app:behavior_peekHeight="20dp"
+        app:layout_behavior="@string/bottom_sheet_behavior">
 
         <View
             android:id="@+id/separator1"
             android:layout_width="match_parent"
-            android:layout_height="4dp"
+            android:layout_height="1dp"
             android:layout_marginHorizontal="40dp"
-            android:layout_marginVertical="10dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/colorPrimary"
+            android:layout_marginTop="10dp"
+            android:alpha="?attr/emphasisDisabledAlpha"
+            android:background="?attr/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -100,16 +106,12 @@
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="5dp"
             app:defaultNavHost="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/separator1"
-            app:navGraph="@navigation/nav_graph_main">
-
-
-        </androidx.fragment.app.FragmentContainerView>
+            app:navGraph="@navigation/nav_graph_main" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

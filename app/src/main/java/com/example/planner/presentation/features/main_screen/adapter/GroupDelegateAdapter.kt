@@ -3,6 +3,7 @@ package com.example.planner.presentation.features.main_screen.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.planner.R
 import com.example.planner.databinding.GroupListHolderBinding
 import com.example.planner.domain.Group
 import com.example.planner.presentation.adapters.DelegateAdapter
@@ -12,7 +13,9 @@ class GroupDelegateAdapter : DelegateAdapter<Group> {
     private lateinit var binding: GroupListHolderBinding
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
-        layoutInflater = LayoutInflater.from(parent.context) ?: throw kotlin.NullPointerException("layoutInflater error")
+        layoutInflater =
+            LayoutInflater.from(parent.context)
+                ?: throw kotlin.NullPointerException("layoutInflater error")
         binding = GroupListHolderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return GroupHolder(binding)
     }
@@ -46,7 +49,8 @@ class GroupDelegateAdapter : DelegateAdapter<Group> {
 
         var groupLogo: Int = 0
             set(value) {
-                binding.groupLogo.setImageResource(value)
+                binding.groupLogo.setImageResource(R.drawable.group_default)
+                field = value
             }
 
         fun setSelected(selected: Boolean) {

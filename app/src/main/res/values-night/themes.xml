@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppThemeDayNight" parent="AppThemeDark" />
+
+    <style name="AppThemeDark" parent="AppThemeLight">
+        <!--Color-->
+        <item name="colorPrimary">@color/reply_blue_200</item>
+        <item name="colorPrimaryVariant">@color/reply_blue_300</item>
+        <item name="colorSecondary">@color/reply_orange_300</item>
+        <item name="colorSecondaryVariant">@color/reply_orange_300</item>
+
+        <item name="android:colorBackground">@color/reply_black_900</item>
+        <item name="colorSurface">@color/reply_black_800</item>
+        <item name="colorPrimarySurfaceVariant">?attr/colorSurface</item>
+        <item name="colorError">@color/reply_red_200</item>
+
+        <item name="colorOnPrimary">@color/reply_black_900</item>
+        <item name="colorOnSecondary">@color/reply_black_900</item>
+        <item name="colorOnBackground">@color/reply_white_50</item>
+        <item name="colorOnSurface">@color/reply_white_50</item>
+        <item name="colorOnError">@color/reply_black_900</item>
+
+    </style>
+</resources>

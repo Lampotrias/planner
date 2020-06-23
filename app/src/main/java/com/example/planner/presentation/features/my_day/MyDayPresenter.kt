@@ -97,7 +97,7 @@ class MyDayPresenter @Inject constructor(
 
     private fun successGetEventList(list: List<Event>) {
         val eventsModel: MutableList<EventModel> = mutableListOf()
-        //val format = SimpleDateFormat("d MMMM, HH:mm", Locale.getDefault())
+        // val format = SimpleDateFormat("d MMMM, HH:mm", Locale.getDefault())
 
         list.map {
 //            val date: Date = Date(it.time)
@@ -105,7 +105,8 @@ class MyDayPresenter @Inject constructor(
                 EventModel(
                     it.id,
                     it.name,
-                    it.time
+                    it.time,
+                    "Входящие задачи"
                 )
             )
         }
@@ -121,10 +122,12 @@ class MyDayPresenter @Inject constructor(
     private fun addTimeSeparatorToEventList(events: List<EventModel>): List<DisplayableItem> {
         val result = mutableListOf<DisplayableItem>()
 
-        var bYesterday = false
-        var bToday = false
-        var bTomorrow = false
-        var bLater = false
+        var bYesterday = false // просроченные
+        var bToday = false // сегодня
+        var bTomorrow = false // завтра
+        var bLater = false // предстоящие
+        var bNextWeek = false // следующая неделя
+        var bFuture = false // на будущее
 
         for (event in events) {
             if (CalendarUtils.forLastDayTimestamp(event.time)) {
@@ -134,23 +137,32 @@ class MyDayPresenter @Inject constructor(
                 }
             } else if (CalendarUtils.forTodayTimestamp(event.time)) {
                 if (!bToday) {
-                    result.add(TimeEventModel("На сегодня"))
+                    result.add(TimeEventModel("Сегодня"))
                     bToday = true
                 }
             } else if (CalendarUtils.forTomorrowTimestamp(event.time)) {
                 if (!bTomorrow) {
-                    result.add(TimeEventModel("На завтра"))
+                    result.add(TimeEventModel("Завтра"))
                     bTomorrow = true
                 }
             } else if (CalendarUtils.forLaterTimestamp(event.time)) {
                 if (!bLater) {
                     bLater = true
-                    result.add(TimeEventModel("Запланированные"))
+                    result.add(TimeEventModel("Предстоящие"))
+                }
+            } else if (CalendarUtils.forNextWeek(event.time)) {
+                if (!bNextWeek) {
+                    bNextWeek = true
+                    result.add(TimeEventModel("Следующая неделя"))
+                }
+            } else if (CalendarUtils.forFuture(event.time)) {
+                if (!bFuture) {
+                    bFuture = true
+                    result.add(TimeEventModel("на будущее"))
                 }
             }
             result.add(event)
         }
-
         return result
     }
 }
