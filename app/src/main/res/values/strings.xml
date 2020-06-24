@@ -21,4 +21,5 @@
     <string name="cd_remind_of_event">Напомнить о событии</string>
     <string name="cd_repeat_settings">Настройки повтора</string>
     <string name="submit_button">Submit button</string>
+    <string name="mess_add_success_event">Событие успешно создано</string>
 </resources>

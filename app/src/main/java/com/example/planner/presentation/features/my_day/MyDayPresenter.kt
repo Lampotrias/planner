@@ -77,7 +77,7 @@ class MyDayPresenter @Inject constructor(
                 event.name,
                 calendar.timeInMillis,
                 TimeZone.getDefault().rawOffset,
-                1L
+                event.groupId
             )
         ) { it.fold(this::handleError, this::successSaveEvent) }
     }
@@ -92,6 +92,7 @@ class MyDayPresenter @Inject constructor(
 
     private fun successSaveEvent(event: Event) {
         alarmManager.createNotify(event.id, event.time)
+        viewState.showSuccessEventAddMessage()
         getAllEvents()
     }
 

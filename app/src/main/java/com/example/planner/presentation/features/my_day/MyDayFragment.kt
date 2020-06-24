@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.FragmentResultListener
 import androidx.navigation.NavDirections
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.planner.R
 import com.example.planner.databinding.MyDayBinding
 import com.example.planner.di.scope.PerFragment
 import com.example.planner.domain.excetion.Failure
@@ -83,5 +85,13 @@ class MyDayFragment : BaseFragment(),
             layoutManager = LinearLayoutManager(requireContext())
             adapter = eventListAdapter
         }
+    }
+
+    override fun showSuccessEventAddMessage() {
+        Toast.makeText(
+            requireContext(),
+            getString(R.string.mess_add_success_event),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }

@@ -9,7 +9,7 @@ import moxy.viewstate.strategy.alias.AddToEnd
 import moxy.viewstate.strategy.alias.AddToEndSingle
 import moxy.viewstate.strategy.alias.Skip
 
-interface MyDayView: MvpView {
+interface MyDayView : MvpView {
     @AddToEndSingle
     fun showAnimationFab(offset: Float)
 
@@ -21,4 +21,7 @@ interface MyDayView: MvpView {
 
     @AddToEnd
     fun showEventList(managerImpl: ManagerImpl<DisplayableItem>, list: List<DisplayableItem>)
+
+    @Skip
+    fun showSuccessEventAddMessage()
 }
