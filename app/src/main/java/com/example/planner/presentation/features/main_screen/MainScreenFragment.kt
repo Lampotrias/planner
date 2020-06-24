@@ -59,9 +59,7 @@ open class MainScreenFragment : BaseFragment(),
         binding = MainScreenBinding.inflate(inflater, container, false)
 
         binding.btnMyDay.setOnClickListener { mPresenter.clickBtnMyDay() }
-        binding.btnMyDay.setImageResource(R.drawable.my_day_icon)
-
-
+        binding.btnMyDay.setImageResource(R.drawable.ic_1circle)
         initBottom()
         return binding.root
     }
@@ -76,7 +74,6 @@ open class MainScreenFragment : BaseFragment(),
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 mPresenter.setSlidingState(newState)
             }
-
         })
     }
 
