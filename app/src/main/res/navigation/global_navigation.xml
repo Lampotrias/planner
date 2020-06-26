@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/global_navigation"
+    app:startDestination="@id/mainScreenFragment">
+
+    <fragment
+        android:id="@+id/mainScreenFragment"
+        android:name="com.example.planner.presentation.features.main_screen.MainScreenFragment"
+        android:label="MainScreenFragment"
+        tools:layout="@layout/main_screen">
+        <action
+            android:id="@+id/action_mainScreenFragment_to_authFragment"
+            app:destination="@id/authFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/authFragment"
+        android:name="com.example.planner.presentation.features.auth.AuthFragment"
+        android:label="AuthFragment"
+        tools:layout="@layout/auth_fragment" />
+</navigation>

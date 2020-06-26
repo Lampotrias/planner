@@ -46,6 +46,7 @@
                     app:srcCompat="@drawable/ic_1circle" />
 
                 <ImageView
+                    android:id="@+id/authButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="23dp"

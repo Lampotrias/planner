@@ -10,7 +10,7 @@
     <string name="channel_def_notify_description">Любые уведомления о событиях</string>
     <string name="dialog_calendar_format_time">%1$s\n%2$d:%3$d</string>
     <string name="dialog_event_format_time">TODAY \n All day</string>
-    <string name="format_date_time">%1$d-%2$d-%3$d \n %4$d:%5$d</string>
+    <string name="format_date_time">%1$s\n%2$s</string>
     <string name="add_event">Добавить событие</string>
     <string name="cd_logo_of_group">Logo of group</string>
     <string name="todo">TODO</string>
@@ -22,4 +22,5 @@
     <string name="cd_repeat_settings">Настройки повтора</string>
     <string name="submit_button">Submit button</string>
     <string name="mess_add_success_event">Событие успешно создано</string>
+    <string name="sing_in_with_google">Sing In with Google</string>
 </resources>

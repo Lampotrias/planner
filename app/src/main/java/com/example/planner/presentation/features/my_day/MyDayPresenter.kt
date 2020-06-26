@@ -131,32 +131,32 @@ class MyDayPresenter @Inject constructor(
         var bFuture = false // на будущее
 
         for (event in events) {
-            if (CalendarUtils.forLastDayTimestamp(event.time)) {
+            if (CalendarUtils.isLastDayTimestamp(event.time)) {
                 if (!bYesterday) {
                     result.add(TimeEventModel("Просроченные"))
                     bYesterday = true
                 }
-            } else if (CalendarUtils.forTodayTimestamp(event.time)) {
+            } else if (CalendarUtils.isTodayTimestamp(event.time)) {
                 if (!bToday) {
                     result.add(TimeEventModel("Сегодня"))
                     bToday = true
                 }
-            } else if (CalendarUtils.forTomorrowTimestamp(event.time)) {
+            } else if (CalendarUtils.isTomorrowTimestamp(event.time)) {
                 if (!bTomorrow) {
                     result.add(TimeEventModel("Завтра"))
                     bTomorrow = true
                 }
-            } else if (CalendarUtils.forLaterTimestamp(event.time)) {
+            } else if (CalendarUtils.isLaterTimestamp(event.time)) {
                 if (!bLater) {
                     bLater = true
                     result.add(TimeEventModel("Предстоящие"))
                 }
-            } else if (CalendarUtils.forNextWeek(event.time)) {
+            } else if (CalendarUtils.isNextWeekTimestamp(event.time)) {
                 if (!bNextWeek) {
                     bNextWeek = true
                     result.add(TimeEventModel("Следующая неделя"))
                 }
-            } else if (CalendarUtils.forFuture(event.time)) {
+            } else if (CalendarUtils.isFutureTimestamp(event.time)) {
                 if (!bFuture) {
                     bFuture = true
                     result.add(TimeEventModel("на будущее"))

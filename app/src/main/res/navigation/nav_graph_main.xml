@@ -53,4 +53,7 @@
             android:name="selectedId"
             app:argType="long" />
     </dialog>
+    <action
+        android:id="@+id/action_global_my_day"
+        app:destination="@id/my_day" />
 </navigation>

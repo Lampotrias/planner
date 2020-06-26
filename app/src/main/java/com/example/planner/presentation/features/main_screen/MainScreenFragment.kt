@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.NavDirections
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.planner.AndroidApp
-import com.example.planner.R
 import com.example.planner.databinding.MainScreenBinding
 import com.example.planner.domain.Group
 import com.example.planner.domain.excetion.Failure
+import com.example.planner.extention.navigate
 import com.example.planner.presentation.adapters.CompositeAdapter
 import com.example.planner.presentation.adapters.ManagerImpl
 import com.example.planner.presentation.base.BaseFragment
@@ -39,6 +40,10 @@ open class MainScreenFragment : BaseFragment(),
         prepareFailure(failure)
     }
 
+    override fun navigateAuth(navDirections: NavDirections) {
+        navigate(navDirections)
+    }
+
     override fun showGroups(
         managerImpl: ManagerImpl<Group>,
         groups: List<Group>
@@ -59,7 +64,7 @@ open class MainScreenFragment : BaseFragment(),
         binding = MainScreenBinding.inflate(inflater, container, false)
 
         binding.btnMyDay.setOnClickListener { mPresenter.clickBtnMyDay() }
-        binding.btnMyDay.setImageResource(R.drawable.ic_1circle)
+        binding.authButton.setOnClickListener { mPresenter.clickAuthButton() }
         initBottom()
         return binding.root
     }
@@ -81,7 +86,12 @@ open class MainScreenFragment : BaseFragment(),
         Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
     }
 
-    override fun openBottomSheet() {
+    override fun navigateMyDay(resId: Int) {
+        navigate(binding.mContainer, resId)
+        showBottomSheet()
+    }
+
+    private fun showBottomSheet() {
         sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
