@@ -1,5 +1,6 @@
 package com.example.planner.presentation.features.event_dialog
 
+import com.example.planner.domain.Constants
 import com.example.planner.domain.Group
 import com.example.planner.domain.excetion.Failure
 import com.example.planner.domain.interactors.GetGroupsInteractor
@@ -15,16 +16,10 @@ class EventPresenter @Inject constructor(
     private lateinit var eventObj: EventTransferObject
     private lateinit var cacheGroups: List<Group>
 
-    private fun drawDialog(event: EventTransferObject) {
+    private fun saveObjectAndDrawDialog(event: EventTransferObject) {
         eventObj = event
-        viewState.showFormattedTime(
-            eventObj.year,
-            eventObj.month,
-            eventObj.day,
-            eventObj.hours,
-            eventObj.minutes
-        )
-        viewState.showGroups(eventObj.groupName)
+        viewState.showFormattedTime(eventObj.strDate, eventObj.getStrTime(), eventObj.allDay)
+        viewState.setGroupFormCaption(eventObj.groupName)
     }
 
     private fun handleError(failure: Failure) {
@@ -32,7 +27,7 @@ class EventPresenter @Inject constructor(
     }
 
     fun setArgsFromCalendar(eventTransferObject: EventTransferObject) {
-        drawDialog(eventTransferObject)
+        saveObjectAndDrawDialog(eventTransferObject)
     }
 
     fun setArgsFromGroupsDialog(group: Group) {
@@ -40,17 +35,17 @@ class EventPresenter @Inject constructor(
             groupId = group.id
             groupName = group.name
         }
-        drawDialog(eventObj)
+        saveObjectAndDrawDialog(eventObj)
     }
 
     fun setInputNavArgs(eventDialogArgs: EventDialogArgs) {
         if (eventDialogArgs.eventObj != null) {
-            drawDialog(eventDialogArgs.eventObj)
+            saveObjectAndDrawDialog(eventDialogArgs.eventObj)
         } else {
             val success: (List<Group>) -> Unit = { groups ->
                 cacheGroups = groups
                 val group = groups.first { it.default }
-                drawDialog(getActualEventObject(group))
+                saveObjectAndDrawDialog(getActualEventObject(group))
             }
             getGroupsInteractor(None()) { it.fold(this::handleError, success) }
         }
@@ -83,13 +78,18 @@ class EventPresenter @Inject constructor(
 
     private fun getActualEventObject(group: Group): EventTransferObject {
         val calendar: Calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, 9)
+        calendar.set(Calendar.MINUTE, 0)
         return EventTransferObject(
             "",
             group.id,
             group.name,
             calendar.get(Calendar.DAY_OF_MONTH),
             calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.YEAR), 9, 0, "Today"
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.MINUTE),
+            Constants.ALL_DAY_Y
         )
     }
 }

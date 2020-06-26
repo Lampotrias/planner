@@ -88,14 +88,28 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
         dialog?.dismiss()
     }
 
-    override fun showDate(hours: Int, minutes: Int, title: String) {
+    override fun showFormattedTime(
+        strDate: String,
+        strTime: String,
+        bAllDay: Int
+    ) {
         binding.textToTime.text =
-            getString(R.string.dialog_calendar_format_time, title, hours, minutes)
+            if (bAllDay > 0) resources.getString(
+                R.string.dialog_format_time,
+                getFormattedDate(strDate),
+                resources.getString(R.string.all_day)
+            )
+            else resources.getString(
+                R.string.dialog_format_time,
+                getFormattedDate(strDate),
+                strTime
+            )
     }
 
     override fun initTimeControl(hours: Int, minutes: Int) {
         binding.textToTime.setOnClickListener {
-            TimePickerDialog(requireContext(),
+            TimePickerDialog(
+                requireContext(),
                 TimePickerDialog.OnTimeSetListener { _, hours, minutes ->
                     mPresenter.setTime(
                         hours,
@@ -116,5 +130,6 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
     }
 
     override fun handleFailure(failure: Failure?) {
+        notify(prepareFailure(failure))
     }
 }

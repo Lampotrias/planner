@@ -3,12 +3,12 @@
     <string name="time_string">%1$d:%2$d</string>
     <string name="date_string">%3$d-%2$d-%1$d</string>
     <string name="save_event">Save Event</string>
-    <string name="all_day">На весь день</string>
+    <string name="all_day">Весь день</string>
     <string name="enter_name_hint">Enter name</string>
     <string name="default_group_name">Входящие</string>
     <string name="channel_def_notify_name">Напоминания</string>
     <string name="channel_def_notify_description">Любые уведомления о событиях</string>
-    <string name="dialog_calendar_format_time">%1$s\n%2$d:%3$d</string>
+    <string name="dialog_format_time">%1$s\n%2$s</string>
     <string name="dialog_event_format_time">TODAY \n All day</string>
     <string name="format_date_time">%1$s\n%2$s</string>
     <string name="add_event">Добавить событие</string>
@@ -23,4 +23,7 @@
     <string name="submit_button">Submit button</string>
     <string name="mess_add_success_event">Событие успешно создано</string>
     <string name="sing_in_with_google">Sing In with Google</string>
+    <string name="today">Сегодня</string>
+    <string name="yesterday">Вчера</string>
+    <string name="tomorrow">Завтра</string>
 </resources>

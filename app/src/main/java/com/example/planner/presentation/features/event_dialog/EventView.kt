@@ -7,7 +7,7 @@ import moxy.MvpView
 import moxy.viewstate.strategy.alias.AddToEnd
 import moxy.viewstate.strategy.alias.Skip
 
-interface EventView: MvpView {
+interface EventView : MvpView {
     @Skip
     fun close(eventObj: EventTransferObject)
 
@@ -18,13 +18,13 @@ interface EventView: MvpView {
     fun showGroupsPopupDialog(navDirections: NavDirections)
 
     @AddToEnd
-    fun showFormattedTime(year: Int, month: Int, day: Int, hours: Int, minutes: Int)
+    fun showFormattedTime(strDate: String, strTime: String, bAllDay: Int)
 
     @AddToEnd
     fun setEnableSubmit(enable: Boolean)
 
     @AddToEnd
-    fun showGroups(groupName: String)
+    fun setGroupFormCaption(groupName: String)
 
     @Skip
     fun handleFailure(failure: Failure?)

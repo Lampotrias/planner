@@ -1,6 +1,9 @@
 package com.example.planner.data.database
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 import com.example.planner.domain.Event
 
 @Entity(
@@ -12,23 +15,25 @@ import com.example.planner.domain.Event
 )
 data class EventEntity(
     @PrimaryKey(autoGenerate = true)
-    var _id: Long,
+    var id: Long,
 
     @ColumnInfo(name = "name")
-    var _name: String,
+    var name: String,
 
     @ColumnInfo(name = "time")
-    var _time: Long,
+    var time: Long,
+
+    @ColumnInfo(name = "all_day")
+    var allDay: Int,
 
     @ColumnInfo(name = "zone_offset")
-    var _zoneOffset: Int,
+    var zoneOffset: Int,
 
     @ColumnInfo(name = "group_id")
 
-    var _groupId: Long
+    var groupId: Long
 
-    /*,
-
+    /*
     @ColumnInfo(name = "priority_id")
     private var _priority_id: Int,
 
@@ -38,5 +43,5 @@ data class EventEntity(
     @ColumnInfo(name = "repeat_id")
     private val _repeat_id: Int*/
 ) {
-    fun toEvent() = Event(_id, _name, _time, _zoneOffset, _groupId)
+    fun toEvent() = Event(id, name, time, allDay, zoneOffset, groupId)
 }

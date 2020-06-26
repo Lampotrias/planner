@@ -6,12 +6,12 @@ import moxy.MvpView
 import moxy.viewstate.strategy.alias.AddToEnd
 import moxy.viewstate.strategy.alias.Skip
 
-interface CalendarView: MvpView {
+interface CalendarView : MvpView {
     @Skip
     fun close(eventObj: EventTransferObject)
 
     @AddToEnd
-    fun showDate(hours: Int, minutes: Int, title: String)
+    fun showFormattedTime(strDate: String, strTime: String, bAllDay: Int)
 
     @AddToEnd
     fun initTimeControl(hours: Int, minutes: Int)

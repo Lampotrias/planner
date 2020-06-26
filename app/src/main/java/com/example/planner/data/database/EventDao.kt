@@ -5,7 +5,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface EventDao {
@@ -15,6 +14,6 @@ interface EventDao {
     @Query("SELECT * FROM events ORDER BY time ASC")
     fun getAllEvents(): List<EventEntity>
 
-    @Query("SELECT * FROM events WHERE _id = :id")
+    @Query("SELECT * FROM events WHERE id = :id")
     fun getEventById(id: Long): EventEntity
 }

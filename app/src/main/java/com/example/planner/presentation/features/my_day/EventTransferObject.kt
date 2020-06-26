@@ -2,8 +2,9 @@ package com.example.planner.presentation.features.my_day
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.example.planner.domain.Constants
 import com.example.planner.domain.Event
-import com.example.planner.domain.Group
+import com.example.planner.domain.utils.CalendarUtils
 import java.util.*
 
 data class EventTransferObject(
@@ -15,14 +16,23 @@ data class EventTransferObject(
     var year: Int,
     var hours: Int,
     var minutes: Int,
-    var strDate: String
-):Parcelable
-{
+    var allDay: Int
+) : Parcelable {
+
+    val strDate: String
+        get() {
+            val calendar: Calendar = Calendar.getInstance()
+            calendar.set(year, month, day)
+            return CalendarUtils.getDayInString(calendar.timeInMillis, Constants.FORMAT_TIME)
+        }
+
     fun toEvent(): Event {
         val calendar = Calendar.getInstance()
         calendar.set(year, month, day, hours, minutes)
-        return Event(0, name, calendar.time.time, TimeZone.getDefault().rawOffset, groupId)
+        return Event(0, name, calendar.time.time, allDay, TimeZone.getDefault().rawOffset, groupId)
     }
+
+    fun getStrTime() = CalendarUtils.formatTime(hours, minutes)
 
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
@@ -33,9 +43,8 @@ data class EventTransferObject(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
-        parcel.readString()!!
-    ) {
-    }
+        parcel.readInt()
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
@@ -46,13 +55,12 @@ data class EventTransferObject(
         parcel.writeInt(year)
         parcel.writeInt(hours)
         parcel.writeInt(minutes)
-        parcel.writeString(strDate)
+        parcel.writeInt(allDay)
     }
 
     override fun describeContents(): Int {
         return 0
     }
-
     companion object CREATOR : Parcelable.Creator<EventTransferObject> {
         override fun createFromParcel(parcel: Parcel): EventTransferObject {
             return EventTransferObject(parcel)

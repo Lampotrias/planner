@@ -2,11 +2,12 @@ package com.example.planner.presentation.base
 
 import android.graphics.Point
 import android.os.Bundle
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.example.planner.AndroidApp
+import com.example.planner.R
+import com.example.planner.domain.DateToText
 import com.example.planner.domain.excetion.Failure
 import moxy.MvpDelegate
 import moxy.MvpDelegateHolder
@@ -23,12 +24,11 @@ abstract class BaseDialog : DialogFragment(), MvpDelegateHolder {
     }
 
     protected fun get90Width(): Int {
-        var width = WindowManager.LayoutParams.WRAP_CONTENT
+        // = WindowManager.LayoutParams.WRAP_CONTENT
         val size = Point()
         dialog?.context?.display?.getRealSize(size).let {
-            width = (size.x * 0.9).toInt()
+            return (size.x * 0.9).toInt()
         }
-        return width
     }
 
     override fun onResume() {
@@ -87,5 +87,14 @@ abstract class BaseDialog : DialogFragment(), MvpDelegateHolder {
 
     fun notify(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    fun getFormattedDate(date: String): String {
+        return when (date) {
+            DateToText.Today.name -> resources.getString(R.string.today)
+            DateToText.Yesterday.name -> resources.getString(R.string.yesterday)
+            DateToText.Tomorrow.name -> resources.getString(R.string.tomorrow)
+            else -> date
+        }
     }
 }

@@ -19,8 +19,7 @@ data class Group(
         parcel.readString()!!,
         parcel.readInt(),
         parcel.readByte() != 0.toByte()
-    ) {
-    }
+    )
 
     fun toGroupEntity() = GroupEntity(id, name, picture, color, sort, default)
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -45,5 +44,4 @@ data class Group(
             return arrayOfNulls(size)
         }
     }
-
 }

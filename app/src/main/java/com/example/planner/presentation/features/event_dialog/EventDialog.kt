@@ -33,7 +33,6 @@ class EventDialog @Inject constructor() : BaseDialog(),
     private lateinit var binding: AddEventFragmentBinding
     private val args: EventDialogArgs by navArgs()
 
-
     @Inject
     lateinit var presenterProvider: EventPresenter
     private val mPresenter by moxyPresenter { presenterProvider }
@@ -135,9 +134,22 @@ class EventDialog @Inject constructor() : BaseDialog(),
         this.dialog?.hide()
     }
 
-    override fun showFormattedTime(year: Int, month: Int, day: Int, hours: Int, minutes: Int) {
+    override fun showFormattedTime(
+        strDate: String,
+        strTime: String,
+        bAllDay: Int
+    ) {
         binding.timeEvent.text =
-            getString(R.string.format_date_time, day, month, year, hours, minutes)
+            if (bAllDay > 0) resources.getString(
+                R.string.dialog_format_time,
+                getFormattedDate(strDate),
+                resources.getString(R.string.all_day)
+            )
+            else resources.getString(
+                R.string.dialog_format_time,
+                getFormattedDate(strDate),
+                strTime
+            )
     }
 
     override fun setEnableSubmit(enable: Boolean) {
@@ -145,10 +157,11 @@ class EventDialog @Inject constructor() : BaseDialog(),
         binding.submitButton.alpha = if (enable) 1f else 0.2f
     }
 
-    override fun showGroups(groupName: String) {
+    override fun setGroupFormCaption(groupName: String) {
         binding.groupEvent.text = groupName
     }
 
     override fun handleFailure(failure: Failure?) {
+        notify(prepareFailure(failure))
     }
 }

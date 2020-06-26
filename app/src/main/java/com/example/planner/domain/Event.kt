@@ -1,13 +1,12 @@
 package com.example.planner.domain
 
 import com.example.planner.data.database.EventEntity
-import com.example.planner.presentation.DisplayableItem
-import java.time.ZoneOffset
 
 data class Event(
     var id: Long,
     var name: String,
     var time: Long,
+    val allDay: Int,
     var zoneOffset: Int,
     val groupId: Long
 ) {
@@ -15,5 +14,5 @@ data class Event(
     val localTime: Long
         get() = time + zoneOffset
 
-    fun toEventEntity() = EventEntity(id, name, time, zoneOffset, groupId)
+    fun toEventEntity() = EventEntity(id, name, time, allDay, zoneOffset, groupId)
 }

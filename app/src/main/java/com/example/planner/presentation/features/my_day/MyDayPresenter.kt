@@ -76,6 +76,7 @@ class MyDayPresenter @Inject constructor(
                 0,
                 event.name,
                 calendar.timeInMillis,
+                event.allDay,
                 TimeZone.getDefault().rawOffset,
                 event.groupId
             )
