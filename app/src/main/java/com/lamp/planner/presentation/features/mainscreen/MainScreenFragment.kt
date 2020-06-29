@@ -1,4 +1,4 @@
-package com.example.planner.presentation.features.mainscreen
+package com.lamp.planner.presentation.features.mainscreen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,16 +8,19 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.NavDirections
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.planner.AndroidApp
-import com.example.planner.databinding.MainScreenBinding
-import com.example.planner.domain.Group
-import com.example.planner.domain.excetion.Failure
-import com.example.planner.extention.navigate
-import com.example.planner.presentation.adapters.CompositeAdapter
-import com.example.planner.presentation.adapters.ManagerImpl
-import com.example.planner.presentation.base.BaseFragment
-import com.example.planner.presentation.features.mainscreen.di.DaggerMainScreenComponent
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.lamp.planner.AndroidApp
+import com.lamp.planner.R
+import com.lamp.planner.databinding.MainScreenBinding
+import com.lamp.planner.domain.Group
+import com.lamp.planner.domain.excetion.Failure
+import com.lamp.planner.extention.navigate
+import com.lamp.planner.presentation.adapters.CompositeAdapter
+import com.lamp.planner.presentation.adapters.ManagerImpl
+import com.lamp.planner.presentation.base.BaseFragment
+import com.lamp.planner.presentation.features.mainscreen.di.DaggerMainScreenComponent
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
@@ -54,6 +57,36 @@ open class MainScreenFragment : BaseFragment(),
             adapter = groupAdapter
             layoutManager = GridLayoutManager(requireContext(), 5)
         }
+    }
+
+    override fun initAuthorizeForm() {
+        val account = GoogleSignIn.getLastSignedInAccount(requireContext())
+        if (account != null) {
+            mPresenter.setUserAccount(account)
+            binding.accountName.setOnClickListener {
+                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .build()
+                val mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+                mGoogleSignInClient.signOut()
+                drawAuthFormForEveryOne()
+            }
+        } else {
+            drawAuthFormForEveryOne()
+        }
+    }
+
+    private fun drawAuthFormForEveryOne() {
+        binding.accountName.apply {
+            text = context.getString(R.string.log_in)
+            setOnClickListener {
+                mPresenter.clickAuthButton()
+            }
+        }
+    }
+
+    override fun setAccountCation(name: String) {
+        binding.accountName.text = name
     }
 
     override fun onCreateView(

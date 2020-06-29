@@ -1,9 +1,9 @@
-package com.example.planner.presentation.features.mainscreen
+package com.lamp.planner.presentation.features.mainscreen
 
 import androidx.navigation.NavDirections
-import com.example.planner.domain.Group
-import com.example.planner.domain.excetion.Failure
-import com.example.planner.presentation.adapters.ManagerImpl
+import com.lamp.planner.domain.Group
+import com.lamp.planner.domain.excetion.Failure
+import com.lamp.planner.presentation.adapters.ManagerImpl
 import moxy.MvpView
 import moxy.viewstate.strategy.alias.AddToEnd
 import moxy.viewstate.strategy.alias.AddToEndSingle
@@ -27,4 +27,10 @@ interface MainScreenView : MvpView {
         managerImpl: ManagerImpl<Group>,
         groups: List<Group>
     )
+
+    @AddToEnd
+    fun initAuthorizeForm()
+
+    @AddToEnd
+    fun setAccountCation(name: String)
 }

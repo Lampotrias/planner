@@ -1,12 +1,13 @@
-package com.example.planner.presentation.features.mainscreen
+package com.lamp.planner.presentation.features.mainscreen
 
-import com.example.planner.R
-import com.example.planner.domain.Group
-import com.example.planner.domain.excetion.Failure
-import com.example.planner.domain.interactors.*
-import com.example.planner.presentation.adapters.ManagerImpl
-import com.example.planner.presentation.base.BasePresenter
-import com.example.planner.presentation.features.mainscreen.adapter.GroupDelegateAdapter
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.lamp.planner.R
+import com.lamp.planner.domain.Group
+import com.lamp.planner.domain.excetion.Failure
+import com.lamp.planner.domain.interactors.*
+import com.lamp.planner.presentation.adapters.ManagerImpl
+import com.lamp.planner.presentation.base.BasePresenter
+import com.lamp.planner.presentation.features.mainscreen.adapter.GroupDelegateAdapter
 import moxy.InjectViewState
 import javax.inject.Inject
 
@@ -17,9 +18,15 @@ class MainScreenPresenter @Inject constructor(
     private val createGroupInteractor: CreateGroupInteractor,
     private val setDefaultGroupInteractor: SetDefaultGroupInteractor
 ) : BasePresenter<MainScreenView>() {
+
     override fun onFirstViewAttach() {
         initMainScreen()
+        initAuthorize()
         super.onFirstViewAttach()
+    }
+
+    private fun initAuthorize() {
+        viewState.initAuthorizeForm()
     }
 
     private fun initMainScreen() {
@@ -62,5 +69,9 @@ class MainScreenPresenter @Inject constructor(
 
     private fun handleFailure(failure: Failure) {
         viewState.handleFailure(failure)
+    }
+
+    fun setUserAccount(account: GoogleSignInAccount) {
+        viewState.setAccountCation(account.displayName.toString())
     }
 }
