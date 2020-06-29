@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:552833804459:android:cc925af9498f9365dbefee",
+        "mobilesdk_app_id": "1:552833804459:android:076579f4eb3f0597dbefee",
         "android_client_info": {
-          "package_name": "com.example.planner"
+          "package_name": "com.lamp.planner"
         }
       },
       "oauth_client": [
