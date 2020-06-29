@@ -1,4 +1,4 @@
-package com.example.planner.presentation.features.main_screen
+package com.example.planner.presentation.features.mainscreen
 
 import com.example.planner.R
 import com.example.planner.domain.Group
@@ -6,7 +6,7 @@ import com.example.planner.domain.excetion.Failure
 import com.example.planner.domain.interactors.*
 import com.example.planner.presentation.adapters.ManagerImpl
 import com.example.planner.presentation.base.BasePresenter
-import com.example.planner.presentation.features.main_screen.adapter.GroupDelegateAdapter
+import com.example.planner.presentation.features.mainscreen.adapter.GroupDelegateAdapter
 import moxy.InjectViewState
 import javax.inject.Inject
 

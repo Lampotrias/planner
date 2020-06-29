@@ -1,9 +1,8 @@
-package com.example.planner.presentation.features.main_screen.di
+package com.example.planner.presentation.features.mainscreen.di
 
-import androidx.appcompat.app.AppCompatActivity
 import com.example.planner.di.AppComponent
 import com.example.planner.di.scope.PerFragment
-import com.example.planner.presentation.features.main_screen.MainScreenFragment
+import com.example.planner.presentation.features.mainscreen.MainScreenFragment
 import dagger.Component
 
 @Component(

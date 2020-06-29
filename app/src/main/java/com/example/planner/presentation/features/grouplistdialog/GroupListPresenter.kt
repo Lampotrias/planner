@@ -6,7 +6,7 @@ import com.example.planner.domain.interactors.GetGroupsInteractor
 import com.example.planner.domain.interactors.None
 import com.example.planner.presentation.adapters.ManagerImpl
 import com.example.planner.presentation.base.BasePresenter
-import com.example.planner.presentation.features.main_screen.adapter.GroupDelegateAdapter
+import com.example.planner.presentation.features.mainscreen.adapter.GroupDelegateAdapter
 import javax.inject.Inject
 
 class GroupListPresenter @Inject constructor(

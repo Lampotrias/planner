@@ -1,4 +1,4 @@
-package com.example.planner.presentation.features.main_screen
+package com.example.planner.presentation.features.mainscreen
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +16,7 @@ import com.example.planner.extention.navigate
 import com.example.planner.presentation.adapters.CompositeAdapter
 import com.example.planner.presentation.adapters.ManagerImpl
 import com.example.planner.presentation.base.BaseFragment
-import com.example.planner.presentation.features.main_screen.di.DaggerMainScreenComponent
+import com.example.planner.presentation.features.mainscreen.di.DaggerMainScreenComponent
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject

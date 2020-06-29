@@ -1,4 +1,4 @@
-package com.example.planner.presentation.features.main_screen
+package com.example.planner.presentation.features.mainscreen
 
 import androidx.navigation.NavDirections
 import com.example.planner.domain.Group

@@ -1,4 +1,4 @@
-package com.example.planner.presentation.features.main_screen.adapter
+package com.example.planner.presentation.features.mainscreen.adapter
 
 import android.graphics.Color
 import android.view.LayoutInflater
