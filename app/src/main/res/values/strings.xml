@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">planner</string>
+    <string name="app_name">Planner</string>
     <string name="time_string">%1$d:%2$d</string>
     <string name="date_string">%3$d-%2$d-%1$d</string>
     <string name="save_event">Save Event</string>
