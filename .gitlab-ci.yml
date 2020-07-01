@@ -1,0 +1,26 @@
+image: jangrewe/gitlab-ci-android
+
+variables:
+  ANDROID_COMPILE_SDK: "30"
+  APP_NAME: "PlannerApp"
+
+stages:
+  - build
+
+before_script:
+  - export GRADLE_USER_HOME=$(pwd)/.gradle
+  - chmod +x ./gradlew
+  - apt-get update -y && apt-get install wget -y
+
+cache:
+  key: ${CI_PROJECT_ID}
+  paths:
+    - .gradle/
+
+build:
+  stage: build
+  script:
+    - ./gradlew assembleDebug
+  artifacts:
+    paths:
+      - app/build/outputs/
