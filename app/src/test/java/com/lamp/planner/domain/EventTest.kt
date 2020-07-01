@@ -16,4 +16,16 @@ class EventTest {
         assertEquals(12345, eventEntity.zoneOffset)
         assertEquals(1L, eventEntity.groupId)
     }
+
+    @Test
+    fun toEventEntity1() {
+        val event = Event(1L, "testName", 12345, 1, 12345, 1L)
+        val eventEntity = event.toEventEntity()
+        assertEquals(12, eventEntity.id)
+        assertEquals("testName", eventEntity.name)
+        assertEquals(12345, eventEntity.time)
+        assertEquals(1, eventEntity.allDay)
+        assertEquals(12345, eventEntity.zoneOffset)
+        assertEquals(1L, eventEntity.groupId)
+    }
 }
