@@ -6,6 +6,7 @@ variables:
 
 stages:
   - build
+  - test
 
 before_script:
   - export GRADLE_USER_HOME=$(pwd)/.gradle
@@ -24,3 +25,8 @@ build:
   artifacts:
     paths:
       - app/build/outputs/
+
+testDebug:
+  stage: test
+  script:
+    - ./gradlew -Pci --console=plain :app:testDebug
