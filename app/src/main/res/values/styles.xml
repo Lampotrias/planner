@@ -8,6 +8,14 @@
         <item name="boxStrokeWidthFocused">0dp</item>
     </style>
 
+    <style name="Widget.MaterialComponents.FloatingActionButton.Main" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="android:elevation">4dp</item>
+    </style>
+
+    <style name="Widget.MaterialComponents.FloatingActionButton.Top" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="android:elevation">10dp</item>
+    </style>
+
     <style name="popup_window_animation_slide">
         <item name="android:windowEnterAnimation">@anim/slide_from_right</item>
         <item name="android:windowExitAnimation">@anim/slide_to_right</item>

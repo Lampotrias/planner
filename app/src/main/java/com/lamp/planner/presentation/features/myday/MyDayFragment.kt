@@ -50,7 +50,7 @@ class MyDayFragment : BaseFragment(),
         savedInstanceState: Bundle?
     ): View? {
         binding = MyDayBinding.inflate(inflater, container, false)
-        binding.fab.setOnClickListener { mPresenter.showPopupDialog() }
+        binding.fabMyDay.setOnClickListener { mPresenter.showPopupDialog() }
         binding.btnStart.setOnClickListener { mPresenter.btnStartClick() }
         binding.btnStop.setOnClickListener { mPresenter.btnStopClick() }
         return binding.root
@@ -64,7 +64,7 @@ class MyDayFragment : BaseFragment(),
     }
 
     override fun showAnimationFab(offset: Float) {
-        binding.fab.rotation = offset * 180
+        binding.fabMyDay.rotation = offset * 180
     }
 
     override fun showAddEventPopupDialog(navDirections: NavDirections) {

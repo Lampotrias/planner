@@ -22,6 +22,9 @@ interface MainScreenView : MvpView {
     @Skip
     fun navigateAuth(navDirections: NavDirections)
 
+    @Skip
+    fun navigateCreateGroupDialog(navDirections: NavDirections)
+
     @AddToEnd
     fun showGroups(
         managerImpl: ManagerImpl<Group>,
