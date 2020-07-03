@@ -51,7 +51,16 @@ open class MainScreenFragment : BaseFragment(),
         managerImpl: ManagerImpl<Group>,
         groups: List<Group>
     ) {
-        val groupAdapter = CompositeAdapter(managerImpl)
+        val groupAdapter =
+            CompositeAdapter(managerImpl, object : CompositeAdapter.ClickItemInterface<Group> {
+                override fun onClick(item: Group) {
+                    mPresenter.clickGroup(item)
+                }
+
+                override fun onLongClick(item: Group) {
+                    mPresenter.clickLongGroup(item)
+                }
+            })
         groupAdapter.setItemList(groups)
         binding.groupList.apply {
             adapter = groupAdapter

@@ -5,9 +5,9 @@ import com.lamp.planner.R
 import com.lamp.planner.domain.Group
 import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.domain.interactors.*
+import com.lamp.planner.presentation.adapters.GroupDelegateAdapter
 import com.lamp.planner.presentation.adapters.ManagerImpl
 import com.lamp.planner.presentation.base.BasePresenter
-import com.lamp.planner.presentation.features.mainscreen.adapter.GroupDelegateAdapter
 import moxy.InjectViewState
 import javax.inject.Inject
 
@@ -73,5 +73,13 @@ class MainScreenPresenter @Inject constructor(
 
     fun setUserAccount(account: GoogleSignInAccount) {
         viewState.setAccountCation(account.displayName.toString())
+    }
+
+    fun clickGroup(group: Group) {
+        viewState.showMessage("click")
+    }
+
+    fun clickLongGroup(group: Group) {
+        viewState.showMessage("Long click")
     }
 }

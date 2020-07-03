@@ -1,11 +1,11 @@
-package com.lamp.planner.presentation.features.myday.adapter
+package com.lamp.planner.presentation.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lamp.planner.databinding.EventListHolderBinding
 import com.lamp.planner.presentation.DisplayableItem
-import com.lamp.planner.presentation.adapters.DelegateAdapter
+import com.lamp.planner.presentation.features.myday.model.EventModel
 import java.text.SimpleDateFormat
 import java.util.*
 

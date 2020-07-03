@@ -1,4 +1,4 @@
-package com.lamp.planner.presentation.features.myday.adapter
+package com.lamp.planner.presentation.features.myday.model
 
 import com.lamp.planner.presentation.DisplayableItem
 import java.text.DateFormat

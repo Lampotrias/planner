@@ -27,10 +27,20 @@ class CompositeAdapter<T>(
                         override fun onSingleTapUp(e: MotionEvent?): Boolean {
                             return true
                         }
+
+                        override fun onLongPress(e: MotionEvent?) {
+                            e?.let {
+                                val childView: View? = recyclerView.findChildViewUnder(e.x, e.y)
+                                if (childView != null) {
+                                    val position = recyclerView.getChildLayoutPosition(childView)
+                                    clickCallback.onLongClick(items[position])
+                                    changeFocusItem(position)
+                                }
+                            }
+                        }
                     })
 
                 override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
-
                 override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
                     val childView: View? = rv.findChildViewUnder(e.x, e.y)
                     childView?.let {
@@ -83,6 +93,7 @@ class CompositeAdapter<T>(
     }
 
     interface ClickItemInterface<T> {
-        fun onClick(item: T)
+        fun onClick(item: T) {}
+        fun onLongClick(item: T) {}
     }
 }

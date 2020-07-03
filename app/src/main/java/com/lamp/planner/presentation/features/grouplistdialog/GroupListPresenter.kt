@@ -4,9 +4,9 @@ import com.lamp.planner.domain.Group
 import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.domain.interactors.GetGroupsInteractor
 import com.lamp.planner.domain.interactors.None
+import com.lamp.planner.presentation.adapters.GroupDelegateAdapter
 import com.lamp.planner.presentation.adapters.ManagerImpl
 import com.lamp.planner.presentation.base.BasePresenter
-import com.lamp.planner.presentation.features.mainscreen.adapter.GroupDelegateAdapter
 import javax.inject.Inject
 
 class GroupListPresenter @Inject constructor(

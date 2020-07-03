@@ -1,11 +1,11 @@
-package com.lamp.planner.presentation.features.myday.adapter
+package com.lamp.planner.presentation.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lamp.planner.databinding.EventTimeListHolderBinding
 import com.lamp.planner.presentation.DisplayableItem
-import com.lamp.planner.presentation.adapters.DelegateAdapter
+import com.lamp.planner.presentation.features.myday.model.TimeEventModel
 
 class TimeEventDelegateAdapter : DelegateAdapter<DisplayableItem> {
     private lateinit var layoutInflater: LayoutInflater

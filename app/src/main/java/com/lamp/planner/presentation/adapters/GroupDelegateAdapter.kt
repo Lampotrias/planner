@@ -1,4 +1,4 @@
-package com.lamp.planner.presentation.features.mainscreen.adapter
+package com.lamp.planner.presentation.adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lamp.planner.databinding.GroupListHolderBinding
 import com.lamp.planner.domain.Group
-import com.lamp.planner.presentation.adapters.DelegateAdapter
 
 class GroupDelegateAdapter : DelegateAdapter<Group> {
     private lateinit var layoutInflater: LayoutInflater
@@ -26,7 +25,7 @@ class GroupDelegateAdapter : DelegateAdapter<Group> {
         holder: RecyclerView.ViewHolder,
         isSelected: Boolean
     ) {
-        if (holder is GroupDelegateAdapter.GroupHolder) {
+        if (holder is GroupHolder) {
             val item = items[position]
             holder.apply {
                 groupName = item.name
