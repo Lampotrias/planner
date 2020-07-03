@@ -4,7 +4,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.lamp.planner.R
 import com.lamp.planner.domain.Group
 import com.lamp.planner.domain.excetion.Failure
-import com.lamp.planner.domain.interactors.*
+import com.lamp.planner.domain.interactors.CreateGroupInteractor
+import com.lamp.planner.domain.interactors.GetGroupsInteractor
+import com.lamp.planner.domain.interactors.GlobalInteractor
+import com.lamp.planner.domain.interactors.SetDefaultGroupInteractor
 import com.lamp.planner.presentation.adapters.ManagerImpl
 import com.lamp.planner.presentation.base.BasePresenter
 import com.lamp.planner.presentation.features.mainscreen.adapter.GroupDelegateAdapter
@@ -73,5 +76,16 @@ class MainScreenPresenter @Inject constructor(
 
     fun setUserAccount(account: GoogleSignInAccount) {
         viewState.setAccountCation(account.displayName.toString())
+    }
+
+    fun clickCreateGroup() {
+        val navDirections =
+            MainScreenFragmentDirections.actionMainScreenFragmentToCreateGroupDialog()
+        viewState.navigateCreateGroupDialog(navDirections)
+    }
+
+    fun processSaveGroup(groupName: String, groupLogo: Int) {
+        val group = Group(0L, groupName, groupLogo, "#000000", 50, true)
+        createGroupInteractor(group) { id -> id.fold(viewState::handleFailure) { getGroups() } }
     }
 }

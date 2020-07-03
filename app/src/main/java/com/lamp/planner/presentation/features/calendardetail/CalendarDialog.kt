@@ -5,11 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.navArgs
-import com.lamp.planner.AndroidApp
 import com.lamp.planner.R
 import com.lamp.planner.databinding.CalendarFragmentBinding
 import com.lamp.planner.domain.excetion.Failure
@@ -40,16 +38,6 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
         const val CALENDAR_DIALOG_PARAM_OBJ = "CALENDAR_DIALOG_PARAM_OBJ"
     }
 
-    override fun onStart() {
-        super.onStart()
-        dialog?.window?.setBackgroundDrawableResource(R.drawable.dialog_rounded_bg)
-
-        dialog?.window?.setLayout(
-            get90Width(),
-            WindowManager.LayoutParams.WRAP_CONTENT
-        )
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         onInitDependencyInjection()
         super.onCreate(savedInstanceState)
@@ -76,7 +64,7 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
 
     override fun onInitDependencyInjection() {
         DaggerCalendarComponent.builder()
-            .appComponent((requireActivity().applicationContext as AndroidApp).getComponent())
+            .appComponent(appComponent)
             .build().inject(this)
     }
 

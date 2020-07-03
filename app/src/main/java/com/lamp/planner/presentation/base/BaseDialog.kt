@@ -2,6 +2,7 @@ package com.lamp.planner.presentation.base
 
 import android.graphics.Point
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -14,7 +15,7 @@ import moxy.MvpDelegateHolder
 
 abstract class BaseDialog : DialogFragment(), MvpDelegateHolder {
     private val mvpDelegate: MvpDelegate<out BaseDialog> = MvpDelegate(this)
-    protected val appContext by lazy { (requireActivity().applicationContext as AndroidApp).getComponent() }
+    protected val appComponent by lazy { (requireActivity().applicationContext as AndroidApp).getComponent() }
     private var stateSaved = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +48,16 @@ abstract class BaseDialog : DialogFragment(), MvpDelegateHolder {
     override fun onStop() {
         super.onStop()
         getMvpDelegate().onDetach()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setBackgroundDrawableResource(R.drawable.dialog_rounded_bg)
+
+        dialog?.window?.setLayout(
+            get90Width(),
+            WindowManager.LayoutParams.WRAP_CONTENT
+        )
     }
 
     override fun onDestroyView() {

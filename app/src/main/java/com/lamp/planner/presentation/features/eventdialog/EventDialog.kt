@@ -6,13 +6,11 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.navArgs
-import com.lamp.planner.AndroidApp
 import com.lamp.planner.R
 import com.lamp.planner.databinding.AddEventFragmentBinding
 import com.lamp.planner.domain.Group
@@ -82,10 +80,7 @@ class EventDialog @Inject constructor() : BaseDialog(),
 
             customIcon.setOnClickListener {}
 
-            timeEvent.text = getString(R.string.dialog_event_format_time)
-            timeEvent.setOnClickListener {
-                mPresenter.onTimeClick()
-            }
+            timeEvent.setOnClickListener { mPresenter.onTimeClick() }
 
             groupEvent.setOnClickListener { mPresenter.onGroupSelectClick() }
 
@@ -99,20 +94,9 @@ class EventDialog @Inject constructor() : BaseDialog(),
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        dialog?.window?.setBackgroundDrawableResource(R.drawable.dialog_rounded_bg)
-
-        dialog?.window?.setLayout(
-            get90Width(),
-            WindowManager.LayoutParams.WRAP_CONTENT
-        )
-    }
-
     override fun onInitDependencyInjection() {
         DaggerEventDialogComponent.builder()
-            .appComponent((requireActivity().applicationContext as AndroidApp).getComponent())
+            .appComponent(appComponent)
             .build().inject(this)
     }
 
@@ -153,8 +137,10 @@ class EventDialog @Inject constructor() : BaseDialog(),
     }
 
     override fun setEnableSubmit(enable: Boolean) {
-        binding.submitButton.setOnClickListener { if (enable) mPresenter.clickSubmit() }
-        binding.submitButton.alpha = if (enable) 1f else 0.2f
+        binding.submitButton.apply {
+            setOnClickListener { if (enable) mPresenter.clickSubmit() }
+            alpha = if (enable) 1f else 0.2f
+        }
     }
 
     override fun setGroupFormCaption(groupName: String) {
