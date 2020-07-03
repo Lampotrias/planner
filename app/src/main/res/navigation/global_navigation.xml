@@ -13,10 +13,18 @@
         <action
             android:id="@+id/action_mainScreenFragment_to_authFragment"
             app:destination="@id/authFragment" />
+        <action
+            android:id="@+id/action_mainScreenFragment_to_createGroupDialog"
+            app:destination="@id/createGroupDialog" />
     </fragment>
     <fragment
         android:id="@+id/authFragment"
         android:name="com.lamp.planner.presentation.features.auth.AuthFragment"
         android:label="AuthFragment"
         tools:layout="@layout/auth_fragment" />
+    <dialog
+        android:id="@+id/createGroupDialog"
+        android:name="com.lamp.planner.presentation.features.groupcreatedialog.CreateGroupDialog"
+        android:label="CreateGroupDialog"
+        tools:layout="@layout/group_create_dialog" />
 </navigation>

@@ -9,7 +9,8 @@
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fabMyDay"
+        style="@style/Widget.MaterialComponents.FloatingActionButton.Top"
         android:contentDescription="@string/add_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

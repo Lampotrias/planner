@@ -4,12 +4,11 @@
     <string name="date_string">%3$d-%2$d-%1$d</string>
     <string name="save_event">Save Event</string>
     <string name="all_day">Весь день</string>
-    <string name="enter_name_hint">Enter name</string>
+    <string name="enter_name_hint">Введите название</string>
     <string name="default_group_name">Входящие</string>
     <string name="channel_def_notify_name">Напоминания</string>
     <string name="channel_def_notify_description">Любые уведомления о событиях</string>
     <string name="dialog_format_time">%1$s\n%2$s</string>
-    <string name="dialog_event_format_time">TODAY \n All day</string>
     <string name="format_date_time">%1$s\n%2$s</string>
     <string name="add_event">Добавить событие</string>
     <string name="cd_logo_of_group">Logo of group</string>
@@ -27,4 +26,6 @@
     <string name="yesterday">Вчера</string>
     <string name="tomorrow">Завтра</string>
     <string name="log_in">Войти</string>
+    <string name="enter_group_name">Введите название</string>
+    <string name="create_group">Создать группу</string>
 </resources>

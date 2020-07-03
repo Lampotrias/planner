@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.FragmentResultListener
 import androidx.navigation.NavDirections
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -22,6 +23,7 @@ import com.lamp.planner.extention.navigate
 import com.lamp.planner.presentation.adapters.CompositeAdapter
 import com.lamp.planner.presentation.adapters.ManagerImpl
 import com.lamp.planner.presentation.base.BaseFragment
+import com.lamp.planner.presentation.features.groupcreatedialog.CreateGroupDialog
 import com.lamp.planner.presentation.features.mainscreen.di.DaggerMainScreenComponent
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
@@ -38,6 +40,16 @@ open class MainScreenFragment : BaseFragment(),
     override fun onCreate(savedInstanceState: Bundle?) {
         onInitDependencyInjection()
         super.onCreate(savedInstanceState)
+
+        parentFragmentManager.setFragmentResultListener(
+            CreateGroupDialog.GROUP_ADD_DIALOG_RESULT,
+            this,
+            FragmentResultListener { _: String, result: Bundle ->
+                mPresenter.processSaveGroup(
+                    result[CreateGroupDialog.GROUP_ADD_DIALOG_PARAM_NAME] as String,
+                    result[CreateGroupDialog.GROUP_ADD_DIALOG_PARAM_LOGO] as Int
+                )
+            })
     }
 
     private lateinit var binding: MainScreenBinding
@@ -48,6 +60,10 @@ open class MainScreenFragment : BaseFragment(),
     }
 
     override fun navigateAuth(navDirections: NavDirections) {
+        navigate(navDirections)
+    }
+
+    override fun navigateCreateGroupDialog(navDirections: NavDirections) {
         navigate(navDirections)
     }
 
@@ -135,6 +151,7 @@ open class MainScreenFragment : BaseFragment(),
 
         binding.btnMyDay.setOnClickListener { mPresenter.clickBtnMyDay() }
         binding.authButton.setOnClickListener { mPresenter.clickAuthButton() }
+        binding.fabMainScreen.setOnClickListener { mPresenter.clickCreateGroup() }
         initBottom()
         return binding.root
     }
