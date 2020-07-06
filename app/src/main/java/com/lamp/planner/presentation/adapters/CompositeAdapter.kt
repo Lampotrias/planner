@@ -19,44 +19,44 @@ class CompositeAdapter<T>(
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
 
-        if (clickCallback != null) {
-            recyclerView.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
-                val gestureDetector = GestureDetector(
-                    recyclerView.context,
-                    object : GestureDetector.SimpleOnGestureListener() {
-                        override fun onSingleTapUp(e: MotionEvent?): Boolean {
-                            return true
-                        }
+        recyclerView.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+            val gestureDetector = GestureDetector(
+                recyclerView.context,
+                object : GestureDetector.SimpleOnGestureListener() {
+                    override fun onSingleTapUp(e: MotionEvent?): Boolean {
+                        return true
+                    }
 
-                        override fun onLongPress(e: MotionEvent?) {
-                            e?.let {
-                                val childView: View? = recyclerView.findChildViewUnder(e.x, e.y)
-                                if (childView != null) {
-                                    val position = recyclerView.getChildLayoutPosition(childView)
-                                    clickCallback.onLongClick(items[position])
-                                    changeFocusItem(position)
-                                }
+                    override fun onLongPress(e: MotionEvent?) {
+                        e?.let {
+                            val childView: View? = recyclerView.findChildViewUnder(e.x, e.y)
+                            if (childView != null) {
+                                val position = recyclerView.getChildLayoutPosition(childView)
+                                if (clickCallback != null) clickCallback.onLongClick(
+                                    items[position],
+                                    childView
+                                ) else changeFocusItem(position)
                             }
                         }
-                    })
-
-                override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
-                override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                    val childView: View? = rv.findChildViewUnder(e.x, e.y)
-                    childView?.let {
-                        if (gestureDetector.onTouchEvent(e)) {
-                            val position = rv.getChildLayoutPosition(it)
-                            clickCallback.onClick(items[position])
-                            changeFocusItem(position)
-                            return true
-                        }
                     }
-                    return false
-                }
+                })
 
-                override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
-            })
-        }
+            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                val childView: View? = rv.findChildViewUnder(e.x, e.y)
+                childView?.let {
+                    if (gestureDetector.onTouchEvent(e)) {
+                        val position = rv.getChildLayoutPosition(it)
+                        if (clickCallback != null) clickCallback.onClick(items[position], childView)
+                        else changeFocusItem(position)
+                        return true
+                    }
+                }
+                return false
+            }
+
+            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+        })
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -93,7 +93,7 @@ class CompositeAdapter<T>(
     }
 
     interface ClickItemInterface<T> {
-        fun onClick(item: T) {}
-        fun onLongClick(item: T) {}
+        fun onClick(item: T, view: View) {}
+        fun onLongClick(item: T, view: View) {}
     }
 }

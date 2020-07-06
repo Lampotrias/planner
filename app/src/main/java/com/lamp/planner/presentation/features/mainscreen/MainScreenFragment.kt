@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.NavDirections
@@ -16,6 +17,7 @@ import com.lamp.planner.R
 import com.lamp.planner.databinding.MainScreenBinding
 import com.lamp.planner.domain.Group
 import com.lamp.planner.domain.excetion.Failure
+import com.lamp.planner.extention.getChildImageView
 import com.lamp.planner.extention.navigate
 import com.lamp.planner.presentation.adapters.CompositeAdapter
 import com.lamp.planner.presentation.adapters.ManagerImpl
@@ -26,6 +28,8 @@ import javax.inject.Inject
 
 open class MainScreenFragment : BaseFragment(),
     MainScreenView {
+
+    val selectedGroup = mutableListOf<Long>()
 
     @Inject
     lateinit var presenterProvider: MainScreenPresenter
@@ -53,18 +57,42 @@ open class MainScreenFragment : BaseFragment(),
     ) {
         val groupAdapter =
             CompositeAdapter(managerImpl, object : CompositeAdapter.ClickItemInterface<Group> {
-                override fun onClick(item: Group) {
+                override fun onClick(item: Group, view: View) {
                     mPresenter.clickGroup(item)
                 }
 
-                override fun onLongClick(item: Group) {
+                override fun onLongClick(item: Group, view: View) {
+                    view.getChildImageView()?.let {
+                        val animationHide =
+                            AnimationUtils.loadAnimation(
+                                requireContext(),
+                                android.R.anim.fade_out
+                            )
+                        val animationShow =
+                            AnimationUtils.loadAnimation(
+                                requireContext(),
+                                android.R.anim.fade_in
+                            )
+
+                        if (selectedGroup.contains(item.id)) {
+                            it.startAnimation(animationHide)
+                            it.setImageResource(item.picture)
+                            it.startAnimation(animationShow)
+                            selectedGroup.remove(item.id)
+                        } else {
+                            it.startAnimation(animationHide)
+                            it.setImageResource(R.drawable.ic_baseline_check_circle_24)
+                            it.startAnimation(animationShow)
+                            selectedGroup.add(item.id)
+                        }
+                    }
                     mPresenter.clickLongGroup(item)
                 }
             })
         groupAdapter.setItemList(groups)
         binding.groupList.apply {
             adapter = groupAdapter
-            layoutManager = GridLayoutManager(requireContext(), 5)
+            layoutManager = GridLayoutManager(requireContext(), 4)
         }
     }
 

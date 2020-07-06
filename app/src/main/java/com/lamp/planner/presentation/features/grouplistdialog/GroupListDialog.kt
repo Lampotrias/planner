@@ -89,7 +89,7 @@ class GroupListDialog @Inject constructor() : BaseDialog(),
 
     override fun showGroups(managerImpl: ManagerImpl<Group>, groups: List<Group>, position: Int) {
         val groupAdapter = CompositeAdapter(managerImpl, object : ClickItemInterface<Group> {
-            override fun onClick(item: Group) {
+            override fun onClick(item: Group, view: View) {
                 mPresenter.clickOnGroup(item)
             }
         })
