@@ -7,10 +7,9 @@ import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.domain.interactors.CreateGroupInteractor
 import com.lamp.planner.domain.interactors.GetGroupsInteractor
 import com.lamp.planner.domain.interactors.GlobalInteractor
+import com.lamp.planner.domain.interactors.None
 import com.lamp.planner.domain.interactors.SetDefaultGroupInteractor
-import com.lamp.planner.presentation.adapters.ManagerImpl
 import com.lamp.planner.presentation.base.BasePresenter
-import com.lamp.planner.presentation.features.mainscreen.adapter.GroupDelegateAdapter
 import moxy.InjectViewState
 import javax.inject.Inject
 
@@ -21,7 +20,6 @@ class MainScreenPresenter @Inject constructor(
     private val createGroupInteractor: CreateGroupInteractor,
     private val setDefaultGroupInteractor: SetDefaultGroupInteractor
 ) : BasePresenter<MainScreenView>() {
-
     override fun onFirstViewAttach() {
         initMainScreen()
         initAuthorize()
@@ -63,9 +61,7 @@ class MainScreenPresenter @Inject constructor(
 //                createGroupInteractor(group2) { id -> id.fold(viewState::handleFailure, {}) }
 //                getGroups()
 //            }
-            val manager = ManagerImpl<Group>()
-            manager.addDelegate(GroupDelegateAdapter())
-            viewState.showGroups(manager, it)
+            viewState.showGroups(it)
         }
         getGroupsInteractor(None()) { it.fold(viewState::handleFailure, successExec) }
     }
@@ -87,5 +83,13 @@ class MainScreenPresenter @Inject constructor(
     fun processSaveGroup(groupName: String, groupLogo: Int) {
         val group = Group(0L, groupName, groupLogo, "#000000", 50, true)
         createGroupInteractor(group) { id -> id.fold(viewState::handleFailure) { getGroups() } }
+    }
+
+    fun clickGroup(group: Group) {
+        viewState.showMessage("click ${group.id}")
+    }
+
+    fun clickLongGroup(group: Group) {
+        viewState.showMessage("Long click  ${group.id}")
     }
 }
