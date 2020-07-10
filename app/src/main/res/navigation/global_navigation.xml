@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_mainScreenFragment_to_createGroupDialog"
             app:destination="@id/createGroupDialog" />
+        <action
+            android:id="@+id/action_mainScreenFragment_to_groupPropertyDialog"
+            app:destination="@id/groupPropertyDialog" />
     </fragment>
     <fragment
         android:id="@+id/authFragment"
@@ -27,4 +30,9 @@
         android:name="com.lamp.planner.presentation.features.groupcreatedialog.CreateGroupDialog"
         android:label="CreateGroupDialog"
         tools:layout="@layout/group_create_dialog" />
+    <dialog
+        android:id="@+id/groupPropertyDialog"
+        android:name="com.lamp.planner.presentation.features.groupproperty.GroupPropertyFragment"
+        android:label="GroupPropertyDialog"
+        tools:layout="@layout/fragment_group_property" />
 </navigation>

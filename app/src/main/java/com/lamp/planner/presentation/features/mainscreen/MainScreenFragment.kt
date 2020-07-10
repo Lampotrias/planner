@@ -21,21 +21,32 @@ import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.extention.getChildImageView
 import com.lamp.planner.extention.navigate
 import com.lamp.planner.presentation.adapters.CompositeAdapter
+import com.lamp.planner.presentation.adapters.GroupDelegateAdapter
 import com.lamp.planner.presentation.adapters.ManagerImpl
 import com.lamp.planner.presentation.base.BaseFragment
 import com.lamp.planner.presentation.features.groupcreatedialog.CreateGroupDialog
+import com.lamp.planner.presentation.features.groupproperty.BottomSheetHelper
+import com.lamp.planner.presentation.features.groupproperty.GroupPropertyBottom
 import com.lamp.planner.presentation.features.mainscreen.di.DaggerMainScreenComponent
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
 open class MainScreenFragment : BaseFragment(),
     MainScreenView {
-
-    val selectedGroup = mutableListOf<Long>()
-
     @Inject
     lateinit var presenterProvider: MainScreenPresenter
     private val mPresenter by moxyPresenter { presenterProvider }
+    private val selectedGroup = mutableListOf<Long>()
+    var bSelectMode = false
+    private val manager by lazy {
+        ManagerImpl<Group>().also { it.addDelegate(GroupDelegateAdapter()) }
+    }
+    private val groupAdapter by lazy {
+        CompositeAdapter(manager, GroupClickListener())
+    }
+    private val groupPropertyHelper: GroupPropertyBottom by lazy {
+        BottomSheetHelper(binding.propertyInclude, binding.groupPropertySheet)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         onInitDependencyInjection()
@@ -67,44 +78,7 @@ open class MainScreenFragment : BaseFragment(),
         navigate(navDirections)
     }
 
-    override fun showGroups(
-        managerImpl: ManagerImpl<Group>,
-        groups: List<Group>
-    ) {
-        val groupAdapter =
-            CompositeAdapter(managerImpl, object : CompositeAdapter.ClickItemInterface<Group> {
-                override fun onClick(item: Group, view: View) {
-                    mPresenter.clickGroup(item)
-                }
-
-                override fun onLongClick(item: Group, view: View) {
-                    view.getChildImageView()?.let {
-                        val animationHide =
-                            AnimationUtils.loadAnimation(
-                                requireContext(),
-                                android.R.anim.fade_out
-                            )
-                        val animationShow =
-                            AnimationUtils.loadAnimation(
-                                requireContext(),
-                                android.R.anim.fade_in
-                            )
-
-                        if (selectedGroup.contains(item.id)) {
-                            it.startAnimation(animationHide)
-                            it.setImageResource(item.picture)
-                            it.startAnimation(animationShow)
-                            selectedGroup.remove(item.id)
-                        } else {
-                            it.startAnimation(animationHide)
-                            it.setImageResource(R.drawable.ic_baseline_check_circle_24)
-                            it.startAnimation(animationShow)
-                            selectedGroup.add(item.id)
-                        }
-                    }
-                    mPresenter.clickLongGroup(item)
-                }
-            })
+    override fun showGroups(groups: List<Group>) {
         groupAdapter.setItemList(groups)
         binding.groupList.apply {
             adapter = groupAdapter
@@ -187,5 +161,71 @@ open class MainScreenFragment : BaseFragment(),
             .builder()
             .appComponent((requireContext().applicationContext as AndroidApp).getComponent())
             .build().inject(this)
+    }
+
+    fun animateSelected(item: Group, view: View) {
+        view.getChildImageView()?.let {
+            val animationHide =
+                AnimationUtils.loadAnimation(
+                    requireContext(),
+                    android.R.anim.fade_out
+                )
+            val animationShow =
+                AnimationUtils.loadAnimation(
+                    requireContext(),
+                    android.R.anim.fade_in
+                )
+
+            if (selectedGroup.contains(item.id)) {
+                it.startAnimation(animationHide)
+                it.setImageResource(item.picture)
+                it.startAnimation(animationShow)
+                selectedGroup.remove(item.id)
+            } else {
+                it.startAnimation(animationHide)
+                it.setImageResource(R.drawable.ic_baseline_check_circle_24)
+                it.startAnimation(animationShow)
+                selectedGroup.add(item.id)
+            }
+        }
+    }
+
+    inner class GroupClickListener : CompositeAdapter.ClickItemInterface<Group> {
+        override fun onClick(item: Group, view: View) {
+            if (bSelectMode) {
+                animateSelected(item, view)
+            }
+            updateSelectedCounter()
+            mPresenter.clickGroup(item)
+        }
+
+        override fun onLongClick(item: Group, view: View) {
+            if (!bSelectMode) {
+                bSelectMode = true
+                showGroupEditDialog()
+            }
+            animateSelected(item, view)
+            updateSelectedCounter()
+            mPresenter.clickLongGroup(item)
+        }
+    }
+
+    private fun updateSelectedCounter() {
+        if (selectedGroup.isEmpty()) {
+            bSelectMode = false
+            hideGroupEditDialog()
+        } else {
+            groupPropertyHelper.setSelectValue(selectedGroup.size)
+        }
+    }
+
+    private fun showGroupEditDialog() {
+        groupPropertyHelper.slideUp()
+        binding.fabMainScreen.visibility = View.INVISIBLE
+    }
+
+    private fun hideGroupEditDialog() {
+        groupPropertyHelper.slideDown()
+        binding.fabMainScreen.visibility = View.VISIBLE
     }
 }

@@ -5,4 +5,5 @@
     <attr name="emphasisMediumAlpha" format="float" />
     <attr name="emphasisDisabledAlpha" format="float" />
     <attr name="colorPrimarySurfaceVariant" format="color" />
+    <attr name="behavior_peekHeightForMainScreen" format="dimension" />
 </resources>

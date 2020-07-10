@@ -4,4 +4,5 @@
     <dimen name="grid_1">8dp</dimen>
     <dimen name="grid_2">16dp</dimen>
     <dimen name="group_image_large">50dp</dimen>
+    <dimen name="main_menu_logo">40dp</dimen>
 </resources>
