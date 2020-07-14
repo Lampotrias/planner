@@ -4,6 +4,8 @@ import com.lamp.planner.data.database.EventEntity
 import com.lamp.planner.data.database.GroupEntity
 import com.lamp.planner.domain.Event
 import com.lamp.planner.domain.Group
+import com.lamp.planner.domain.GroupColor
+import com.lamp.planner.domain.GroupPicture
 import com.lamp.planner.domain.Result
 import com.lamp.planner.domain.excetion.Failure
 
@@ -14,5 +16,8 @@ interface RepoDb {
 
     fun createGroup(groupEntity: GroupEntity): Result<Failure, Long>
     fun getGroups(): Result<Failure, List<Group>>
+    fun updateGroupColor(groupColors: List<GroupColor>): Result<Failure, Int>
+    fun updateGroupPicture(groupPictures: List<GroupPicture>): Result<Failure, Int>
+    fun deleteGroups(groupIds: List<Long>): Result<Failure, Int>
     fun setDefaultGroup(id: Long): Result<Failure, Int>
 }

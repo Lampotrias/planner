@@ -5,6 +5,8 @@ import com.lamp.planner.data.database.EventEntity
 import com.lamp.planner.data.database.GroupEntity
 import com.lamp.planner.domain.Event
 import com.lamp.planner.domain.Group
+import com.lamp.planner.domain.GroupColor
+import com.lamp.planner.domain.GroupPicture
 import com.lamp.planner.domain.Result
 import com.lamp.planner.domain.Result.Error
 import com.lamp.planner.domain.Result.Success
@@ -59,6 +61,41 @@ class RepoDbImpl @Inject constructor(private val appDatabase: AppDatabase) : Rep
         }
     }
 
+    override fun updateGroupColor(groupColors: List<GroupColor>): Result<Failure, Int> {
+        return try {
+            var counter = 0
+            groupColors.forEach {
+                val result = appDatabase.groupDao().updateColor(it.id, it.color)
+                counter += result
+            }
+            return Success(counter)
+        } catch (throwable: Throwable) {
+            Error(Failure.DatabaseErrorQuery(throwable.message))
+        }
+    }
+
+    override fun updateGroupPicture(groupPictures: List<GroupPicture>): Result<Failure, Int> {
+        return try {
+            var counter = 0
+            groupPictures.forEach {
+                val result = appDatabase.groupDao().updatePicture(it.id, it.picture)
+                counter += result
+            }
+            return Success(counter)
+        } catch (throwable: Throwable) {
+            Error(Failure.DatabaseErrorQuery(throwable.message))
+        }
+    }
+
+    override fun deleteGroups(groupIds: List<Long>): Result<Failure, Int> {
+        return try {
+            val result = appDatabase.groupDao().deleteGroups(groupIds)
+            return Success(result)
+        } catch (throwable: Throwable) {
+            Error(Failure.DatabaseErrorQuery(throwable.message))
+        }
+    }
+
     override fun setDefaultGroup(id: Long): Result<Failure, Int> {
         return try {
             val result = appDatabase.groupDao().setDefaultGroup(id)
@@ -67,5 +104,4 @@ class RepoDbImpl @Inject constructor(private val appDatabase: AppDatabase) : Rep
             Error(Failure.DatabaseErrorQuery(throwable.message))
         }
     }
-
 }

@@ -1,6 +1,10 @@
 package com.lamp.planner.data.database
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Transaction
 
 @Dao
 interface GroupDao {
@@ -21,4 +25,13 @@ interface GroupDao {
         invalidateDefault()
         return setDefaultGroupInternal(id)
     }
+
+    @Query("DELETE FROM groups WHERE _id IN (:groupIds)")
+    fun deleteGroups(groupIds: List<Long>): Int
+
+    @Query("UPDATE groups SET color = :color WHERE _id = :id")
+    fun updateColor(id: Long, color: String): Int
+
+    @Query("UPDATE groups SET picture_id = :picture WHERE _id = :id")
+    fun updatePicture(id: Long, picture: Int): Int
 }
