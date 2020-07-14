@@ -15,38 +15,9 @@ class CompositeAdapter<T>(
 
     private val items = mutableListOf<T>()
     private var focusedItem = RecyclerView.NO_POSITION
-
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-
-        if (clickCallback != null) {
-            recyclerView.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
-                val gestureDetector = GestureDetector(
-                    recyclerView.context,
-                    object : GestureDetector.SimpleOnGestureListener() {
-                        override fun onSingleTapUp(e: MotionEvent?): Boolean {
-                            return true
-                        }
-                    })
-
-                override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
-
-                override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                    val childView: View? = rv.findChildViewUnder(e.x, e.y)
-                    childView?.let {
-                        if (gestureDetector.onTouchEvent(e)) {
-                            val position = rv.getChildLayoutPosition(it)
-                            clickCallback.onClick(items[position])
-                            changeFocusItem(position)
-                            return true
-                        }
-                    }
-                    return false
-                }
-
-                override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
-            })
-        }
+        recyclerView.addOnItemTouchListener(RecyclerViewOnItemTouchListener(recyclerView))
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -63,11 +34,19 @@ class CompositeAdapter<T>(
         managerImpl.bindViewHolder(items, position, holder, focusedItem == position)
     }
 
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        managerImpl.bindViewHolder(items, position, holder, focusedItem == position, payloads)
+    }
+
     private fun changeFocusItem(position: Int) {
-        notifyItemChanged(focusedItem)
+        // notifyItemChanged(focusedItem)
         Timber.tag("disabled").e(focusedItem.toString())
         focusedItem = position
-        notifyItemChanged(focusedItem)
+        // notifyItemChanged(focusedItem)
         Timber.tag("selected").e(focusedItem.toString())
     }
 
@@ -82,7 +61,50 @@ class CompositeAdapter<T>(
         changeFocusItem(position)
     }
 
+    fun notifyItemChangedWithPayload(position: Int, payload: Any) {
+        notifyItemChanged(position, payload)
+    }
+
     interface ClickItemInterface<T> {
-        fun onClick(item: T)
+        fun onClick(item: T, position: Int) {}
+        fun onLongClick(item: T, position: Int) {}
+    }
+
+    inner class RecyclerViewOnItemTouchListener(val recyclerView: RecyclerView) :
+        RecyclerView.OnItemTouchListener {
+        private val gestureDetector = GestureDetector(
+            recyclerView.context,
+            object : GestureDetector.SimpleOnGestureListener() {
+                override fun onSingleTapUp(e: MotionEvent?): Boolean {
+                    return true
+                }
+
+                override fun onLongPress(e: MotionEvent?) {
+                    e?.let {
+                        val childView: View? = recyclerView.findChildViewUnder(e.x, e.y)
+                        if (childView != null) {
+                            val position = recyclerView.getChildLayoutPosition(childView)
+                            clickCallback?.onLongClick(items[position], position)
+                            // changeFocusItem(position)
+                        }
+                    }
+                }
+            })
+
+        override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+        override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+            val childView: View? = rv.findChildViewUnder(e.x, e.y)
+            childView?.let {
+                if (gestureDetector.onTouchEvent(e)) {
+                    val position = rv.getChildLayoutPosition(it)
+                    clickCallback?.onClick(items[position], position)
+                    // changeFocusItem(position)
+                    return true
+                }
+            }
+            return false
+        }
+
+        override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
     }
 }

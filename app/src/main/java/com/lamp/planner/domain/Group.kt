@@ -36,6 +36,7 @@ data class Group(
     }
 
     companion object CREATOR : Parcelable.Creator<Group> {
+        const val DEFAULT_SORT = 50
         override fun createFromParcel(parcel: Parcel): Group {
             return Group(parcel)
         }

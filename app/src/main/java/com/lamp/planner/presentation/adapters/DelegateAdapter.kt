@@ -9,7 +9,8 @@ interface DelegateAdapter<T> {
         items: List<T>,
         position: Int,
         holder: RecyclerView.ViewHolder,
-        isSelected: Boolean = false
+        isSelected: Boolean = false,
+        payloads: MutableList<Any>
     )
 
     fun isForViewType(items: List<T>, position: Int): Boolean

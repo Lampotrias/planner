@@ -39,5 +39,7 @@
         <item name="emphasisMediumAlpha">0.60</item>
         <item name="emphasisDisabledAlpha">0.38</item>
 
+        <item name="behavior_peekHeightForMainScreen">20dp</item>
+
     </style>
 </resources>

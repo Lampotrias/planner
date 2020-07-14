@@ -19,19 +19,55 @@ import com.lamp.planner.domain.Group
 import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.extention.navigate
 import com.lamp.planner.presentation.adapters.CompositeAdapter
+import com.lamp.planner.presentation.adapters.GroupDelegateAdapter
 import com.lamp.planner.presentation.adapters.ManagerImpl
 import com.lamp.planner.presentation.base.BaseFragment
 import com.lamp.planner.presentation.features.groupcreatedialog.CreateGroupDialog
+import com.lamp.planner.presentation.features.groupproperty.BottomSheetHelper
+import com.lamp.planner.presentation.features.groupproperty.GroupPropertyBottom
 import com.lamp.planner.presentation.features.mainscreen.di.DaggerMainScreenComponent
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
 open class MainScreenFragment : BaseFragment(),
     MainScreenView {
-
     @Inject
     lateinit var presenterProvider: MainScreenPresenter
     private val mPresenter by moxyPresenter { presenterProvider }
+
+    private val bottomCallback = object : GroupPropertyBottom.OnClickBottomButton {
+        override fun clickPalette() {
+            mPresenter.clickPalette()
+        }
+
+        override fun clickImage() {
+            mPresenter.clickImage()
+        }
+
+        override fun clickEdit() {
+            mPresenter.clickEdit()
+        }
+
+        override fun clickDelete() {
+            mPresenter.clickDelete()
+        }
+
+        override fun clickBookmark() {
+            mPresenter.clickBookmark()
+        }
+    }
+    private val manager by lazy {
+        ManagerImpl<Group>().also { it.addDelegate(GroupDelegateAdapter()) }
+    }
+    private val groupAdapter by lazy {
+        CompositeAdapter(manager, GroupClickListener())
+    }
+    private val groupPropertyHelper: GroupPropertyBottom by lazy {
+        BottomSheetHelper(
+            binding.propertyInclude,
+            binding.groupPropertySheet
+        ).also { it.setCallback(bottomCallback) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         onInitDependencyInjection()
@@ -63,15 +99,11 @@ open class MainScreenFragment : BaseFragment(),
         navigate(navDirections)
     }
 
-    override fun showGroups(
-        managerImpl: ManagerImpl<Group>,
-        groups: List<Group>
-    ) {
-        val groupAdapter = CompositeAdapter(managerImpl)
+    override fun showGroups(groups: List<Group>) {
         groupAdapter.setItemList(groups)
         binding.groupList.apply {
             adapter = groupAdapter
-            layoutManager = GridLayoutManager(requireContext(), 5)
+            layoutManager = GridLayoutManager(requireContext(), 4)
         }
     }
 
@@ -150,5 +182,37 @@ open class MainScreenFragment : BaseFragment(),
             .builder()
             .appComponent((requireContext().applicationContext as AndroidApp).getComponent())
             .build().inject(this)
+    }
+
+    inner class GroupClickListener : CompositeAdapter.ClickItemInterface<Group> {
+        override fun onClick(item: Group, position: Int) {
+            mPresenter.clickGroup(item, position)
+        }
+
+        override fun onLongClick(item: Group, position: Int) {
+            mPresenter.clickLongGroup(item, position)
+        }
+    }
+
+    override fun showGroupEditDialog() {
+        groupPropertyHelper.slideUp()
+        binding.fabMainScreen.visibility = View.INVISIBLE
+    }
+
+    override fun hideGroupEditDialog() {
+        groupPropertyHelper.slideDown()
+        binding.fabMainScreen.visibility = View.VISIBLE
+    }
+
+    override fun setSelectValueInBottom(value: Int) {
+        groupPropertyHelper.setSelectValue(value)
+    }
+
+    override fun activateGroup(position: Int) {
+        groupAdapter.notifyItemChangedWithPayload(position, GroupDelegateAdapter.PAYLOAD_ENABLE)
+    }
+
+    override fun deactivateGroup(position: Int) {
+        groupAdapter.notifyItemChangedWithPayload(position, GroupDelegateAdapter.PAYLOAD_DISABLE)
     }
 }
