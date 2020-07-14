@@ -22,7 +22,8 @@ class TimeEventDelegateAdapter : DelegateAdapter<DisplayableItem> {
         items: List<DisplayableItem>,
         position: Int,
         holder: RecyclerView.ViewHolder,
-        isSelected: Boolean
+        isSelected: Boolean,
+        payloads: MutableList<Any>
     ) {
         if (holder is TimeHolder) {
             val item = items[position] as TimeEventModel

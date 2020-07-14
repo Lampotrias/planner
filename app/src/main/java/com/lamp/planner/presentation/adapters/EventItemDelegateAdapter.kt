@@ -25,7 +25,8 @@ class EventItemDelegateAdapter : DelegateAdapter<DisplayableItem> {
         items: List<DisplayableItem>,
         position: Int,
         holder: RecyclerView.ViewHolder,
-        isSelected: Boolean
+        isSelected: Boolean,
+        payloads: MutableList<Any>
     ) {
         if (holder is EventHolder) {
             val item = items[position] as EventModel

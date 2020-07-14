@@ -32,4 +32,19 @@ interface MainScreenView : MvpView {
 
     @AddToEnd
     fun setAccountCation(name: String)
+
+    @AddToEnd
+    fun showGroupEditDialog()
+
+    @AddToEnd
+    fun hideGroupEditDialog()
+
+    @AddToEnd
+    fun setSelectValueInBottom(value: Int)
+
+    @AddToEnd
+    fun activateGroup(position: Int)
+
+    @AddToEnd
+    fun deactivateGroup(position: Int)
 }

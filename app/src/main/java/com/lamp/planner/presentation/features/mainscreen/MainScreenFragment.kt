@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentResultListener
@@ -18,7 +17,6 @@ import com.lamp.planner.R
 import com.lamp.planner.databinding.MainScreenBinding
 import com.lamp.planner.domain.Group
 import com.lamp.planner.domain.excetion.Failure
-import com.lamp.planner.extention.getChildImageView
 import com.lamp.planner.extention.navigate
 import com.lamp.planner.presentation.adapters.CompositeAdapter
 import com.lamp.planner.presentation.adapters.GroupDelegateAdapter
@@ -36,8 +34,28 @@ open class MainScreenFragment : BaseFragment(),
     @Inject
     lateinit var presenterProvider: MainScreenPresenter
     private val mPresenter by moxyPresenter { presenterProvider }
-    private val selectedGroup = mutableListOf<Long>()
-    var bSelectMode = false
+
+    private val bottomCallback = object : GroupPropertyBottom.OnClickBottomButton {
+        override fun clickPalette() {
+            mPresenter.clickPalette()
+        }
+
+        override fun clickImage() {
+            mPresenter.clickImage()
+        }
+
+        override fun clickEdit() {
+            mPresenter.clickEdit()
+        }
+
+        override fun clickDelete() {
+            mPresenter.clickDelete()
+        }
+
+        override fun clickBookmark() {
+            mPresenter.clickBookmark()
+        }
+    }
     private val manager by lazy {
         ManagerImpl<Group>().also { it.addDelegate(GroupDelegateAdapter()) }
     }
@@ -45,7 +63,10 @@ open class MainScreenFragment : BaseFragment(),
         CompositeAdapter(manager, GroupClickListener())
     }
     private val groupPropertyHelper: GroupPropertyBottom by lazy {
-        BottomSheetHelper(binding.propertyInclude, binding.groupPropertySheet)
+        BottomSheetHelper(
+            binding.propertyInclude,
+            binding.groupPropertySheet
+        ).also { it.setCallback(bottomCallback) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -163,69 +184,35 @@ open class MainScreenFragment : BaseFragment(),
             .build().inject(this)
     }
 
-    fun animateSelected(item: Group, view: View) {
-        view.getChildImageView()?.let {
-            val animationHide =
-                AnimationUtils.loadAnimation(
-                    requireContext(),
-                    android.R.anim.fade_out
-                )
-            val animationShow =
-                AnimationUtils.loadAnimation(
-                    requireContext(),
-                    android.R.anim.fade_in
-                )
-
-            if (selectedGroup.contains(item.id)) {
-                it.startAnimation(animationHide)
-                it.setImageResource(item.picture)
-                it.startAnimation(animationShow)
-                selectedGroup.remove(item.id)
-            } else {
-                it.startAnimation(animationHide)
-                it.setImageResource(R.drawable.ic_baseline_check_circle_24)
-                it.startAnimation(animationShow)
-                selectedGroup.add(item.id)
-            }
-        }
-    }
-
     inner class GroupClickListener : CompositeAdapter.ClickItemInterface<Group> {
-        override fun onClick(item: Group, view: View) {
-            if (bSelectMode) {
-                animateSelected(item, view)
-            }
-            updateSelectedCounter()
-            mPresenter.clickGroup(item)
+        override fun onClick(item: Group, position: Int) {
+            mPresenter.clickGroup(item, position)
         }
 
-        override fun onLongClick(item: Group, view: View) {
-            if (!bSelectMode) {
-                bSelectMode = true
-                showGroupEditDialog()
-            }
-            animateSelected(item, view)
-            updateSelectedCounter()
-            mPresenter.clickLongGroup(item)
+        override fun onLongClick(item: Group, position: Int) {
+            mPresenter.clickLongGroup(item, position)
         }
     }
 
-    private fun updateSelectedCounter() {
-        if (selectedGroup.isEmpty()) {
-            bSelectMode = false
-            hideGroupEditDialog()
-        } else {
-            groupPropertyHelper.setSelectValue(selectedGroup.size)
-        }
-    }
-
-    private fun showGroupEditDialog() {
+    override fun showGroupEditDialog() {
         groupPropertyHelper.slideUp()
         binding.fabMainScreen.visibility = View.INVISIBLE
     }
 
-    private fun hideGroupEditDialog() {
+    override fun hideGroupEditDialog() {
         groupPropertyHelper.slideDown()
         binding.fabMainScreen.visibility = View.VISIBLE
+    }
+
+    override fun setSelectValueInBottom(value: Int) {
+        groupPropertyHelper.setSelectValue(value)
+    }
+
+    override fun activateGroup(position: Int) {
+        groupAdapter.notifyItemChangedWithPayload(position, GroupDelegateAdapter.PAYLOAD_ENABLE)
+    }
+
+    override fun deactivateGroup(position: Int) {
+        groupAdapter.notifyItemChangedWithPayload(position, GroupDelegateAdapter.PAYLOAD_DISABLE)
     }
 }

@@ -39,7 +39,26 @@ class BottomSheetHelper(
         bottomView.startAnimation(animate)
     }
 
+    override fun setCallback(callback: GroupPropertyBottom.OnClickBottomButton) {
+        binding.imgPalette.setOnClickListener { callback.clickPalette() }
+        binding.imgImage.setOnClickListener { callback.clickImage() }
+        binding.imgEdit.setOnClickListener { callback.clickEdit() }
+        binding.imgDelete.setOnClickListener { callback.clickDelete() }
+        binding.imgBookmark.setOnClickListener { callback.clickBookmark() }
+    }
+
     override fun setSelectValue(value: Int) {
         binding.selectCounter.text = value.toString()
+        setVisibilityOfCounter(value)
+    }
+
+    private fun setVisibilityOfCounter(value: Int) {
+        if (value == 1) {
+            binding.imgEdit.visibility = View.VISIBLE
+            binding.imgBookmark.visibility = View.VISIBLE
+        } else {
+            binding.imgEdit.visibility = View.INVISIBLE
+            binding.imgBookmark.visibility = View.INVISIBLE
+        }
     }
 }

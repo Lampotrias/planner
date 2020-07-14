@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:textAppearance="?attr/textAppearanceSubtitle1"
+                android:textAppearance="?attr/textAppearanceOverline"
                 android:textColor="@color/color_on_surface_emphasis_high"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -52,7 +52,7 @@
                 android:id="@+id/topMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
+                android:layout_marginHorizontal="@dimen/grid_2"
                 android:layout_marginTop="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -60,34 +60,34 @@
 
                 <ImageView
                     android:id="@+id/btnMyDay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="23dp"
+                    android:layout_width="@dimen/main_menu_logo"
+                    android:layout_height="@dimen/main_menu_logo"
+                    android:layout_weight="1"
                     android:contentDescription="@string/cd_my_day_click_logo"
                     android:tint="?attr/colorPrimary"
                     app:srcCompat="@drawable/ic_1circle" />
 
                 <ImageView
                     android:id="@+id/authButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="23dp"
+                    android:layout_width="@dimen/main_menu_logo"
+                    android:layout_height="@dimen/main_menu_logo"
+                    android:layout_weight="1"
                     android:contentDescription="@string/todo"
                     android:tint="?attr/colorPrimary"
                     app:srcCompat="@drawable/ic_1circle" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="23dp"
+                    android:layout_width="@dimen/main_menu_logo"
+                    android:layout_height="@dimen/main_menu_logo"
+                    android:layout_weight="1"
                     android:contentDescription="@string/todo"
                     android:tint="?attr/colorPrimary"
                     app:srcCompat="@drawable/ic_1circle" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="23dp"
+                    android:layout_width="@dimen/main_menu_logo"
+                    android:layout_height="@dimen/main_menu_logo"
+                    android:layout_weight="1"
                     android:contentDescription="@string/todo"
                     android:tint="?attr/colorPrimary"
                     app:srcCompat="@drawable/ic_1circle" />
@@ -113,7 +113,7 @@
         android:background="?attr/colorSurface"
         android:elevation="6dp"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="20dp"
+        app:behavior_peekHeight="?attr/behavior_peekHeightForMainScreen"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
         <View
@@ -141,4 +141,18 @@
             app:navGraph="@navigation/nav_graph_main" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <LinearLayout
+        android:id="@+id/groupPropertySheet"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="23dp"
+        android:elevation="8dp"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
+        <include
+            android:id="@+id/property_include"
+            layout="@layout/fragment_group_property" />
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

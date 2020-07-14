@@ -27,9 +27,20 @@ class ManagerImpl<T> : ManagerAdapt {
         isSelected: Boolean = false
     ) {
 
+        bindViewHolder(items, position, holder, isSelected)
+    }
+
+    fun bindViewHolder(
+        items: List<T>,
+        position: Int,
+        holder: RecyclerView.ViewHolder,
+        isSelected: Boolean = false,
+        payloads: MutableList<Any> = mutableListOf()
+    ) {
+
         val delegate = delegates[holder.itemViewType]
             ?: throw NullPointerException("not view holder for viewType")
-        delegate.onBindViewHolder(items, position, holder, isSelected)
+        delegate.onBindViewHolder(items, position, holder, isSelected, payloads)
     }
 
     fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

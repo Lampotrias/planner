@@ -15,7 +15,6 @@ class CompositeAdapter<T>(
 
     private val items = mutableListOf<T>()
     private var focusedItem = RecyclerView.NO_POSITION
-
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         recyclerView.addOnItemTouchListener(RecyclerViewOnItemTouchListener(recyclerView))
@@ -35,11 +34,19 @@ class CompositeAdapter<T>(
         managerImpl.bindViewHolder(items, position, holder, focusedItem == position)
     }
 
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        managerImpl.bindViewHolder(items, position, holder, focusedItem == position, payloads)
+    }
+
     private fun changeFocusItem(position: Int) {
-        notifyItemChanged(focusedItem)
+        // notifyItemChanged(focusedItem)
         Timber.tag("disabled").e(focusedItem.toString())
         focusedItem = position
-        notifyItemChanged(focusedItem)
+        // notifyItemChanged(focusedItem)
         Timber.tag("selected").e(focusedItem.toString())
     }
 
@@ -54,9 +61,13 @@ class CompositeAdapter<T>(
         changeFocusItem(position)
     }
 
+    fun notifyItemChangedWithPayload(position: Int, payload: Any) {
+        notifyItemChanged(position, payload)
+    }
+
     interface ClickItemInterface<T> {
-        fun onClick(item: T, view: View) {}
-        fun onLongClick(item: T, view: View) {}
+        fun onClick(item: T, position: Int) {}
+        fun onLongClick(item: T, position: Int) {}
     }
 
     inner class RecyclerViewOnItemTouchListener(val recyclerView: RecyclerView) :
@@ -73,10 +84,8 @@ class CompositeAdapter<T>(
                         val childView: View? = recyclerView.findChildViewUnder(e.x, e.y)
                         if (childView != null) {
                             val position = recyclerView.getChildLayoutPosition(childView)
-                            if (clickCallback != null) clickCallback.onLongClick(
-                                items[position],
-                                childView
-                            ) else changeFocusItem(position)
+                            clickCallback?.onLongClick(items[position], position)
+                            // changeFocusItem(position)
                         }
                     }
                 }
@@ -88,8 +97,8 @@ class CompositeAdapter<T>(
             childView?.let {
                 if (gestureDetector.onTouchEvent(e)) {
                     val position = rv.getChildLayoutPosition(it)
-                    if (clickCallback != null) clickCallback.onClick(items[position], childView)
-                    else changeFocusItem(position)
+                    clickCallback?.onClick(items[position], position)
+                    // changeFocusItem(position)
                     return true
                 }
             }

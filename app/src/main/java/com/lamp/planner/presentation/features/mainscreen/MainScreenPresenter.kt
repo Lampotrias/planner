@@ -20,6 +20,9 @@ class MainScreenPresenter @Inject constructor(
     private val createGroupInteractor: CreateGroupInteractor,
     private val setDefaultGroupInteractor: SetDefaultGroupInteractor
 ) : BasePresenter<MainScreenView>() {
+    private var bSelectMode = false
+    private val selectedGroup = mutableListOf<Long>()
+
     override fun onFirstViewAttach() {
         initMainScreen()
         initAuthorize()
@@ -81,15 +84,59 @@ class MainScreenPresenter @Inject constructor(
     }
 
     fun processSaveGroup(groupName: String, groupLogo: Int) {
-        val group = Group(0L, groupName, groupLogo, "#000000", 50, true)
+        val group = Group(0L, groupName, groupLogo, "#000000", Group.DEFAULT_SORT, true)
         createGroupInteractor(group) { id -> id.fold(viewState::handleFailure) { getGroups() } }
     }
 
-    fun clickGroup(group: Group) {
-        viewState.showMessage("click ${group.id}")
+    fun clickGroup(group: Group, position: Int) {
+        if (bSelectMode) {
+            if (selectedGroup.contains(group.id)) {
+                viewState.deactivateGroup(position)
+                selectedGroup.remove(group.id)
+            } else {
+                viewState.activateGroup(position)
+                selectedGroup.add(group.id)
+            }
+            updateSelectedCounter()
+        }
     }
 
-    fun clickLongGroup(group: Group) {
-        viewState.showMessage("Long click  ${group.id}")
+    fun clickLongGroup(group: Group, position: Int) {
+        if (!bSelectMode) {
+            selectedGroup.add(group.id)
+            viewState.showGroupEditDialog()
+            viewState.activateGroup(position)
+            updateSelectedCounter()
+            bSelectMode = true
+        }
+    }
+
+    private fun updateSelectedCounter() {
+        if (selectedGroup.isEmpty()) {
+            bSelectMode = false
+            viewState.hideGroupEditDialog()
+        } else {
+            viewState.setSelectValueInBottom(selectedGroup.size)
+        }
+    }
+
+    fun clickPalette() {
+        TODO("Not yet implemented")
+    }
+
+    fun clickImage() {
+        TODO("Not yet implemented")
+    }
+
+    fun clickEdit() {
+        TODO("Not yet implemented")
+    }
+
+    fun clickDelete() {
+        TODO("Not yet implemented")
+    }
+
+    fun clickBookmark() {
+        TODO("Not yet implemented")
     }
 }

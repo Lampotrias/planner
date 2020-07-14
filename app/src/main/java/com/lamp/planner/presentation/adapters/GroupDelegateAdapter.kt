@@ -1,15 +1,34 @@
 package com.lamp.planner.presentation.adapters
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
+import com.lamp.planner.R
 import com.lamp.planner.databinding.GroupListHolderBinding
 import com.lamp.planner.domain.Group
 
 class GroupDelegateAdapter : DelegateAdapter<Group> {
     private lateinit var layoutInflater: LayoutInflater
     private lateinit var binding: GroupListHolderBinding
+
+    companion object {
+        const val PAYLOAD_ENABLE = 1
+        const val PAYLOAD_DISABLE = 2
+    }
+
+    private val animationHide by lazy {
+        AnimationUtils.loadAnimation(
+            binding.root.context,
+            android.R.anim.fade_out
+        )
+    }
+    private val animationShow by lazy {
+        AnimationUtils.loadAnimation(
+            binding.root.context,
+            android.R.anim.fade_in
+        )
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         layoutInflater =
@@ -23,14 +42,27 @@ class GroupDelegateAdapter : DelegateAdapter<Group> {
         items: List<Group>,
         position: Int,
         holder: RecyclerView.ViewHolder,
-        isSelected: Boolean
+        isSelected: Boolean,
+        payloads: MutableList<Any>
     ) {
         if (holder is GroupHolder) {
             val item = items[position]
             holder.apply {
                 groupName = item.name
                 groupLogo = item.picture
-                setSelected(isSelected)
+            }
+            if (payloads.contains(PAYLOAD_ENABLE)) {
+                with(holder.getAnimationView()) {
+                    startAnimation(animationHide)
+                    setImageResource(R.drawable.ic_baseline_check_circle_24)
+                    startAnimation(animationShow)
+                }
+            } else if (payloads.contains(PAYLOAD_DISABLE)) {
+                with(holder.getAnimationView()) {
+                    startAnimation(animationHide)
+                    setImageResource(item.picture)
+                    startAnimation(animationShow)
+                }
             }
         }
     }
@@ -39,7 +71,9 @@ class GroupDelegateAdapter : DelegateAdapter<Group> {
         return true
     }
 
-    inner class GroupHolder(private val binding: GroupListHolderBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class GroupHolder(private val binding: GroupListHolderBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
         var groupName: String
             get() = binding.groupName.text.toString()
             set(value) {
@@ -51,8 +85,6 @@ class GroupDelegateAdapter : DelegateAdapter<Group> {
                 binding.groupLogo.setImageResource(value)
             }
 
-        fun setSelected(selected: Boolean) {
-            binding.groupLogo.setColorFilter(Color.MAGENTA)
-        }
+        fun getAnimationView() = binding.groupLogo
     }
 }
