@@ -7,6 +7,9 @@ import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.domain.interactors.CreateGroupInteractor
 import com.lamp.planner.domain.interactors.GetGroupsInteractor
 import com.lamp.planner.domain.interactors.GlobalInteractor
+import com.lamp.planner.domain.interactors.GroupDeleteInteractor
+import com.lamp.planner.domain.interactors.GroupUpdateColorInteractor
+import com.lamp.planner.domain.interactors.GroupUpdatePictureInteractor
 import com.lamp.planner.domain.interactors.None
 import com.lamp.planner.domain.interactors.SetDefaultGroupInteractor
 import com.lamp.planner.presentation.base.BasePresenter
@@ -18,7 +21,10 @@ class MainScreenPresenter @Inject constructor(
     private val globalInteractor: GlobalInteractor,
     private val getGroupsInteractor: GetGroupsInteractor,
     private val createGroupInteractor: CreateGroupInteractor,
-    private val setDefaultGroupInteractor: SetDefaultGroupInteractor
+    private val setDefaultGroupInteractor: SetDefaultGroupInteractor,
+    private val groupUpdateColorInteractor: GroupUpdateColorInteractor,
+    private val groupUpdatePictureInteractor: GroupUpdatePictureInteractor,
+    private val groupDeleteInteractor: GroupDeleteInteractor
 ) : BasePresenter<MainScreenView>() {
     private var bSelectMode = false
     private val selectedGroup = mutableListOf<Long>()
@@ -56,16 +62,7 @@ class MainScreenPresenter @Inject constructor(
 
     private fun getGroups() {
         setDefaultGroupInteractor(1L) { it.fold(::handleFailure) {} }
-        val successExec: (List<Group>) -> Unit = {
-//            if (it.isEmpty()) {
-//                val group1 = Group(0L, "Личное", R.drawable.group_default, "#000000", 999, true)
-//                val group2 = Group(0L, "Работа", R.drawable.group_work, "#000000", 998, false)
-//                createGroupInteractor(group1) { id -> id.fold(viewState::handleFailure, {}) }
-//                createGroupInteractor(group2) { id -> id.fold(viewState::handleFailure, {}) }
-//                getGroups()
-//            }
-            viewState.showGroups(it)
-        }
+        val successExec: (List<Group>) -> Unit = { viewState.showGroups(it) }
         getGroupsInteractor(None()) { it.fold(viewState::handleFailure, successExec) }
     }
 
@@ -84,7 +81,7 @@ class MainScreenPresenter @Inject constructor(
     }
 
     fun processSaveGroup(groupName: String, groupLogo: Int) {
-        val group = Group(0L, groupName, groupLogo, "#000000", Group.DEFAULT_SORT, true)
+        val group = Group(0L, groupName, groupLogo, "0", Group.DEFAULT_SORT, false)
         createGroupInteractor(group) { id -> id.fold(viewState::handleFailure) { getGroups() } }
     }
 
@@ -133,7 +130,18 @@ class MainScreenPresenter @Inject constructor(
     }
 
     fun clickDelete() {
-        TODO("Not yet implemented")
+        groupDeleteInteractor(selectedGroup) { result ->
+            result.fold(viewState::handleFailure) {
+                getGroups()
+                resetSelectMode()
+            }
+        }
+    }
+
+    private fun resetSelectMode() {
+        bSelectMode = false
+        viewState.hideGroupEditDialog()
+        selectedGroup.clear()
     }
 
     fun clickBookmark() {
