@@ -1,8 +1,10 @@
 package com.lamp.planner.presentation.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.lamp.planner.R
 import com.lamp.planner.databinding.GroupListHolderBinding
@@ -47,10 +49,12 @@ class GroupDelegateAdapter : DelegateAdapter<Group> {
     ) {
         if (holder is GroupHolder) {
             val item = items[position]
-            holder.apply {
-                groupName = item.name
-                groupLogo = item.picture
+            with(holder) {
+                setGroupName(item.name)
+                setGroupLogo(item.picture)
+                setColorLogo(item.color)
             }
+
             if (payloads.contains(PAYLOAD_ENABLE)) {
                 with(holder.getAnimationView()) {
                     startAnimation(animationHide)
@@ -60,31 +64,41 @@ class GroupDelegateAdapter : DelegateAdapter<Group> {
             } else if (payloads.contains(PAYLOAD_DISABLE)) {
                 with(holder.getAnimationView()) {
                     startAnimation(animationHide)
-                    setImageResource(item.picture)
+                    holder.setGroupLogo(item.picture)
                     startAnimation(animationShow)
                 }
             }
         }
     }
 
-    override fun isForViewType(items: List<Group>, position: Int): Boolean {
-        return true
-    }
+    override fun isForViewType(items: List<Group>, position: Int) = true
 
     inner class GroupHolder(private val binding: GroupListHolderBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
-        var groupName: String
-            get() = binding.groupName.text.toString()
-            set(value) {
-                binding.groupName.text = value
-            }
-
-        var groupLogo: Int = 0
-            set(value) {
-                binding.groupLogo.setImageResource(value)
-            }
-
+        val context: Context? by lazy { binding.root.context }
         fun getAnimationView() = binding.groupLogo
+
+        fun setGroupName(name: String) {
+            binding.groupName.text = name
+        }
+
+        fun setGroupLogo(picture: Int) {
+            context?.let {
+                val imagesRes = it.resources.obtainTypedArray(R.array.all_images)
+                binding.groupLogo.setImageResource(imagesRes.getResourceId(picture, -1))
+                imagesRes.recycle()
+            }
+        }
+
+        fun setColorLogo(color: String) {
+            context?.let {
+                val imagesRes = it.resources.obtainTypedArray(R.array.all_colors)
+                val colorRes =
+                    ContextCompat.getColor(it, imagesRes.getResourceId(color.toInt(), -1))
+                binding.groupLogo.setColorFilter(colorRes)
+                binding.groupLogo.alpha = 0.5f
+                imagesRes.recycle()
+            }
+        }
     }
 }

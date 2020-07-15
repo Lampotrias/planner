@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
-import com.lamp.planner.R
 import com.lamp.planner.databinding.GroupCreateDialogBinding
 import com.lamp.planner.presentation.base.BaseDialog
 import com.lamp.planner.presentation.features.groupcreatedialog.di.DaggerGroupCreateComponent
@@ -56,7 +55,7 @@ class CreateGroupDialog @Inject constructor() : BaseDialog(), GroupCreateView {
             GROUP_ADD_DIALOG_RESULT,
             bundleOf(
                 GROUP_ADD_DIALOG_PARAM_NAME to binding.nameGroup.text.toString(),
-                GROUP_ADD_DIALOG_PARAM_LOGO to R.drawable.group_work
+                GROUP_ADD_DIALOG_PARAM_LOGO to 0
             )
         )
         this.dialog?.dismiss()
