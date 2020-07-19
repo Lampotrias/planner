@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_mainScreenFragment_to_groupPropertyDialog"
             app:destination="@id/groupPropertyDialog" />
+        <action
+            android:id="@+id/action_mainScreenFragment_to_paletteDialog"
+            app:destination="@id/paletteDialog" />
     </fragment>
     <fragment
         android:id="@+id/authFragment"
@@ -35,4 +38,9 @@
         android:name="com.lamp.planner.presentation.features.groupproperty.GroupPropertyFragment"
         android:label="GroupPropertyDialog"
         tools:layout="@layout/fragment_group_property" />
+    <dialog
+        android:id="@+id/paletteDialog"
+        android:name="com.lamp.planner.presentation.features.palettedialog.PaletteDialog"
+        android:label="PaletteDialog"
+        tools:layout="@layout/palette_layout" />
 </navigation>

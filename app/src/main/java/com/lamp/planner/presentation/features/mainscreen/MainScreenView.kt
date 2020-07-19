@@ -47,4 +47,7 @@ interface MainScreenView : MvpView {
 
     @AddToEnd
     fun deactivateGroup(position: Int)
+
+    @AddToEnd
+    fun showPalette()
 }

@@ -1,6 +1,5 @@
 package com.lamp.planner.presentation.base
 
-import android.graphics.Point
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
@@ -8,6 +7,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.lamp.planner.AndroidApp
 import com.lamp.planner.R
+import com.lamp.planner.domain.Constants
 import com.lamp.planner.domain.DateToText
 import com.lamp.planner.domain.excetion.Failure
 import moxy.MvpDelegate
@@ -24,13 +24,8 @@ abstract class BaseDialog : DialogFragment(), MvpDelegateHolder {
         getMvpDelegate().onCreate(savedInstanceState)
     }
 
-    protected fun get90Width(): Int {
-        // = WindowManager.LayoutParams.WRAP_CONTENT
-        val size = Point()
-        dialog?.context?.display?.getRealSize(size).let {
-            return (size.x * 0.9).toInt()
-        }
-    }
+    private fun get90Width() =
+        (resources.displayMetrics.widthPixels * Constants.WIDTH_DIALOG_FLOAT).toInt()
 
     override fun onResume() {
         super.onResume()

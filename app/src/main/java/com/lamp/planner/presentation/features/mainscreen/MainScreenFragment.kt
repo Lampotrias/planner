@@ -26,6 +26,7 @@ import com.lamp.planner.presentation.features.groupcreatedialog.CreateGroupDialo
 import com.lamp.planner.presentation.features.groupproperty.BottomSheetHelper
 import com.lamp.planner.presentation.features.groupproperty.GroupPropertyBottom
 import com.lamp.planner.presentation.features.mainscreen.di.DaggerMainScreenComponent
+import com.lamp.planner.presentation.features.palettedialog.PaletteDialog
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
@@ -74,14 +75,22 @@ open class MainScreenFragment : BaseFragment(),
         super.onCreate(savedInstanceState)
 
         parentFragmentManager.setFragmentResultListener(
-            CreateGroupDialog.GROUP_ADD_DIALOG_RESULT,
+            CreateGroupDialog.GROUP_ADD_REQUEST_KEY,
             this,
             FragmentResultListener { _: String, result: Bundle ->
-                mPresenter.processSaveGroup(
-                    result[CreateGroupDialog.GROUP_ADD_DIALOG_PARAM_NAME] as String,
-                    result[CreateGroupDialog.GROUP_ADD_DIALOG_PARAM_LOGO] as Int
-                )
+                val groupName = result.getString(CreateGroupDialog.GROUP_ADD_DIALOG_RESULT_NAME)
+                val groupLogo = result.getInt(CreateGroupDialog.GROUP_ADD_DIALOG_RESULT_LOGO)
+                groupName?.let { mPresenter.processSaveGroup(groupName, groupLogo) }
             })
+
+        parentFragmentManager.setFragmentResultListener(
+            PaletteDialog.PALETTE_REQUEST_KEY,
+            this,
+            FragmentResultListener { _: String, result: Bundle ->
+                val color = result.getInt(PaletteDialog.PALETTE_DIALOG_PARAM_COLOR)
+                mPresenter.setColor(color)
+            }
+        )
     }
 
     private lateinit var binding: MainScreenBinding
@@ -147,6 +156,7 @@ open class MainScreenFragment : BaseFragment(),
         binding.btnMyDay.setOnClickListener { mPresenter.clickBtnMyDay() }
         binding.authButton.setOnClickListener { mPresenter.clickAuthButton() }
         binding.fabMainScreen.setOnClickListener { mPresenter.clickCreateGroup() }
+        binding.separator1.setOnClickListener { mPresenter.clickBtnMyDay() }
         initBottom()
         return binding.root
     }
@@ -209,10 +219,14 @@ open class MainScreenFragment : BaseFragment(),
     }
 
     override fun activateGroup(position: Int) {
-        groupAdapter.notifyItemChangedWithPayload(position, GroupDelegateAdapter.PAYLOAD_ENABLE)
+        groupAdapter.notifyItemChangedWithPayload(position, GroupDelegateAdapter.PAYLOAD_ACTIVATE)
     }
 
     override fun deactivateGroup(position: Int) {
-        groupAdapter.notifyItemChangedWithPayload(position, GroupDelegateAdapter.PAYLOAD_DISABLE)
+        groupAdapter.notifyItemChangedWithPayload(position, GroupDelegateAdapter.PAYLOAD_DEACTIVATE)
+    }
+
+    override fun showPalette() {
+        navigate(MainScreenFragmentDirections.actionMainScreenFragmentToPaletteDialog())
     }
 }

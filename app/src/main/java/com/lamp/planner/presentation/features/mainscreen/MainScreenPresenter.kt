@@ -3,6 +3,7 @@ package com.lamp.planner.presentation.features.mainscreen
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.lamp.planner.R
 import com.lamp.planner.domain.Group
+import com.lamp.planner.domain.GroupColor
 import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.domain.interactors.CreateGroupInteractor
 import com.lamp.planner.domain.interactors.GetGroupsInteractor
@@ -63,7 +64,7 @@ class MainScreenPresenter @Inject constructor(
     private fun getGroups() {
         setDefaultGroupInteractor(1L) { it.fold(::handleFailure) {} }
         val successExec: (List<Group>) -> Unit = { viewState.showGroups(it) }
-        getGroupsInteractor(None()) { it.fold(viewState::handleFailure, successExec) }
+        getGroupsInteractor(None()) { it.fold(::handleFailure, successExec) }
     }
 
     private fun handleFailure(failure: Failure) {
@@ -82,7 +83,7 @@ class MainScreenPresenter @Inject constructor(
 
     fun processSaveGroup(groupName: String, groupLogo: Int) {
         val group = Group(0L, groupName, groupLogo, "0", Group.DEFAULT_SORT, false)
-        createGroupInteractor(group) { id -> id.fold(viewState::handleFailure) { getGroups() } }
+        createGroupInteractor(group) { id -> id.fold(::handleFailure) { getGroups() } }
     }
 
     fun clickGroup(group: Group, position: Int) {
@@ -118,7 +119,7 @@ class MainScreenPresenter @Inject constructor(
     }
 
     fun clickPalette() {
-        TODO("Not yet implemented")
+        viewState.showPalette()
     }
 
     fun clickImage() {
@@ -129,9 +130,20 @@ class MainScreenPresenter @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    fun setColor(color: Int) {
+        val lColors = mutableListOf<GroupColor>()
+        selectedGroup.forEach { lColors.add(GroupColor(it, color.toString())) }
+        groupUpdateColorInteractor(lColors) {
+            it.fold(::handleFailure) {
+                getGroups()
+                resetSelectMode()
+            }
+        }
+    }
+
     fun clickDelete() {
-        groupDeleteInteractor(selectedGroup) { result ->
-            result.fold(viewState::handleFailure) {
+        groupDeleteInteractor(selectedGroup) {
+            it.fold(::handleFailure) {
                 getGroups()
                 resetSelectMode()
             }

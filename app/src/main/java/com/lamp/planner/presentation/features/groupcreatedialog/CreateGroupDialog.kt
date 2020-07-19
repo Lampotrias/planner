@@ -23,9 +23,9 @@ class CreateGroupDialog @Inject constructor() : BaseDialog(), GroupCreateView {
     private val mPresenter by moxyPresenter { presenterProvider }
 
     companion object {
-        const val GROUP_ADD_DIALOG_RESULT = "GROUP_ADD_DIALOG_RESULT"
-        const val GROUP_ADD_DIALOG_PARAM_NAME = "GROUP_ADD_DIALOG_PARAM_NAME"
-        const val GROUP_ADD_DIALOG_PARAM_LOGO = "GROUP_ADD_DIALOG_PARAM_LOGO"
+        const val GROUP_ADD_REQUEST_KEY = "GROUP_ADD_REQUEST_KEY"
+        const val GROUP_ADD_DIALOG_RESULT_NAME = "GROUP_ADD_DIALOG_RESULT_NAME"
+        const val GROUP_ADD_DIALOG_RESULT_LOGO = "GROUP_ADD_DIALOG_RESULT_LOGO"
     }
 
     override fun onInitDependencyInjection() {
@@ -52,10 +52,10 @@ class CreateGroupDialog @Inject constructor() : BaseDialog(), GroupCreateView {
 
     override fun close() {
         setFragmentResult(
-            GROUP_ADD_DIALOG_RESULT,
+            GROUP_ADD_REQUEST_KEY,
             bundleOf(
-                GROUP_ADD_DIALOG_PARAM_NAME to binding.nameGroup.text.toString(),
-                GROUP_ADD_DIALOG_PARAM_LOGO to 0
+                GROUP_ADD_DIALOG_RESULT_NAME to binding.nameGroup.text.toString(),
+                GROUP_ADD_DIALOG_RESULT_LOGO to 0
             )
         )
         this.dialog?.dismiss()

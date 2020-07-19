@@ -1,9 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer-array name="all_colors">
-        <item>@android:color/black</item>
-        <item>@android:color/holo_blue_dark</item>
-        <item>@android:color/holo_orange_dark</item>
+        <item>@color/pl_red_800</item>
+        <item>@color/pl_pink_800</item>
+        <item>@color/pl_purple_800</item>
+        <item>@color/pl_deep_purple_800</item>
+        <item>@color/pl_indigo_800</item>
+        <item>@color/pl_blue_800</item>
+        <item>@color/pl_light_blue_800</item>
+        <item>@color/pl_cyan_800</item>
+        <item>@color/pl_teal_800</item>
+        <item>@color/pl_green_800</item>
+        <item>@color/pl_light_green_800</item>
+        <item>@color/pl_lime_800</item>
+        <item>@color/pl_yellow_800</item>
+        <item>@color/pl_amber_800</item>
+        <item>@color/pl_orange_800</item>
+        <item>@color/pl_deep_orange_800</item>
+        <item>@color/pl_brown_800</item>
+        <item>@color/pl_grey_800</item>
+        <item>@color/pl_blue_grey_800</item>
     </integer-array>
 </resources>
 

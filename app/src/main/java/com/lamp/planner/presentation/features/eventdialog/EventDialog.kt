@@ -18,9 +18,10 @@ import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.extention.navigate
 import com.lamp.planner.presentation.base.BaseDialog
 import com.lamp.planner.presentation.features.calendardetail.CalendarDialog
-import com.lamp.planner.presentation.features.calendardetail.CalendarDialog.Companion.CALENDAR_DIALOG_PARAM_OBJ
+import com.lamp.planner.presentation.features.calendardetail.CalendarDialog.Companion.CALENDAR_DIALOG_RESULT_EVENT_OBJ
 import com.lamp.planner.presentation.features.eventdialog.di.DaggerEventDialogComponent
 import com.lamp.planner.presentation.features.grouplistdialog.GroupListDialog
+import com.lamp.planner.presentation.features.grouplistdialog.GroupListDialog.Companion.GROUPS_DIALOG_PARAM_OBJ
 import com.lamp.planner.presentation.features.myday.EventTransferObject
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
@@ -46,19 +47,22 @@ class EventDialog @Inject constructor() : BaseDialog(),
         mPresenter.setInputNavArgs(args)
         // Back stack from calendar
         parentFragmentManager.setFragmentResultListener(
-            CalendarDialog.CALENDAR_DIALOG_RESULT,
+            CalendarDialog.CALENDAR_DIALOG_REQUEST_KEY,
             this,
             FragmentResultListener { _: String, result: Bundle ->
-                mPresenter.setArgsFromCalendar(result[CALENDAR_DIALOG_PARAM_OBJ] as EventTransferObject)
+                val transferObject =
+                    result.getParcelable<EventTransferObject>(CALENDAR_DIALOG_RESULT_EVENT_OBJ)
+                transferObject?.let { mPresenter.setArgsFromCalendar(it) }
                 this.dialog?.show()
             })
 
         // Back stack from groups
         parentFragmentManager.setFragmentResultListener(
-            GroupListDialog.GROUPS_DIALOG_RESULT,
+            GroupListDialog.GROUPS_DIALOG_REQUEST_KEY,
             this,
             FragmentResultListener { _, result ->
-                mPresenter.setArgsFromGroupsDialog(result[GroupListDialog.GROUPS_DIALOG_PARAM_OBJ] as Group)
+                val group = result.getParcelable<Group>(GROUPS_DIALOG_PARAM_OBJ)
+                group?.let { mPresenter.setArgsFromGroupsDialog(it) }
                 this.dialog?.show()
             }
         )

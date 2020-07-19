@@ -1,6 +1,7 @@
 package com.lamp.planner.presentation.adapters
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -15,8 +16,8 @@ class GroupDelegateAdapter : DelegateAdapter<Group> {
     private lateinit var binding: GroupListHolderBinding
 
     companion object {
-        const val PAYLOAD_ENABLE = 1
-        const val PAYLOAD_DISABLE = 2
+        const val PAYLOAD_ACTIVATE = 1
+        const val PAYLOAD_DEACTIVATE = 2
     }
 
     private val animationHide by lazy {
@@ -55,15 +56,17 @@ class GroupDelegateAdapter : DelegateAdapter<Group> {
                 setColorLogo(item.color)
             }
 
-            if (payloads.contains(PAYLOAD_ENABLE)) {
+            if (payloads.contains(PAYLOAD_ACTIVATE)) {
                 with(holder.getAnimationView()) {
                     startAnimation(animationHide)
+                    holder.setSelectColor()
                     setImageResource(R.drawable.ic_baseline_check_circle_24)
                     startAnimation(animationShow)
                 }
-            } else if (payloads.contains(PAYLOAD_DISABLE)) {
+            } else if (payloads.contains(PAYLOAD_DEACTIVATE)) {
                 with(holder.getAnimationView()) {
                     startAnimation(animationHide)
+                    holder.setColorLogo(item.color)
                     holder.setGroupLogo(item.picture)
                     startAnimation(animationShow)
                 }
@@ -90,14 +93,19 @@ class GroupDelegateAdapter : DelegateAdapter<Group> {
             }
         }
 
+        fun setSelectColor() {
+            binding.groupLogo.setColorFilter(Color.RED)
+            binding.groupLogo.alpha = 1f
+        }
+
         fun setColorLogo(color: String) {
             context?.let {
-                val imagesRes = it.resources.obtainTypedArray(R.array.all_colors)
-                val colorRes =
-                    ContextCompat.getColor(it, imagesRes.getResourceId(color.toInt(), -1))
-                binding.groupLogo.setColorFilter(colorRes)
+                val colorsRes = it.resources.obtainTypedArray(R.array.all_colors)
+                val mColorRes =
+                    ContextCompat.getColor(it, colorsRes.getResourceId(color.toInt(), -1))
+                binding.groupLogo.setColorFilter(mColorRes)
                 binding.groupLogo.alpha = 0.5f
-                imagesRes.recycle()
+                colorsRes.recycle()
             }
         }
     }

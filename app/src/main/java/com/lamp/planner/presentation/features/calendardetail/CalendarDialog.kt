@@ -34,8 +34,8 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
     }
 
     companion object {
-        const val CALENDAR_DIALOG_RESULT = "CALENDAR_DIALOG_RESULT"
-        const val CALENDAR_DIALOG_PARAM_OBJ = "CALENDAR_DIALOG_PARAM_OBJ"
+        const val CALENDAR_DIALOG_REQUEST_KEY = "CALENDAR_DIALOG_REQUEST_KEY"
+        const val CALENDAR_DIALOG_RESULT_EVENT_OBJ = "CALENDAR_DIALOG_RESULT_EVENT_OBJ"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,8 +70,8 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
 
     override fun close(eventObj: EventTransferObject) {
         setFragmentResult(
-            CALENDAR_DIALOG_RESULT,
-            bundleOf(CALENDAR_DIALOG_PARAM_OBJ to eventObj)
+            CALENDAR_DIALOG_REQUEST_KEY,
+            bundleOf(CALENDAR_DIALOG_RESULT_EVENT_OBJ to eventObj)
         )
         dialog?.dismiss()
     }

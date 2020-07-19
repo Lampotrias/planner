@@ -17,7 +17,6 @@ import com.lamp.planner.presentation.adapters.ManagerImpl
 import com.lamp.planner.presentation.base.BaseDialog
 import com.lamp.planner.presentation.features.grouplistdialog.di.DaggerGroupListDialogComponent
 import moxy.ktx.moxyPresenter
-import timber.log.Timber
 import javax.inject.Inject
 
 class GroupListDialog @Inject constructor() : BaseDialog(),
@@ -27,7 +26,7 @@ class GroupListDialog @Inject constructor() : BaseDialog(),
     private val args: GroupListDialogArgs by navArgs()
 
     companion object {
-        const val GROUPS_DIALOG_RESULT = "GROUPS_DIALOG_RESULT"
+        const val GROUPS_DIALOG_REQUEST_KEY = "GROUPS_DIALOG_RESULT"
         const val GROUPS_DIALOG_PARAM_OBJ = "GROUPS_DIALOG_PARAM_OBJ"
     }
 
@@ -55,24 +54,9 @@ class GroupListDialog @Inject constructor() : BaseDialog(),
         return binding.root
     }
 
-    override fun onStop() {
-        Timber.e("onStop")
-        super.onStop()
-    }
-
-    override fun onDestroyView() {
-        Timber.e("onDestroyView")
-        super.onDestroyView()
-    }
-
-    override fun onDestroy() {
-        Timber.e("onDestroy")
-        super.onDestroy()
-    }
-
     override fun close(group: Group) {
         setFragmentResult(
-            GROUPS_DIALOG_RESULT,
+            GROUPS_DIALOG_REQUEST_KEY,
             bundleOf(GROUPS_DIALOG_PARAM_OBJ to group)
         )
         this.dialog?.dismiss()
