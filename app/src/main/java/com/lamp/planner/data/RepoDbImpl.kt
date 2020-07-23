@@ -6,7 +6,7 @@ import com.lamp.planner.data.database.GroupEntity
 import com.lamp.planner.domain.Event
 import com.lamp.planner.domain.Group
 import com.lamp.planner.domain.GroupColor
-import com.lamp.planner.domain.GroupPicture
+import com.lamp.planner.domain.GroupImage
 import com.lamp.planner.domain.Result
 import com.lamp.planner.domain.Result.Error
 import com.lamp.planner.domain.Result.Success
@@ -61,6 +61,15 @@ class RepoDbImpl @Inject constructor(private val appDatabase: AppDatabase) : Rep
         }
     }
 
+    override fun getGroup(id: Long): Result<Failure, Group> {
+        return try {
+            val result = appDatabase.groupDao().getGroup(id)
+            return Success(result.toGroup())
+        } catch (throwable: Throwable) {
+            Error(Failure.DatabaseErrorQuery(throwable.message))
+        }
+    }
+
     override fun updateGroupColor(groupColors: List<GroupColor>): Result<Failure, Int> {
         return try {
             var counter = 0
@@ -74,10 +83,10 @@ class RepoDbImpl @Inject constructor(private val appDatabase: AppDatabase) : Rep
         }
     }
 
-    override fun updateGroupPicture(groupPictures: List<GroupPicture>): Result<Failure, Int> {
+    override fun updateGroupPicture(groupImages: List<GroupImage>): Result<Failure, Int> {
         return try {
             var counter = 0
-            groupPictures.forEach {
+            groupImages.forEach {
                 val result = appDatabase.groupDao().updatePicture(it.id, it.picture)
                 counter += result
             }

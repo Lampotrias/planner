@@ -14,6 +14,9 @@ interface GroupDao {
     @Query("SELECT * FROM groups ORDER BY sort DESC")
     fun getGroups(): List<GroupEntity>
 
+    @Query("SELECT * FROM groups where _id = :id")
+    fun getGroup(id: Long): GroupEntity
+
     @Query("UPDATE groups SET is_default = 0")
     fun invalidateDefault()
 

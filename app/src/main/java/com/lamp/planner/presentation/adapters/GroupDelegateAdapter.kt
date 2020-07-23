@@ -51,7 +51,8 @@ class GroupDelegateAdapter : DelegateAdapter<Group> {
         if (holder is GroupHolder) {
             val item = items[position]
             with(holder) {
-                setGroupName(item.name)
+
+                setGroupName(if (item.default) item.name + "(!)" else item.name)
                 setGroupLogo(item.picture)
                 setColorLogo(item.color)
             }

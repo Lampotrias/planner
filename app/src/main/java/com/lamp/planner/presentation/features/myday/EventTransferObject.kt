@@ -3,7 +3,6 @@ package com.lamp.planner.presentation.features.myday
 import android.os.Parcel
 import android.os.Parcelable
 import com.lamp.planner.domain.Constants
-import com.lamp.planner.domain.Event
 import com.lamp.planner.domain.utils.CalendarUtils
 import java.util.*
 
@@ -26,11 +25,11 @@ data class EventTransferObject(
             return CalendarUtils.getDayInString(calendar.timeInMillis, Constants.FORMAT_TIME)
         }
 
-    fun toEvent(): Event {
-        val calendar = Calendar.getInstance()
-        calendar.set(year, month, day, hours, minutes)
-        return Event(0, name, calendar.time.time, allDay, TimeZone.getDefault().rawOffset, groupId)
-    }
+//    fun toEvent(): Event {
+//        val calendar = Calendar.getInstance()
+//        calendar.set(year, month, day, hours, minutes)
+//        return Event(0, name, calendar.time.time, allDay, TimeZone.getDefault().rawOffset, groupId)
+//    }
 
     fun getStrTime() = CalendarUtils.formatTime(hours, minutes)
 

@@ -10,7 +10,7 @@
         android:layout_height="@dimen/group_image_large"
         android:layout_marginTop="32dp"
         android:contentDescription="@string/todo"
-        android:src="@drawable/group_default"
+        android:src="@drawable/icg_work"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

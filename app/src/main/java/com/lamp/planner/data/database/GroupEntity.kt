@@ -21,6 +21,5 @@ data class GroupEntity(
     @ColumnInfo(name = "is_default")
     var isDefault: Boolean
 ) {
-    fun toEvent(): Group = Group(id, name, picture, color, sort, isDefault)
-
+    fun toGroup(): Group = Group(id, name, picture, color, sort, isDefault)
 }

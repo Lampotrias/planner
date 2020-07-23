@@ -1,13 +1,14 @@
 package com.lamp.planner.presentation.base
 
 import android.os.Bundle
+import android.util.Size
+import android.util.SizeF
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.lamp.planner.AndroidApp
 import com.lamp.planner.R
-import com.lamp.planner.domain.Constants
 import com.lamp.planner.domain.DateToText
 import com.lamp.planner.domain.excetion.Failure
 import moxy.MvpDelegate
@@ -23,9 +24,6 @@ abstract class BaseDialog : DialogFragment(), MvpDelegateHolder {
         super.onCreate(savedInstanceState)
         getMvpDelegate().onCreate(savedInstanceState)
     }
-
-    private fun get90Width() =
-        (resources.displayMetrics.widthPixels * Constants.WIDTH_DIALOG_FLOAT).toInt()
 
     override fun onResume() {
         super.onResume()
@@ -49,10 +47,27 @@ abstract class BaseDialog : DialogFragment(), MvpDelegateHolder {
         super.onStart()
         dialog?.window?.setBackgroundDrawableResource(R.drawable.dialog_rounded_bg)
 
-        dialog?.window?.setLayout(
-            get90Width(),
-            WindowManager.LayoutParams.WRAP_CONTENT
-        )
+        calculateSize(setSizeDialog()).also {
+            dialog?.window?.setLayout(
+                it.width,
+                it.height
+            )
+        }
+    }
+
+    abstract fun setSizeDialog(): SizeF
+
+    private fun calculateSize(rawSizeF: SizeF): Size {
+        val prepareSize: (Int) -> Int = rt@{
+            return@rt when (it) {
+                0 -> WindowManager.LayoutParams.WRAP_CONTENT
+                1 -> WindowManager.LayoutParams.MATCH_PARENT
+                else -> it
+            }
+        }
+        val width = (resources.displayMetrics.widthPixels * rawSizeF.width).toInt()
+        val height = (resources.displayMetrics.heightPixels * rawSizeF.height).toInt()
+        return Size(prepareSize(width), prepareSize(height))
     }
 
     override fun onDestroyView() {

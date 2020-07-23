@@ -13,6 +13,6 @@ fun List<EventEntity>.toEvent(): List<Event> {
 
 fun List<GroupEntity>.toGroup(): List<Group> {
     val tpm: ArrayList<Group> = arrayListOf()
-    this.forEach { tpm.add(it.toEvent()) }
+    this.forEach { tpm.add(it.toGroup()) }
     return tpm
 }

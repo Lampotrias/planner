@@ -9,9 +9,6 @@ class GlobalRepoImpl : GlobalRepo {
 
     private var subscriber: Subscriber? = null
 
-    private var offset = 0f
-    private var slidingState = 0
-
     override fun attach(s: Subscriber) {
         subscriber = s
     }

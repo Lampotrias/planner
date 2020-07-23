@@ -56,7 +56,6 @@
             android:contentDescription="@string/todo"
             android:src="@drawable/ic_baseline_bookmark_24"
             android:tint="@color/color_on_surface_emphasis_disable_alpha" />
-        />
 
         <ImageView
             android:id="@+id/imgDelete"

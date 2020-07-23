@@ -1,6 +1,7 @@
 package com.lamp.planner.presentation.features.palettedialog
 
 import android.os.Bundle
+import android.util.SizeF
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,18 +20,20 @@ class PaletteDialog : BaseDialog() {
 
     companion object {
         const val PALETTE_REQUEST_KEY = "PALETTE_DIALOG_RESULT"
-        const val PALETTE_DIALOG_PARAM_COLOR = "PALETTE_DIALOG_PARAM_COLOR"
+        const val PALETTE_DIALOG_RESULT_COLOR = "PALETTE_DIALOG_RESULT_COLOR"
     }
 
     override fun onInitDependencyInjection() {
     }
 
-    fun getColorsList(): List<Int> {
+    private fun getColorsList(): List<Int> {
         val colorsRes = binding.root.resources.obtainTypedArray(R.array.all_colors)
         val end = colorsRes.length() - 1
         colorsRes.recycle()
         return (0..end).toList()
     }
+
+    override fun setSizeDialog(): SizeF = SizeF(0.9f, 0f)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,7 +61,7 @@ class PaletteDialog : BaseDialog() {
     fun close(color: Int) {
         setFragmentResult(
             PALETTE_REQUEST_KEY,
-            bundleOf(PALETTE_DIALOG_PARAM_COLOR to color)
+            bundleOf(PALETTE_DIALOG_RESULT_COLOR to color)
         )
         this.dialog?.dismiss()
     }

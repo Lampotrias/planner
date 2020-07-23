@@ -3,6 +3,7 @@ package com.lamp.planner.presentation.features.eventdialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.SizeF
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,6 +41,8 @@ class EventDialog @Inject constructor() : BaseDialog(),
         const val EVENT_DIALOG_RESULT = "EVENT_DIALOG_RESULT"
         const val EVENT_DIALOG_PARAM_OBJ = "EVENT_DIALOG_PARAM_OBJ"
     }
+
+    override fun setSizeDialog(): SizeF = SizeF(0.9f, 0f)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

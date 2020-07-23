@@ -10,9 +10,5 @@ data class Event(
     var zoneOffset: Int,
     val groupId: Long
 ) {
-
-    val localTime: Long
-        get() = time + zoneOffset
-
     fun toEventEntity() = EventEntity(id, name, time, allDay, zoneOffset, groupId)
 }

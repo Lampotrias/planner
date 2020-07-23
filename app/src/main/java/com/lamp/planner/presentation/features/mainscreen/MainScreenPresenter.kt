@@ -4,8 +4,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.lamp.planner.R
 import com.lamp.planner.domain.Group
 import com.lamp.planner.domain.GroupColor
+import com.lamp.planner.domain.GroupImage
+import com.lamp.planner.domain.SimpleGroupFields
 import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.domain.interactors.CreateGroupInteractor
+import com.lamp.planner.domain.interactors.GetGroupInteractor
 import com.lamp.planner.domain.interactors.GetGroupsInteractor
 import com.lamp.planner.domain.interactors.GlobalInteractor
 import com.lamp.planner.domain.interactors.GroupDeleteInteractor
@@ -25,7 +28,8 @@ class MainScreenPresenter @Inject constructor(
     private val setDefaultGroupInteractor: SetDefaultGroupInteractor,
     private val groupUpdateColorInteractor: GroupUpdateColorInteractor,
     private val groupUpdatePictureInteractor: GroupUpdatePictureInteractor,
-    private val groupDeleteInteractor: GroupDeleteInteractor
+    private val groupDeleteInteractor: GroupDeleteInteractor,
+    private val getGroupInteractor: GetGroupInteractor
 ) : BasePresenter<MainScreenView>() {
     private var bSelectMode = false
     private val selectedGroup = mutableListOf<Long>()
@@ -62,7 +66,6 @@ class MainScreenPresenter @Inject constructor(
     }
 
     private fun getGroups() {
-        setDefaultGroupInteractor(1L) { it.fold(::handleFailure) {} }
         val successExec: (List<Group>) -> Unit = { viewState.showGroups(it) }
         getGroupsInteractor(None()) { it.fold(::handleFailure, successExec) }
     }
@@ -77,13 +80,37 @@ class MainScreenPresenter @Inject constructor(
 
     fun clickCreateGroup() {
         val navDirections =
-            MainScreenFragmentDirections.actionMainScreenFragmentToCreateGroupDialog()
-        viewState.navigateCreateGroupDialog(navDirections)
+            MainScreenFragmentDirections.actionMainScreenFragmentToCreateGroupDialog(null)
+        viewState.navigateCreateUpdateGroupDialog(navDirections)
     }
 
-    fun processSaveGroup(groupName: String, groupLogo: Int) {
-        val group = Group(0L, groupName, groupLogo, "0", Group.DEFAULT_SORT, false)
-        createGroupInteractor(group) { id -> id.fold(::handleFailure) { getGroups() } }
+    fun clickEditGroup() {
+        getGroupInteractor(selectedGroup.first()) {
+            it.fold(this::handleFailure) { group ->
+                val fields =
+                    SimpleGroupFields(group.id, group.name, group.picture, group.color.toInt())
+                val navDirections =
+                    MainScreenFragmentDirections.actionMainScreenFragmentToCreateGroupDialog(fields)
+                viewState.navigateCreateUpdateGroupDialog(navDirections)
+            }
+        }
+    }
+
+    fun processSaveGroup(fields: SimpleGroupFields) {
+        val group = Group(
+            fields.id,
+            fields.name,
+            fields.image,
+            fields.color.toString(),
+            Group.DEFAULT_SORT,
+            false
+        )
+        createGroupInteractor(group) { it.fold(::handleFailure) { successHideBottomPanel() } }
+    }
+
+    private fun successHideBottomPanel() {
+        getGroups()
+        resetSelectMode()
     }
 
     fun clickGroup(group: Group, position: Int) {
@@ -123,30 +150,20 @@ class MainScreenPresenter @Inject constructor(
     }
 
     fun clickImage() {
-        TODO("Not yet implemented")
-    }
-
-    fun clickEdit() {
-        TODO("Not yet implemented")
+        viewState.showImageSelector()
     }
 
     fun setColor(color: Int) {
         val lColors = mutableListOf<GroupColor>()
         selectedGroup.forEach { lColors.add(GroupColor(it, color.toString())) }
         groupUpdateColorInteractor(lColors) {
-            it.fold(::handleFailure) {
-                getGroups()
-                resetSelectMode()
-            }
+            it.fold(::handleFailure) { successHideBottomPanel() }
         }
     }
 
     fun clickDelete() {
         groupDeleteInteractor(selectedGroup) {
-            it.fold(::handleFailure) {
-                getGroups()
-                resetSelectMode()
-            }
+            it.fold(::handleFailure) { successHideBottomPanel() }
         }
     }
 
@@ -156,7 +173,17 @@ class MainScreenPresenter @Inject constructor(
         selectedGroup.clear()
     }
 
-    fun clickBookmark() {
-        TODO("Not yet implemented")
+    fun clickSetDefault() {
+        setDefaultGroupInteractor(selectedGroup.first()) {
+            it.fold(::handleFailure) { successHideBottomPanel() }
+        }
+    }
+
+    fun setImage(image: Int) {
+        val iImages = mutableListOf<GroupImage>()
+        selectedGroup.forEach { iImages.add(GroupImage(it, image)) }
+        groupUpdatePictureInteractor(iImages) {
+            it.fold(::handleFailure) { successHideBottomPanel() }
+        }
     }
 }

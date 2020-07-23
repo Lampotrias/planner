@@ -16,6 +16,7 @@ import com.lamp.planner.AndroidApp
 import com.lamp.planner.R
 import com.lamp.planner.databinding.MainScreenBinding
 import com.lamp.planner.domain.Group
+import com.lamp.planner.domain.SimpleGroupFields
 import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.extention.navigate
 import com.lamp.planner.presentation.adapters.CompositeAdapter
@@ -25,6 +26,7 @@ import com.lamp.planner.presentation.base.BaseFragment
 import com.lamp.planner.presentation.features.groupcreatedialog.CreateGroupDialog
 import com.lamp.planner.presentation.features.groupproperty.BottomSheetHelper
 import com.lamp.planner.presentation.features.groupproperty.GroupPropertyBottom
+import com.lamp.planner.presentation.features.imagedialog.ImageDialog
 import com.lamp.planner.presentation.features.mainscreen.di.DaggerMainScreenComponent
 import com.lamp.planner.presentation.features.palettedialog.PaletteDialog
 import moxy.ktx.moxyPresenter
@@ -46,7 +48,7 @@ open class MainScreenFragment : BaseFragment(),
         }
 
         override fun clickEdit() {
-            mPresenter.clickEdit()
+            mPresenter.clickEditGroup()
         }
 
         override fun clickDelete() {
@@ -54,7 +56,7 @@ open class MainScreenFragment : BaseFragment(),
         }
 
         override fun clickBookmark() {
-            mPresenter.clickBookmark()
+            mPresenter.clickSetDefault()
         }
     }
     private val manager by lazy {
@@ -78,17 +80,26 @@ open class MainScreenFragment : BaseFragment(),
             CreateGroupDialog.GROUP_ADD_REQUEST_KEY,
             this,
             FragmentResultListener { _: String, result: Bundle ->
-                val groupName = result.getString(CreateGroupDialog.GROUP_ADD_DIALOG_RESULT_NAME)
-                val groupLogo = result.getInt(CreateGroupDialog.GROUP_ADD_DIALOG_RESULT_LOGO)
-                groupName?.let { mPresenter.processSaveGroup(groupName, groupLogo) }
+                val fields =
+                    result.getParcelable(CreateGroupDialog.GROUP_FIELDS) as? SimpleGroupFields
+                fields?.let { mPresenter.processSaveGroup(it) }
             })
 
         parentFragmentManager.setFragmentResultListener(
             PaletteDialog.PALETTE_REQUEST_KEY,
             this,
             FragmentResultListener { _: String, result: Bundle ->
-                val color = result.getInt(PaletteDialog.PALETTE_DIALOG_PARAM_COLOR)
+                val color = result.getInt(PaletteDialog.PALETTE_DIALOG_RESULT_COLOR)
                 mPresenter.setColor(color)
+            }
+        )
+
+        parentFragmentManager.setFragmentResultListener(
+            ImageDialog.IMAGE_SELECTOR_REQUEST_KEY,
+            this,
+            FragmentResultListener { _: String, result: Bundle ->
+                val image = result.getInt(ImageDialog.IMAGE_SELECTOR_RESULT_IMAGE)
+                mPresenter.setImage(image)
             }
         )
     }
@@ -104,7 +115,10 @@ open class MainScreenFragment : BaseFragment(),
         navigate(navDirections)
     }
 
-    override fun navigateCreateGroupDialog(navDirections: NavDirections) {
+    override fun navigateCreateUpdateGroupDialog(
+        navDirections: NavDirections,
+        params: Bundle?
+    ) {
         navigate(navDirections)
     }
 
@@ -228,5 +242,9 @@ open class MainScreenFragment : BaseFragment(),
 
     override fun showPalette() {
         navigate(MainScreenFragmentDirections.actionMainScreenFragmentToPaletteDialog())
+    }
+
+    override fun showImageSelector() {
+        navigate(MainScreenFragmentDirections.actionMainScreenFragmentToImageDialog())
     }
 }

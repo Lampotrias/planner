@@ -2,6 +2,7 @@ package com.lamp.planner.presentation.features.calendardetail
 
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.util.SizeF
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +43,8 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
         onInitDependencyInjection()
         super.onCreate(savedInstanceState)
     }
+
+    override fun setSizeDialog(): SizeF = SizeF(0.9f, 0f)
 
     override fun onCreateView(
         inflater: LayoutInflater,

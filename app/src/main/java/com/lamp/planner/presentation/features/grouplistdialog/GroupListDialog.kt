@@ -1,6 +1,7 @@
 package com.lamp.planner.presentation.features.grouplistdialog
 
 import android.os.Bundle
+import android.util.SizeF
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +35,8 @@ class GroupListDialog @Inject constructor() : BaseDialog(),
         super.onCreate(savedInstanceState)
         mPresenter.setInputNavArgs(args)
     }
+
+    override fun setSizeDialog(): SizeF = SizeF(0.9f, 0f)
 
     @Inject
     lateinit var presenterProvider: GroupListPresenter

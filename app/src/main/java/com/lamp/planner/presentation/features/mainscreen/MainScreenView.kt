@@ -1,5 +1,6 @@
 package com.lamp.planner.presentation.features.mainscreen
 
+import android.os.Bundle
 import androidx.navigation.NavDirections
 import com.lamp.planner.domain.Group
 import com.lamp.planner.domain.excetion.Failure
@@ -22,7 +23,7 @@ interface MainScreenView : MvpView {
     fun navigateAuth(navDirections: NavDirections)
 
     @Skip
-    fun navigateCreateGroupDialog(navDirections: NavDirections)
+    fun navigateCreateUpdateGroupDialog(navDirections: NavDirections, params: Bundle? = null)
 
     @AddToEnd
     fun showGroups(groups: List<Group>)
@@ -50,4 +51,7 @@ interface MainScreenView : MvpView {
 
     @AddToEnd
     fun showPalette()
+
+    @AddToEnd
+    fun showImageSelector()
 }

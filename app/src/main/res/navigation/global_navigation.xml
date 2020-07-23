@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_mainScreenFragment_to_paletteDialog"
             app:destination="@id/paletteDialog" />
+        <action
+            android:id="@+id/action_mainScreenFragment_to_imageDialog"
+            app:destination="@id/imageDialog" />
     </fragment>
     <fragment
         android:id="@+id/authFragment"
@@ -32,7 +35,13 @@
         android:id="@+id/createGroupDialog"
         android:name="com.lamp.planner.presentation.features.groupcreatedialog.CreateGroupDialog"
         android:label="CreateGroupDialog"
-        tools:layout="@layout/group_create_dialog" />
+        tools:layout="@layout/group_create_dialog">
+        <argument
+            android:name="group_params"
+            android:defaultValue="@null"
+            app:argType="com.lamp.planner.domain.SimpleGroupFields"
+            app:nullable="true" />
+    </dialog>
     <dialog
         android:id="@+id/groupPropertyDialog"
         android:name="com.lamp.planner.presentation.features.groupproperty.GroupPropertyFragment"
@@ -43,4 +52,9 @@
         android:name="com.lamp.planner.presentation.features.palettedialog.PaletteDialog"
         android:label="PaletteDialog"
         tools:layout="@layout/palette_layout" />
+    <dialog
+        android:id="@+id/imageDialog"
+        android:name="com.lamp.planner.presentation.features.imagedialog.ImageDialog"
+        android:label="ImageDialog"
+        tools:layout="@layout/image_selector_layout" />
 </navigation>
