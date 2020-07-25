@@ -20,13 +20,14 @@ import com.lamp.planner.extention.navigate
 import com.lamp.planner.presentation.base.BaseDialog
 import com.lamp.planner.presentation.features.calendardetail.CalendarDialog
 import com.lamp.planner.presentation.features.calendardetail.CalendarDialog.Companion.CALENDAR_DIALOG_RESULT_EVENT_OBJ
-import com.lamp.planner.presentation.features.eventdialog.di.DaggerEventDialogComponent
 import com.lamp.planner.presentation.features.grouplistdialog.GroupListDialog
 import com.lamp.planner.presentation.features.grouplistdialog.GroupListDialog.Companion.GROUPS_DIALOG_PARAM_OBJ
 import com.lamp.planner.presentation.features.myday.EventTransferObject
+import dagger.hilt.android.AndroidEntryPoint
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class EventDialog @Inject constructor() : BaseDialog(),
     EventView {
 
@@ -99,12 +100,6 @@ class EventDialog @Inject constructor() : BaseDialog(),
                 }
             })
         }
-    }
-
-    override fun onInitDependencyInjection() {
-        DaggerEventDialogComponent.builder()
-            .appComponent(appComponent)
-            .build().inject(this)
     }
 
     override fun close(eventObj: EventTransferObject) {

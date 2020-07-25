@@ -2,17 +2,13 @@ package com.lamp.planner
 
 import android.app.Application
 import androidx.work.Configuration
-import androidx.work.WorkManager
-import com.lamp.planner.di.AppComponent
-import com.lamp.planner.presentation.background.NotificationHelper
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
-import javax.inject.Inject
 
-class AndroidApp : Application() {
-    private val appComponent by lazy { AppComponent.Initializer.init(this) }
-
-    @Inject
-    lateinit var notificationHelper: NotificationHelper
+@HiltAndroidApp
+class AndroidApp : Application(), Configuration.Provider {
+    //   @Inject lateinit var notificationHelper: NotificationHelper
+//    @Inject lateinit var workerFactory: HiltWorkerFactory
 
     override fun onCreate() {
         super.onCreate()
@@ -20,25 +16,16 @@ class AndroidApp : Application() {
             Timber.plant(Timber.DebugTree())
         }
 
-        onInitDependencyInjection()
         initNotification()
-        initWorkManager()
-    }
-
-    private fun initWorkManager() {
-        WorkManager.initialize(
-            this,
-            Configuration.Builder().setWorkerFactory(appComponent.workerFactory()).build()
-        )
+//        initWorkManager()
     }
 
     private fun initNotification() {
-        notificationHelper.createChannels()
+        //    notificationHelper.createChannels()
     }
 
-    fun getComponent() = appComponent
-
-    private fun onInitDependencyInjection() {
-        appComponent.inject(this)
-    }
+    override fun getWorkManagerConfiguration() =
+        Configuration.Builder()
+//            .setWorkerFactory(workerFactory)
+            .build()
 }

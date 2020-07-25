@@ -55,9 +55,6 @@ class ImageDialog : BaseDialog() {
         return binding.root
     }
 
-    override fun onInitDependencyInjection() {
-    }
-
     fun close(image: Int) {
         setFragmentResult(
             IMAGE_SELECTOR_REQUEST_KEY,

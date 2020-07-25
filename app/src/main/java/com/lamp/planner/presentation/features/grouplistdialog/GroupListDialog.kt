@@ -16,10 +16,11 @@ import com.lamp.planner.presentation.adapters.CompositeAdapter
 import com.lamp.planner.presentation.adapters.CompositeAdapter.ClickItemInterface
 import com.lamp.planner.presentation.adapters.ManagerImpl
 import com.lamp.planner.presentation.base.BaseDialog
-import com.lamp.planner.presentation.features.grouplistdialog.di.DaggerGroupListDialogComponent
+import dagger.hilt.android.AndroidEntryPoint
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class GroupListDialog @Inject constructor() : BaseDialog(),
     GroupListView {
 
@@ -41,12 +42,6 @@ class GroupListDialog @Inject constructor() : BaseDialog(),
     @Inject
     lateinit var presenterProvider: GroupListPresenter
     private val mPresenter by moxyPresenter { presenterProvider }
-
-    override fun onInitDependencyInjection() {
-        DaggerGroupListDialogComponent.builder()
-            .appComponent(appComponent)
-            .build().inject(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

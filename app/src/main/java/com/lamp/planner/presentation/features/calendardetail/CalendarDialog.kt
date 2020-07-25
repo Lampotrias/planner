@@ -13,12 +13,13 @@ import com.lamp.planner.R
 import com.lamp.planner.databinding.CalendarFragmentBinding
 import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.presentation.base.BaseDialog
-import com.lamp.planner.presentation.features.calendardetail.di.DaggerCalendarComponent
 import com.lamp.planner.presentation.features.myday.EventTransferObject
+import dagger.hilt.android.AndroidEntryPoint
 import moxy.ktx.moxyPresenter
 import java.util.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class CalendarDialog @Inject constructor() : BaseDialog(),
     CalendarView {
 
@@ -40,7 +41,6 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        onInitDependencyInjection()
         super.onCreate(savedInstanceState)
     }
 
@@ -63,12 +63,6 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
         }
 
         return binding.root
-    }
-
-    override fun onInitDependencyInjection() {
-        DaggerCalendarComponent.builder()
-            .appComponent(appComponent)
-            .build().inject(this)
     }
 
     override fun close(eventObj: EventTransferObject) {

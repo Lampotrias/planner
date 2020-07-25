@@ -10,7 +10,6 @@ import androidx.navigation.NavDirections
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lamp.planner.R
 import com.lamp.planner.databinding.MyDayBinding
-import com.lamp.planner.di.scope.PerFragment
 import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.extention.navigate
 import com.lamp.planner.presentation.DisplayableItem
@@ -18,13 +17,12 @@ import com.lamp.planner.presentation.adapters.CompositeAdapter
 import com.lamp.planner.presentation.adapters.ManagerImpl
 import com.lamp.planner.presentation.base.BaseFragment
 import com.lamp.planner.presentation.features.eventdialog.EventDialog
-import com.lamp.planner.presentation.features.myday.di.DaggerMyDayComponent
+import dagger.hilt.android.AndroidEntryPoint
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
-@PerFragment
-class MyDayFragment : BaseFragment(),
-    MyDayView {
+@AndroidEntryPoint
+class MyDayFragment : BaseFragment(), MyDayView {
 
     private lateinit var binding: MyDayBinding
 
@@ -33,7 +31,6 @@ class MyDayFragment : BaseFragment(),
     private val mPresenter by moxyPresenter { presenterProvider }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        onInitDependencyInjection()
         super.onCreate(savedInstanceState)
 
         parentFragmentManager.setFragmentResultListener(
@@ -54,13 +51,6 @@ class MyDayFragment : BaseFragment(),
         binding.btnStart.setOnClickListener { mPresenter.btnStartClick() }
         binding.btnStop.setOnClickListener { mPresenter.btnStopClick() }
         return binding.root
-    }
-
-    override fun onInitDependencyInjection() {
-        DaggerMyDayComponent.builder()
-            .appComponent(appComponent)
-            .build()
-            .inject(this)
     }
 
     override fun showAnimationFab(offset: Float) {

@@ -23,9 +23,6 @@ class PaletteDialog : BaseDialog() {
         const val PALETTE_DIALOG_RESULT_COLOR = "PALETTE_DIALOG_RESULT_COLOR"
     }
 
-    override fun onInitDependencyInjection() {
-    }
-
     private fun getColorsList(): List<Int> {
         val colorsRes = binding.root.resources.obtainTypedArray(R.array.all_colors)
         val end = colorsRes.length() - 1

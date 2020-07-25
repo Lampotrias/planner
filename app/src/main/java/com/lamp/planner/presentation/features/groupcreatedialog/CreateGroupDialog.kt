@@ -15,10 +15,11 @@ import com.lamp.planner.R
 import com.lamp.planner.databinding.GroupCreateDialogBinding
 import com.lamp.planner.domain.SimpleGroupFields
 import com.lamp.planner.presentation.base.BaseDialog
-import com.lamp.planner.presentation.features.groupcreatedialog.di.DaggerGroupCreateComponent
+import dagger.hilt.android.AndroidEntryPoint
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class CreateGroupDialog @Inject constructor() : BaseDialog(), GroupCreateView {
 
     private lateinit var binding: GroupCreateDialogBinding
@@ -39,10 +40,6 @@ class CreateGroupDialog @Inject constructor() : BaseDialog(), GroupCreateView {
     }
 
     override fun setSizeDialog(): SizeF = SizeF(0.9f, 0f)
-
-    override fun onInitDependencyInjection() {
-        DaggerGroupCreateComponent.builder().appComponent(appComponent).build().inject(this)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

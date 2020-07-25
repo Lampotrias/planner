@@ -3,15 +3,18 @@ package com.lamp.planner.data.database
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.lamp.planner.domain.Event
 
 @Entity(
-    tableName = "events", foreignKeys = [ForeignKey(
+    tableName = "events",
+    foreignKeys = [ForeignKey(
         entity = GroupEntity::class,
         parentColumns = ["_id"],
         childColumns = ["group_id"], onDelete = ForeignKey.CASCADE
-    )]
+    )],
+    indices = [Index(value = ["group_id"])]
 )
 data class EventEntity(
     @PrimaryKey(autoGenerate = true)

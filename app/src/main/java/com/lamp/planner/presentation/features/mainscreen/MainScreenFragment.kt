@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.lamp.planner.AndroidApp
 import com.lamp.planner.R
 import com.lamp.planner.databinding.MainScreenBinding
 import com.lamp.planner.domain.Group
@@ -27,11 +26,12 @@ import com.lamp.planner.presentation.features.groupcreatedialog.CreateGroupDialo
 import com.lamp.planner.presentation.features.groupproperty.BottomSheetHelper
 import com.lamp.planner.presentation.features.groupproperty.GroupPropertyBottom
 import com.lamp.planner.presentation.features.imagedialog.ImageDialog
-import com.lamp.planner.presentation.features.mainscreen.di.DaggerMainScreenComponent
 import com.lamp.planner.presentation.features.palettedialog.PaletteDialog
+import dagger.hilt.android.AndroidEntryPoint
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
+@AndroidEntryPoint
 open class MainScreenFragment : BaseFragment(),
     MainScreenView {
     @Inject
@@ -73,7 +73,6 @@ open class MainScreenFragment : BaseFragment(),
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        onInitDependencyInjection()
         super.onCreate(savedInstanceState)
 
         parentFragmentManager.setFragmentResultListener(
@@ -199,13 +198,6 @@ open class MainScreenFragment : BaseFragment(),
 
     private fun showBottomSheet() {
         sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-    }
-
-    override fun onInitDependencyInjection() {
-        DaggerMainScreenComponent
-            .builder()
-            .appComponent((requireContext().applicationContext as AndroidApp).getComponent())
-            .build().inject(this)
     }
 
     inner class GroupClickListener : CompositeAdapter.ClickItemInterface<Group> {

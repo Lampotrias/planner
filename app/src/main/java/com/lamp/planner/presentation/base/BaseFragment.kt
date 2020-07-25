@@ -2,19 +2,11 @@ package com.lamp.planner.presentation.base
 
 import android.content.Context
 import android.widget.Toast
-import com.lamp.planner.AndroidApp
-import com.lamp.planner.di.AppComponent
 import com.lamp.planner.domain.excetion.Failure
 import moxy.MvpAppCompatFragment
 import timber.log.Timber
 
 abstract class BaseFragment : MvpAppCompatFragment() {
-    val appComponent: AppComponent by lazy {
-        (requireContext().applicationContext as AndroidApp).getComponent()
-    }
-
-    abstract fun onInitDependencyInjection()
-
     fun prepareFailure(failure: Failure?): String {
         return when (failure) {
             is Failure.ServerError -> "Error server connect"
@@ -31,6 +23,5 @@ abstract class BaseFragment : MvpAppCompatFragment() {
     override fun onAttach(context: Context) {
         Timber.i("onAttach")
         super.onAttach(context)
-        onInitDependencyInjection()
     }
 }

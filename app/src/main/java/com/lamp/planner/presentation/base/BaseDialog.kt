@@ -7,7 +7,6 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import com.lamp.planner.AndroidApp
 import com.lamp.planner.R
 import com.lamp.planner.domain.DateToText
 import com.lamp.planner.domain.excetion.Failure
@@ -16,11 +15,9 @@ import moxy.MvpDelegateHolder
 
 abstract class BaseDialog : DialogFragment(), MvpDelegateHolder {
     private val mvpDelegate: MvpDelegate<out BaseDialog> = MvpDelegate(this)
-    protected val appComponent by lazy { (requireActivity().applicationContext as AndroidApp).getComponent() }
     private var stateSaved = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        onInitDependencyInjection()
         super.onCreate(savedInstanceState)
         getMvpDelegate().onCreate(savedInstanceState)
     }
@@ -95,8 +92,6 @@ abstract class BaseDialog : DialogFragment(), MvpDelegateHolder {
     }
 
     override fun getMvpDelegate() = mvpDelegate
-
-    abstract fun onInitDependencyInjection()
 
     fun prepareFailure(failure: Failure?): String {
         return when (failure) {

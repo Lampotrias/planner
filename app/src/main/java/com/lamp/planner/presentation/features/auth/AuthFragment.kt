@@ -12,10 +12,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.lamp.planner.databinding.AuthFragmentBinding
 import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.presentation.base.BaseFragment
-import com.lamp.planner.presentation.features.auth.di.DaggerAuthComponent
+import dagger.hilt.android.AndroidEntryPoint
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class AuthFragment : BaseFragment(), AuthView {
     @Inject
     lateinit var presenterProvider: AuthPresenter
@@ -23,10 +24,6 @@ class AuthFragment : BaseFragment(), AuthView {
     private lateinit var binding: AuthFragmentBinding
     private lateinit var gso: GoogleSignInOptions
     private lateinit var mGoogleSignInClient: GoogleSignInClient
-
-    override fun onInitDependencyInjection() {
-        DaggerAuthComponent.builder().appComponent(appComponent).build().inject(this)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
