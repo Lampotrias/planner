@@ -7,7 +7,7 @@ import com.lamp.planner.domain.interactors.GetGroupsInteractor
 import com.lamp.planner.domain.interactors.None
 import com.lamp.planner.presentation.base.BasePresenter
 import com.lamp.planner.presentation.features.myday.EventTransferObject
-import java.util.*
+import java.util.Calendar
 import javax.inject.Inject
 
 class EventPresenter @Inject constructor(
@@ -44,7 +44,7 @@ class EventPresenter @Inject constructor(
         } else {
             val success: (List<Group>) -> Unit = { groups ->
                 cacheGroups = groups
-                val group = groups.first { it.default }
+                val group = groups.firstOrNull() { it.default } ?: groups.first()
                 saveObjectAndDrawDialog(getActualEventObject(group))
             }
             getGroupsInteractor(None()) { it.fold(this::handleError, success) }
