@@ -3,18 +3,18 @@ package com.lamp.planner.presentation.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.lamp.planner.databinding.EventTimeListHolderBinding
+import com.lamp.planner.databinding.HolderEventTimeListBinding
 import com.lamp.planner.presentation.DisplayableItem
 import com.lamp.planner.presentation.features.myday.model.TimeEventModel
 
 class TimeEventDelegateAdapter : DelegateAdapter<DisplayableItem> {
     private lateinit var layoutInflater: LayoutInflater
-    private lateinit var binding: EventTimeListHolderBinding
+    private lateinit var binding: HolderEventTimeListBinding
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         layoutInflater = LayoutInflater.from(parent.context)
             ?: throw kotlin.NullPointerException("layoutInflater error")
-        binding = EventTimeListHolderBinding.inflate(layoutInflater, parent, false)
+        binding = HolderEventTimeListBinding.inflate(layoutInflater, parent, false)
         return TimeHolder(binding)
     }
 
@@ -34,7 +34,7 @@ class TimeEventDelegateAdapter : DelegateAdapter<DisplayableItem> {
     override fun isForViewType(items: List<DisplayableItem>, position: Int) =
         (items[position] is TimeEventModel)
 
-    inner class TimeHolder(private val binding: EventTimeListHolderBinding) :
+    inner class TimeHolder(private val binding: HolderEventTimeListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         var title: String
             get() = binding.textView.text.toString()

@@ -1,19 +1,18 @@
 package com.lamp.planner.presentation.features.mainscreen
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentResultListener
 import androidx.navigation.NavDirections
 import androidx.recyclerview.widget.GridLayoutManager
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.lamp.planner.R
-import com.lamp.planner.databinding.MainScreenBinding
+import com.lamp.planner.databinding.FragmentMainScreenBinding
 import com.lamp.planner.domain.Group
 import com.lamp.planner.domain.SimpleGroupFields
 import com.lamp.planner.domain.excetion.Failure
@@ -32,12 +31,15 @@ import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
 @AndroidEntryPoint
-open class MainScreenFragment : BaseFragment(),
+open class MainScreenFragment : BaseFragment(R.layout.fragment_main_screen),
     MainScreenView {
     @Inject
     lateinit var presenterProvider: MainScreenPresenter
     private val mPresenter by moxyPresenter { presenterProvider }
-
+    private val binding by viewBinding {
+        FragmentMainScreenBinding.bind(it.requireView())
+    }
+    private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
     private val bottomCallback = object : GroupPropertyBottom.OnClickBottomButton {
         override fun clickPalette() {
             mPresenter.clickPalette()
@@ -103,9 +105,6 @@ open class MainScreenFragment : BaseFragment(),
         )
     }
 
-    private lateinit var binding: MainScreenBinding
-    private lateinit var sheetBehavior: BottomSheetBehavior<ConstraintLayout>
-
     override fun handleFailure(failure: Failure?) {
         prepareFailure(failure)
     }
@@ -159,19 +158,13 @@ open class MainScreenFragment : BaseFragment(),
         binding.accountName.text = name
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = MainScreenBinding.inflate(inflater, container, false)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.btnMyDay.setOnClickListener { mPresenter.clickBtnMyDay() }
         binding.authButton.setOnClickListener { mPresenter.clickAuthButton() }
         binding.fabMainScreen.setOnClickListener { mPresenter.clickCreateGroup() }
         binding.separator1.setOnClickListener { mPresenter.clickBtnMyDay() }
         initBottom()
-        return binding.root
     }
 
     private fun initBottom() {

@@ -12,14 +12,15 @@ import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.navArgs
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.lamp.planner.R
-import com.lamp.planner.databinding.AddEventFragmentBinding
+import com.lamp.planner.databinding.DialogEventAddBinding
 import com.lamp.planner.domain.Group
 import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.extention.navigate
 import com.lamp.planner.presentation.base.BaseDialog
-import com.lamp.planner.presentation.features.calendardetail.CalendarDialog
-import com.lamp.planner.presentation.features.calendardetail.CalendarDialog.Companion.CALENDAR_DIALOG_RESULT_EVENT_OBJ
+import com.lamp.planner.presentation.features.calendardialog.CalendarDialog
+import com.lamp.planner.presentation.features.calendardialog.CalendarDialog.Companion.CALENDAR_DIALOG_RESULT_EVENT_OBJ
 import com.lamp.planner.presentation.features.grouplistdialog.GroupListDialog
 import com.lamp.planner.presentation.features.grouplistdialog.GroupListDialog.Companion.GROUPS_DIALOG_PARAM_OBJ
 import com.lamp.planner.presentation.features.myday.EventTransferObject
@@ -30,13 +31,15 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class EventDialog @Inject constructor() : BaseDialog(),
     EventView {
-
-    private lateinit var binding: AddEventFragmentBinding
     private val args: EventDialogArgs by navArgs()
 
     @Inject
     lateinit var presenterProvider: EventPresenter
     private val mPresenter by moxyPresenter { presenterProvider }
+
+    private val binding by viewBinding {
+        DialogEventAddBinding.bind(it.requireView())
+    }
 
     companion object {
         const val EVENT_DIALOG_RESULT = "EVENT_DIALOG_RESULT"
@@ -72,26 +75,24 @@ class EventDialog @Inject constructor() : BaseDialog(),
         )
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setUserEvents()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = AddEventFragmentBinding.inflate(inflater, container, false)
-
-        setUserEvents()
-        return binding.root
+        return inflater.inflate(R.layout.dialog_event_add, container, false)
     }
 
     private fun setUserEvents() {
         binding.apply {
-
             customIcon.setOnClickListener {}
-
             timeEvent.setOnClickListener { mPresenter.onTimeClick() }
-
             groupEvent.setOnClickListener { mPresenter.onGroupSelectClick() }
-
             nameEvent.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(p0: Editable?) {}
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}

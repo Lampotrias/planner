@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/my_day"
-        tools:layout="@layout/my_day"
+        tools:layout="@layout/fragment_my_day"
         android:name="com.lamp.planner.presentation.features.myday.MyDayFragment"
         android:label="PlannerListFragment" >
         <action
@@ -16,9 +16,9 @@
     </fragment>
     <dialog
         android:id="@+id/calendarDialog"
-        tools:layout="@layout/calendar_fragment"
-        android:name="com.lamp.planner.presentation.features.calendardetail.CalendarDialog"
-        android:label="CalendarDialog" >
+        android:name="com.lamp.planner.presentation.features.calendardialog.CalendarDialog"
+        android:label="CalendarDialog"
+        tools:layout="@layout/dialog_calendar">
         <argument
             android:name="eventObj"
             app:argType="com.lamp.planner.presentation.features.myday.EventTransferObject" />
@@ -26,7 +26,7 @@
     </dialog>
     <dialog
         android:id="@+id/eventDialog"
-        tools:layout="@layout/add_event_fragment"
+        tools:layout="@layout/dialog_event_add"
         android:name="com.lamp.planner.presentation.features.eventdialog.EventDialog"
         android:label="EventDialog">
         <action
@@ -45,7 +45,7 @@
         android:id="@+id/groupListDialog"
         android:name="com.lamp.planner.presentation.features.grouplistdialog.GroupListDialog"
         android:label="GroupListDialog"
-        tools:layout="@layout/group_list_dialog">
+        tools:layout="@layout/dialog_group_list">
         <argument
             android:name="groupList"
             app:argType="com.lamp.planner.domain.Group[]" />

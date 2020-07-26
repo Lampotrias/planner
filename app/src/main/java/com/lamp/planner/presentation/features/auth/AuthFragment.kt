@@ -1,15 +1,15 @@
 package com.lamp.planner.presentation.features.auth
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.lamp.planner.databinding.AuthFragmentBinding
+import com.lamp.planner.R
+import com.lamp.planner.databinding.FragmentAuthBinding
 import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,11 +17,13 @@ import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AuthFragment : BaseFragment(), AuthView {
+class AuthFragment : BaseFragment(R.layout.fragment_auth), AuthView {
     @Inject
     lateinit var presenterProvider: AuthPresenter
     private val mPresenter by moxyPresenter { presenterProvider }
-    private lateinit var binding: AuthFragmentBinding
+    private val binding by viewBinding {
+        FragmentAuthBinding.bind(it.requireView())
+    }
     private lateinit var gso: GoogleSignInOptions
     private lateinit var mGoogleSignInClient: GoogleSignInClient
 
@@ -31,14 +33,7 @@ class AuthFragment : BaseFragment(), AuthView {
             .requestEmail()
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
-    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = AuthFragmentBinding.inflate(inflater, container, false)
         binding.singGoogleBtn.setOnClickListener {
             val startToResult =
                 registerForActivityResult(
@@ -50,8 +45,6 @@ class AuthFragment : BaseFragment(), AuthView {
             val signInIntent = mGoogleSignInClient.signInIntent
             startToResult.launch(signInIntent)
         }
-
-        return binding.root
     }
 
     override fun closeAuthFragmentWithNotify(message: String) {

@@ -8,15 +8,18 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.GridLayoutManager
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.lamp.planner.R
-import com.lamp.planner.databinding.ImageSelectorLayoutBinding
+import com.lamp.planner.databinding.DialogImageSelectorBinding
 import com.lamp.planner.presentation.adapters.CompositeAdapter
 import com.lamp.planner.presentation.adapters.ImageSelectorDelegateAdapter
 import com.lamp.planner.presentation.adapters.ManagerImpl
 import com.lamp.planner.presentation.base.BaseDialog
 
 class ImageDialog : BaseDialog() {
-    private lateinit var binding: ImageSelectorLayoutBinding
+    private val binding by viewBinding {
+        DialogImageSelectorBinding.bind(it.requireView())
+    }
 
     companion object {
         const val IMAGE_SELECTOR_REQUEST_KEY = "IMAGE_SELECTOR_REQUEST_KEY"
@@ -37,7 +40,11 @@ class ImageDialog : BaseDialog() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = ImageSelectorLayoutBinding.inflate(inflater, container, false)
+        return inflater.inflate(R.layout.dialog_image_selector, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.imageSelectorRecycler.apply {
             val manager = ManagerImpl<Int>().also { it.addDelegate(ImageSelectorDelegateAdapter()) }
             val imageSelectorAdapter =
@@ -51,8 +58,6 @@ class ImageDialog : BaseDialog() {
             layoutManager = GridLayoutManager(context, 5)
             addItemDecoration(ItemOffsetDecoration(20))
         }
-
-        return binding.root
     }
 
     fun close(image: Int) {

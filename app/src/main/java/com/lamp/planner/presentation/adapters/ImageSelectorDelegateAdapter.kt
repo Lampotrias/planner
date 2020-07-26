@@ -7,11 +7,11 @@ import androidx.core.util.contains
 import androidx.core.util.isEmpty
 import androidx.recyclerview.widget.RecyclerView
 import com.lamp.planner.R
-import com.lamp.planner.databinding.ImageSelectorHolderBinding
+import com.lamp.planner.databinding.HolderImageSelectorBinding
 
 class ImageSelectorDelegateAdapter : DelegateAdapter<Int> {
     private lateinit var layoutInflater: LayoutInflater
-    private lateinit var binding: ImageSelectorHolderBinding
+    private lateinit var binding: HolderImageSelectorBinding
     private var imagesMap = SparseIntArray()
 
     private fun initImagesMap() {
@@ -29,7 +29,7 @@ class ImageSelectorDelegateAdapter : DelegateAdapter<Int> {
         layoutInflater = LayoutInflater.from(parent.context)
             ?: throw kotlin.NullPointerException("layoutInflater error")
         binding =
-            ImageSelectorHolderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            HolderImageSelectorBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         if (imagesMap.isEmpty()) {
             initImagesMap()
         }
@@ -55,7 +55,7 @@ class ImageSelectorDelegateAdapter : DelegateAdapter<Int> {
 
     override fun isForViewType(items: List<Int>, position: Int) = true
 
-    inner class ImageSelectorHolder(binding: ImageSelectorHolderBinding) :
+    inner class ImageSelectorHolder(binding: HolderImageSelectorBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun setImage(image: Int) {
             binding.imageSelectorBase.setImageResource(image)

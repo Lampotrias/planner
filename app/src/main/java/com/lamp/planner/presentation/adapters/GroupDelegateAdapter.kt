@@ -8,12 +8,12 @@ import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.lamp.planner.R
-import com.lamp.planner.databinding.GroupListHolderBinding
+import com.lamp.planner.databinding.HolderGroupListBinding
 import com.lamp.planner.domain.Group
 
 class GroupDelegateAdapter : DelegateAdapter<Group> {
     private lateinit var layoutInflater: LayoutInflater
-    private lateinit var binding: GroupListHolderBinding
+    private lateinit var binding: HolderGroupListBinding
 
     companion object {
         const val PAYLOAD_ACTIVATE = 1
@@ -37,7 +37,7 @@ class GroupDelegateAdapter : DelegateAdapter<Group> {
         layoutInflater =
             LayoutInflater.from(parent.context)
                 ?: throw kotlin.NullPointerException("layoutInflater error")
-        binding = GroupListHolderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding = HolderGroupListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return GroupHolder(binding)
     }
 
@@ -77,7 +77,7 @@ class GroupDelegateAdapter : DelegateAdapter<Group> {
 
     override fun isForViewType(items: List<Group>, position: Int) = true
 
-    inner class GroupHolder(private val binding: GroupListHolderBinding) :
+    inner class GroupHolder(private val binding: HolderGroupListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         val context: Context? by lazy { binding.root.context }
         fun getAnimationView() = binding.groupLogo

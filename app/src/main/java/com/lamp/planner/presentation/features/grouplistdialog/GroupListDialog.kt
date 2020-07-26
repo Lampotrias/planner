@@ -9,7 +9,9 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
-import com.lamp.planner.databinding.GroupListDialogBinding
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.lamp.planner.R
+import com.lamp.planner.databinding.DialogGroupListBinding
 import com.lamp.planner.domain.Group
 import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.presentation.adapters.CompositeAdapter
@@ -23,8 +25,9 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class GroupListDialog @Inject constructor() : BaseDialog(),
     GroupListView {
-
-    private lateinit var binding: GroupListDialogBinding
+    private val binding by viewBinding {
+        DialogGroupListBinding.bind(it.requireView())
+    }
     private val args: GroupListDialogArgs by navArgs()
 
     companion object {
@@ -43,21 +46,20 @@ class GroupListDialog @Inject constructor() : BaseDialog(),
     lateinit var presenterProvider: GroupListPresenter
     private val mPresenter by moxyPresenter { presenterProvider }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = GroupListDialogBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun close(group: Group) {
         setFragmentResult(
             GROUPS_DIALOG_REQUEST_KEY,
             bundleOf(GROUPS_DIALOG_PARAM_OBJ to group)
         )
         this.dialog?.dismiss()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.dialog_group_list, container, false)
     }
 
     override fun showGroups(managerImpl: ManagerImpl<Group>, groups: List<Group>, position: Int) {

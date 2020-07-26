@@ -8,11 +8,11 @@ import androidx.core.util.contains
 import androidx.core.util.isEmpty
 import androidx.recyclerview.widget.RecyclerView
 import com.lamp.planner.R
-import com.lamp.planner.databinding.PaletteHolderBinding
+import com.lamp.planner.databinding.HolderPaletteBinding
 
 class PaletteDelegateAdapter : DelegateAdapter<Int> {
     private lateinit var layoutInflater: LayoutInflater
-    private lateinit var binding: PaletteHolderBinding
+    private lateinit var binding: HolderPaletteBinding
     private var colorMap = SparseIntArray()
 
     private fun initColorMap() {
@@ -30,7 +30,7 @@ class PaletteDelegateAdapter : DelegateAdapter<Int> {
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         layoutInflater = LayoutInflater.from(parent.context)
             ?: throw kotlin.NullPointerException("layoutInflater error")
-        binding = PaletteHolderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding = HolderPaletteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         if (colorMap.isEmpty()) {
             initColorMap()
         }
@@ -56,7 +56,7 @@ class PaletteDelegateAdapter : DelegateAdapter<Int> {
 
     override fun isForViewType(items: List<Int>, position: Int) = true
 
-    inner class PaletteHolder(binding: PaletteHolderBinding) :
+    inner class PaletteHolder(binding: HolderPaletteBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun setColor(color: Int) {
             binding.paletteTestColor.setColorFilter(color)

@@ -1,4 +1,4 @@
-package com.lamp.planner.presentation.features.calendardetail
+package com.lamp.planner.presentation.features.calendardialog
 
 import com.lamp.planner.domain.Constants
 import com.lamp.planner.domain.utils.CalendarUtils

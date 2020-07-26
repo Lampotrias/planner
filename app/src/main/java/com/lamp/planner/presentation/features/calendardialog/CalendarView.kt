@@ -1,4 +1,4 @@
-package com.lamp.planner.presentation.features.calendardetail
+package com.lamp.planner.presentation.features.calendardialog
 
 import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.presentation.features.myday.EventTransferObject

@@ -9,7 +9,7 @@
         android:id="@+id/mainScreenFragment"
         android:name="com.lamp.planner.presentation.features.mainscreen.MainScreenFragment"
         android:label="MainScreenFragment"
-        tools:layout="@layout/main_screen">
+        tools:layout="@layout/fragment_main_screen">
         <action
             android:id="@+id/action_mainScreenFragment_to_authFragment"
             app:destination="@id/authFragment" />
@@ -30,12 +30,12 @@
         android:id="@+id/authFragment"
         android:name="com.lamp.planner.presentation.features.auth.AuthFragment"
         android:label="AuthFragment"
-        tools:layout="@layout/auth_fragment" />
+        tools:layout="@layout/fragment_auth" />
     <dialog
         android:id="@+id/createGroupDialog"
         android:name="com.lamp.planner.presentation.features.groupcreatedialog.CreateGroupDialog"
         android:label="CreateGroupDialog"
-        tools:layout="@layout/group_create_dialog">
+        tools:layout="@layout/dialog_create_group">
         <argument
             android:name="group_params"
             android:defaultValue="@null"
@@ -51,10 +51,10 @@
         android:id="@+id/paletteDialog"
         android:name="com.lamp.planner.presentation.features.palettedialog.PaletteDialog"
         android:label="PaletteDialog"
-        tools:layout="@layout/palette_layout" />
+        tools:layout="@layout/dialog_palette" />
     <dialog
         android:id="@+id/imageDialog"
         android:name="com.lamp.planner.presentation.features.imagedialog.ImageDialog"
         android:label="ImageDialog"
-        tools:layout="@layout/image_selector_layout" />
+        tools:layout="@layout/dialog_image_selector" />
 </navigation>

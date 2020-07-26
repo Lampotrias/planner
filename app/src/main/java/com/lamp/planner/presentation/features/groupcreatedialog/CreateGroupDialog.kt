@@ -11,8 +11,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.navArgs
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.lamp.planner.R
-import com.lamp.planner.databinding.GroupCreateDialogBinding
+import com.lamp.planner.databinding.DialogCreateGroupBinding
 import com.lamp.planner.domain.SimpleGroupFields
 import com.lamp.planner.presentation.base.BaseDialog
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,9 +22,10 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class CreateGroupDialog @Inject constructor() : BaseDialog(), GroupCreateView {
-
-    private lateinit var binding: GroupCreateDialogBinding
     private val args: CreateGroupDialogArgs by navArgs()
+    private val binding by viewBinding {
+        DialogCreateGroupBinding.bind(it.requireView())
+    }
 
     @Inject
     lateinit var presenterProvider: GroupCreatePresenter
@@ -46,7 +48,11 @@ class CreateGroupDialog @Inject constructor() : BaseDialog(), GroupCreateView {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = GroupCreateDialogBinding.inflate(inflater, container, false)
+        return inflater.inflate(R.layout.dialog_create_group, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.apply {
             nameGroup.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(p0: Editable?) {}
@@ -56,7 +62,6 @@ class CreateGroupDialog @Inject constructor() : BaseDialog(), GroupCreateView {
                 }
             })
         }
-        return binding.root
     }
 
     override fun close(simpleGroupFields: SimpleGroupFields) {
