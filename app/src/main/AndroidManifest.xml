@@ -15,7 +15,6 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -39,9 +38,9 @@
         </receiver>
 
         <provider
-            tools:node="remove"
             android:name="androidx.work.impl.WorkManagerInitializer"
             android:authorities="${applicationId}.workmanager-init"
+            tools:node="remove"
             android:exported="false" />
         <meta-data
             android:name="preloaded_fonts"
