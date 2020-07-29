@@ -21,7 +21,10 @@
         tools:layout="@layout/dialog_calendar">
         <argument
             android:name="eventObj"
-            app:argType="com.lamp.planner.presentation.features.myday.EventTransferObject" />
+            app:argType="com.lamp.planner.domain.EventTransferObject" />
+        <action
+            android:id="@+id/action_calendarDialog_to_notificationDialog"
+            app:destination="@id/notificationDialog" />
 
     </dialog>
     <dialog
@@ -34,9 +37,8 @@
             app:destination="@id/calendarDialog" />
         <argument
             android:name="eventObj"
-            app:argType="com.lamp.planner.presentation.features.myday.EventTransferObject"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:argType="com.lamp.planner.domain.EventTransferObject"
+            app:nullable="true" />
         <action
             android:id="@+id/action_eventDialog_to_groupListDialog2"
             app:destination="@id/groupListDialog" />
@@ -53,6 +55,11 @@
             android:name="selectedId"
             app:argType="long" />
     </dialog>
+    <dialog
+        android:id="@+id/notificationDialog"
+        android:name="com.lamp.planner.presentation.features.notificationdialog.NotificationDialog"
+        android:label="NotificationDialog"
+        tools:layout="@layout/dialog_notify_set" />
     <action
         android:id="@+id/action_global_my_day"
         app:destination="@id/my_day" />

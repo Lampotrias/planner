@@ -28,4 +28,10 @@
     <string name="log_in">Войти</string>
     <string name="enter_group_name">Введите название</string>
     <string name="create_group">Создать группу</string>
+    <string name="notify_interval_5min">5 минут</string>
+    <string name="notify_interval_15min">15 минут</string>
+    <string name="notify_interval_30min">30 минут</string>
+    <string name="notify_interval_1hour">1 час</string>
+    <string name="notify_interval_3hour">3 часа</string>
+    <string name="notify_interval_1day">1 день</string>
 </resources>

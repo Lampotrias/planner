@@ -1,8 +1,8 @@
 package com.lamp.planner.presentation.features.eventdialog
 
 import androidx.navigation.NavDirections
+import com.lamp.planner.domain.EventTransferObject
 import com.lamp.planner.domain.excetion.Failure
-import com.lamp.planner.presentation.features.myday.EventTransferObject
 import moxy.MvpView
 import moxy.viewstate.strategy.alias.AddToEnd
 import moxy.viewstate.strategy.alias.Skip

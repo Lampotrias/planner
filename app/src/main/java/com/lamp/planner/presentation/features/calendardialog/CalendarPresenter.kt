@@ -1,9 +1,10 @@
 package com.lamp.planner.presentation.features.calendardialog
 
 import com.lamp.planner.domain.Constants
+import com.lamp.planner.domain.EventTransferObject
 import com.lamp.planner.domain.utils.CalendarUtils
 import com.lamp.planner.presentation.base.BasePresenter
-import com.lamp.planner.presentation.features.myday.EventTransferObject
+import com.lamp.planner.presentation.features.NotifyTimeInterval
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -55,5 +56,14 @@ class CalendarPresenter @Inject constructor() : BasePresenter<CalendarView>() {
             eventObj.getStrTime(),
             eventObj.allDay
         )
+    }
+
+    fun clickReminder() {
+        val navDirections = CalendarDialogDirections.actionCalendarDialogToNotificationDialog()
+        viewState.navigateReminderDialog(navDirections)
+    }
+
+    fun setReminder(timeInterval: NotifyTimeInterval) {
+        eventObj.reminderInterval = timeInterval.also { viewState.updateReminderStatus(it) }
     }
 }

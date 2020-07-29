@@ -8,7 +8,8 @@ data class Event(
     var time: Long,
     val allDay: Int,
     var zoneOffset: Int,
-    val groupId: Long
+    val groupId: Long,
+    var notifyTime: Long
 ) {
-    fun toEventEntity() = EventEntity(id, name, time, allDay, zoneOffset, groupId)
+    fun toEventEntity() = EventEntity(id, name, time, allDay, zoneOffset, groupId, notifyTime)
 }

@@ -15,6 +15,7 @@ import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.lamp.planner.R
 import com.lamp.planner.databinding.DialogEventAddBinding
+import com.lamp.planner.domain.EventTransferObject
 import com.lamp.planner.domain.Group
 import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.extention.navigate
@@ -23,7 +24,6 @@ import com.lamp.planner.presentation.features.calendardialog.CalendarDialog
 import com.lamp.planner.presentation.features.calendardialog.CalendarDialog.Companion.CALENDAR_DIALOG_RESULT_EVENT_OBJ
 import com.lamp.planner.presentation.features.grouplistdialog.GroupListDialog
 import com.lamp.planner.presentation.features.grouplistdialog.GroupListDialog.Companion.GROUPS_DIALOG_PARAM_OBJ
-import com.lamp.planner.presentation.features.myday.EventTransferObject
 import dagger.hilt.android.AndroidEntryPoint
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject

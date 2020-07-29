@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.lamp.planner.R
 import com.lamp.planner.databinding.FragmentMyDayBinding
+import com.lamp.planner.domain.EventTransferObject
 import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.extention.navigate
 import com.lamp.planner.presentation.DisplayableItem

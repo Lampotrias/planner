@@ -9,9 +9,13 @@ import timber.log.Timber
 
 abstract class BaseFragment(@LayoutRes layoutId: Int) : MvpAppCompatFragment(layoutId) {
     fun prepareFailure(failure: Failure?): String {
+
         return when (failure) {
             is Failure.ServerError -> "Error server connect"
-            is Failure.DatabaseErrorQuery -> "Error database query ${failure.message}"
+            is Failure.DatabaseErrorQuery -> {
+                Timber.tag("EXCEPTION_PLAN").e(failure.message)
+                "Error database query ${failure.message}"
+            }
             is Failure.AuthorizeError -> "Error authorize  (${failure.message})"
             else -> "Unknown error"
         }

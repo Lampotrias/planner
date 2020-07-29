@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [EventEntity::class, GroupEntity::class], version = 5, exportSchema = false)
+@Database(entities = [EventEntity::class, GroupEntity::class], version = 6, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun eventDao(): EventDao
@@ -26,10 +28,19 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "plannerDb"
                 )
-                    .fallbackToDestructiveMigration()
+                    // .fallbackToDestructiveMigration()
+                    .addMigrations(MIGRATION_5_6)
                     .build()
                 INSTANCE = instance
                 return instance
+            }
+        }
+
+        private val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL(
+                    "ALTER TABLE events ADD COLUMN notify_time INTEGER not null default 0"
+                )
             }
         }
     }

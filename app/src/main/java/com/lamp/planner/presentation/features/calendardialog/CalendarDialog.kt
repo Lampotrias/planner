@@ -7,14 +7,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.setFragmentResult
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.lamp.planner.R
 import com.lamp.planner.databinding.DialogCalendarBinding
+import com.lamp.planner.domain.EventTransferObject
 import com.lamp.planner.domain.excetion.Failure
+import com.lamp.planner.extention.navigate
 import com.lamp.planner.presentation.base.BaseDialog
-import com.lamp.planner.presentation.features.myday.EventTransferObject
+import com.lamp.planner.presentation.features.NotifyIntervalTools
+import com.lamp.planner.presentation.features.NotifyTimeInterval
+import com.lamp.planner.presentation.features.notificationdialog.NotificationDialog
 import dagger.hilt.android.AndroidEntryPoint
 import moxy.ktx.moxyPresenter
 import java.util.Calendar
@@ -40,9 +46,24 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
         return inflater.inflate(R.layout.dialog_calendar, container, false)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mPresenter.setInputNavArgs(args)
+        parentFragmentManager.setFragmentResultListener(
+            NotificationDialog.NOTIFY_SET_DIALOG_REQUEST_KEY,
+            this,
+            FragmentResultListener { _: String, result: Bundle ->
+                val timestamp =
+                    result.getSerializable(NotificationDialog.NOTIFY_SET_DIALOG_RESULT_INTERVAL) as? NotifyTimeInterval
+                        ?: NotifyTimeInterval.NONE
+                mPresenter.setReminder(timestamp)
+            })
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.submitButton.setOnClickListener { mPresenter.clickSubmit() }
+        binding.reminder.setOnClickListener { mPresenter.clickReminder() }
         binding.calendar.setOnDateChangeListener { _, year, month, day ->
             mPresenter.setDate(
                 year,
@@ -50,7 +71,6 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
                 day
             )
         }
-        mPresenter.setInputNavArgs(args)
     }
 
     companion object {
@@ -111,5 +131,14 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
 
     override fun handleFailure(failure: Failure?) {
         notify(prepareFailure(failure))
+    }
+
+    override fun navigateReminderDialog(navDirections: NavDirections) {
+        navigate(navDirections)
+    }
+
+    override fun updateReminderStatus(timeInterval: NotifyTimeInterval) {
+        binding.reminderText.text =
+            NotifyIntervalTools.getTextReminder(requireContext(), timeInterval)
     }
 }

@@ -1,6 +1,7 @@
 package com.lamp.planner.presentation.features.myday
 
 import com.lamp.planner.domain.Event
+import com.lamp.planner.domain.EventTransferObject
 import com.lamp.planner.domain.Subscriber
 import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.domain.interactors.GetAllEventsInteractor
@@ -18,7 +19,7 @@ import com.lamp.planner.presentation.base.BasePresenter
 import com.lamp.planner.presentation.features.myday.model.EventModel
 import com.lamp.planner.presentation.features.myday.model.TimeEventModel
 import timber.log.Timber
-import java.util.*
+import java.util.TimeZone
 import javax.inject.Inject
 
 class MyDayPresenter @Inject constructor(
@@ -29,6 +30,7 @@ class MyDayPresenter @Inject constructor(
 
     @Inject
     lateinit var alarmManager: AlarmTaskManager
+
     @Inject
     lateinit var notificationHelper: NotificationHelper
 
@@ -69,16 +71,16 @@ class MyDayPresenter @Inject constructor(
     }
 
     fun processSaveEvent(event: EventTransferObject) {
-        val calendar = Calendar.getInstance()
-        calendar.set(event.year, event.month, event.day, event.hours, event.minutes, 0)
+        Timber.tag("processSaveEvent").e(event.toString())
         saveAndReturnEventInteractor(
             Event(
                 0,
                 event.name,
-                calendar.timeInMillis,
+                event.time,
                 event.allDay,
                 TimeZone.getDefault().rawOffset,
-                event.groupId
+                event.groupId,
+                event.notifyTime
             )
         ) { it.fold(this::handleError, this::successSaveEvent) }
     }
@@ -92,7 +94,8 @@ class MyDayPresenter @Inject constructor(
     }
 
     private fun successSaveEvent(event: Event) {
-        alarmManager.createNotify(event.id, event.time)
+        Timber.tag("createNotify").e(event.toString())
+        alarmManager.createNotify(event.id, event.notifyTime)
         viewState.showSuccessEventAddMessage()
         getAllEvents()
     }

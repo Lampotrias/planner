@@ -35,14 +35,15 @@ class NotificationHelper @Inject constructor(private val context: Context) :
             val name = context.getString(R.string.channel_def_notify_name)
             val descriptionText = getString(R.string.channel_def_notify_description)
             val importance = NotificationManager.IMPORTANCE_HIGH
-            val mChannel = NotificationChannel(DEFAULT_NOTIFY_CHANNEL_ID, name, importance).apply {
-                description = descriptionText
-                enableLights(true)
-                setShowBadge(true)
-                lockscreenVisibility = Notification.VISIBILITY_PUBLIC
-                lightColor = Color.RED
-                enableVibration(true)
-            }
+            val mChannel =
+                NotificationChannel(DEFAULT_NOTIFY_CHANNEL_ID, name, importance).apply {
+                    description = descriptionText
+                    enableLights(true)
+                    setShowBadge(true)
+                    lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+                    lightColor = Color.RED
+                    enableVibration(true)
+                }
 
             notificationManager.createNotificationChannel(mChannel)
         }
@@ -55,9 +56,7 @@ class NotificationHelper @Inject constructor(private val context: Context) :
         textContent: String,
         channelId: String = DEFAULT_NOTIFY_CHANNEL_ID
     ) {
-        val intent = Intent(this, NotifyBroadcast::class.java).apply {
-
-        }
+        val intent = Intent(this, NotifyBroadcast::class.java)
         val pendingIntent: PendingIntent =
             PendingIntent.getBroadcast(context, id, intent, FLAG_UPDATE_CURRENT)
 
@@ -74,7 +73,13 @@ class NotificationHelper @Inject constructor(private val context: Context) :
 
         sendNotify(id, builder)
     }
-//    fun getBigNotify(textTitle: String, textContent: String, bigText: String, channelId: String = DEFAULT_NOTIFY_CHANNEL_ID) : NotificationCompat.Builder{
+
+//    fun getBigNotify(
+//        textTitle: String,
+//        textContent: String,
+//        bigText: String,
+//        channelId: String = DEFAULT_NOTIFY_CHANNEL_ID
+//    ): NotificationCompat.Builder {
 //        return getShortNotify(textTitle, textContent, channelId)
 //            .setStyle(NotificationCompat.BigTextStyle().bigText(bigText))
 //    }

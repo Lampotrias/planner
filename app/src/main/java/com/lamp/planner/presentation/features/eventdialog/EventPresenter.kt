@@ -1,12 +1,13 @@
 package com.lamp.planner.presentation.features.eventdialog
 
 import com.lamp.planner.domain.Constants
+import com.lamp.planner.domain.EventTransferObject
 import com.lamp.planner.domain.Group
 import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.domain.interactors.GetGroupsInteractor
 import com.lamp.planner.domain.interactors.None
 import com.lamp.planner.presentation.base.BasePresenter
-import com.lamp.planner.presentation.features.myday.EventTransferObject
+import com.lamp.planner.presentation.features.NotifyTimeInterval
 import java.util.Calendar
 import javax.inject.Inject
 
@@ -89,7 +90,8 @@ class EventPresenter @Inject constructor(
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.HOUR_OF_DAY),
             calendar.get(Calendar.MINUTE),
-            Constants.ALL_DAY_Y
+            Constants.ALL_DAY_Y,
+            NotifyTimeInterval.NONE
         )
     }
 }

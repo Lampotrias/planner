@@ -1,10 +1,10 @@
-package com.lamp.planner.presentation.features.myday
+package com.lamp.planner.domain
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.lamp.planner.domain.Constants
 import com.lamp.planner.domain.utils.CalendarUtils
-import java.util.*
+import com.lamp.planner.presentation.features.NotifyTimeInterval
+import java.util.Calendar
 
 data class EventTransferObject(
     var name: String,
@@ -15,21 +15,28 @@ data class EventTransferObject(
     var year: Int,
     var hours: Int,
     var minutes: Int,
-    var allDay: Int
+    var allDay: Int,
+    var reminderInterval: NotifyTimeInterval
 ) : Parcelable {
 
+    val time: Long
+        get() {
+            val calendar = Calendar.getInstance()
+            calendar.set(year, month, day, hours, minutes, 0)
+            return calendar.timeInMillis
+        }
+    val notifyTime: Long
+        get() {
+            val time =
+                (reminderInterval.days * 86400 + reminderInterval.hours * 3600 + reminderInterval.minutes * 60) * 1000
+            return this.time - time.toLong()
+        }
     val strDate: String
         get() {
             val calendar: Calendar = Calendar.getInstance()
             calendar.set(year, month, day)
             return CalendarUtils.getDayInString(calendar.timeInMillis, Constants.FORMAT_TIME)
         }
-
-//    fun toEvent(): Event {
-//        val calendar = Calendar.getInstance()
-//        calendar.set(year, month, day, hours, minutes)
-//        return Event(0, name, calendar.time.time, allDay, TimeZone.getDefault().rawOffset, groupId)
-//    }
 
     fun getStrTime() = CalendarUtils.formatTime(hours, minutes)
 
@@ -42,7 +49,8 @@ data class EventTransferObject(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
-        parcel.readInt()
+        parcel.readInt(),
+        parcel.readSerializable() as NotifyTimeInterval
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -55,11 +63,13 @@ data class EventTransferObject(
         parcel.writeInt(hours)
         parcel.writeInt(minutes)
         parcel.writeInt(allDay)
+        parcel.writeSerializable(reminderInterval)
     }
 
     override fun describeContents(): Int {
         return 0
     }
+
     companion object CREATOR : Parcelable.Creator<EventTransferObject> {
         override fun createFromParcel(parcel: Parcel): EventTransferObject {
             return EventTransferObject(parcel)

@@ -33,8 +33,10 @@ data class EventEntity(
     var zoneOffset: Int,
 
     @ColumnInfo(name = "group_id")
+    var groupId: Long,
 
-    var groupId: Long
+    @ColumnInfo(name = "notify_time", defaultValue = "0")
+    var notifyTime: Long
 
     /*
     @ColumnInfo(name = "priority_id")
@@ -46,5 +48,5 @@ data class EventEntity(
     @ColumnInfo(name = "repeat_id")
     private val _repeat_id: Int*/
 ) {
-    fun toEvent() = Event(id, name, time, allDay, zoneOffset, groupId)
+    fun toEvent() = Event(id, name, time, allDay, zoneOffset, groupId, notifyTime)
 }
