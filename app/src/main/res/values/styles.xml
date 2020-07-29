@@ -35,4 +35,8 @@
         <item name="android:textAppearance">?attr/textAppearanceHeadline4</item>
     </style>
 
+    <style name="Widget.MaterialComponents.TextView.CropCorner" parent="Widget.MaterialComponents.TextView">
+
+    </style>
+
 </resources>

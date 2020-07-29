@@ -3,19 +3,19 @@ package com.lamp.planner.presentation.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.lamp.planner.databinding.HolderEventTimeListBinding
+import com.lamp.planner.databinding.HolderEventNowListBinding
 import com.lamp.planner.presentation.DisplayableItem
-import com.lamp.planner.presentation.features.myday.model.TimeEventModel
+import com.lamp.planner.presentation.features.myday.model.TimeNowModel
 
-class TimeEventDelegateAdapter : DelegateAdapter<DisplayableItem> {
+class TimeEventNowDelegateAdapter : DelegateAdapter<DisplayableItem> {
     private lateinit var layoutInflater: LayoutInflater
-    private lateinit var binding: HolderEventTimeListBinding
+    private lateinit var binding: HolderEventNowListBinding
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         layoutInflater = LayoutInflater.from(parent.context)
             ?: throw kotlin.NullPointerException("layoutInflater error")
-        binding = HolderEventTimeListBinding.inflate(layoutInflater, parent, false)
-        return TimeHolder(binding)
+        binding = HolderEventNowListBinding.inflate(layoutInflater, parent, false)
+        return TimeNowHolder(binding)
     }
 
     override fun onBindViewHolder(
@@ -25,21 +25,21 @@ class TimeEventDelegateAdapter : DelegateAdapter<DisplayableItem> {
         isSelected: Boolean,
         payloads: MutableList<Any>
     ) {
-        if (holder is TimeHolder) {
-            val item = items[position] as TimeEventModel
-            holder.title = item.timeName
+        if (holder is TimeNowHolder) {
+            val item = items[position] as TimeNowModel
+            holder.title = item.nowTime
         }
     }
 
     override fun isForViewType(items: List<DisplayableItem>, position: Int) =
-        (items[position] is TimeEventModel)
+        (items[position] is TimeNowModel)
 
-    inner class TimeHolder(private val binding: HolderEventTimeListBinding) :
+    inner class TimeNowHolder(private val binding: HolderEventNowListBinding) :
         RecyclerView.ViewHolder(binding.root) {
         var title: String
-            get() = binding.textView.text.toString()
+            get() = binding.timeNow.text.toString()
             set(value) {
-                binding.textView.text = value
+                binding.timeNow.text = value
             }
     }
 }

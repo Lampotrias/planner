@@ -13,12 +13,15 @@ import com.lamp.planner.presentation.DisplayableItem
 import com.lamp.planner.presentation.adapters.EventItemDelegateAdapter
 import com.lamp.planner.presentation.adapters.ManagerImpl
 import com.lamp.planner.presentation.adapters.TimeEventDelegateAdapter
+import com.lamp.planner.presentation.adapters.TimeEventNowDelegateAdapter
 import com.lamp.planner.presentation.background.NotificationHelper
 import com.lamp.planner.presentation.background.alarm.AlarmTaskManager
 import com.lamp.planner.presentation.base.BasePresenter
 import com.lamp.planner.presentation.features.myday.model.EventModel
 import com.lamp.planner.presentation.features.myday.model.TimeEventModel
+import com.lamp.planner.presentation.features.myday.model.TimeNowModel
 import timber.log.Timber
+import java.util.Calendar
 import java.util.TimeZone
 import javax.inject.Inject
 
@@ -102,10 +105,8 @@ class MyDayPresenter @Inject constructor(
 
     private fun successGetEventList(list: List<Event>) {
         val eventsModel: MutableList<EventModel> = mutableListOf()
-        // val format = SimpleDateFormat("d MMMM, HH:mm", Locale.getDefault())
 
         list.map {
-//            val date: Date = Date(it.time)
             eventsModel.add(
                 EventModel(
                     it.id,
@@ -119,6 +120,7 @@ class MyDayPresenter @Inject constructor(
         val manager = ManagerImpl<DisplayableItem>()
         manager.addDelegate(EventItemDelegateAdapter())
         manager.addDelegate(TimeEventDelegateAdapter())
+        manager.addDelegate(TimeEventNowDelegateAdapter())
 
         eventsModel.sortBy { it.time }
         viewState.showEventList(manager, addTimeSeparatorToEventList(eventsModel))
@@ -133,6 +135,7 @@ class MyDayPresenter @Inject constructor(
         var bLater = false // предстоящие
         var bNextWeek = false // следующая неделя
         var bFuture = false // на будущее
+        var bNowPoint = false
 
         for (event in events) {
             if (CalendarUtils.isLastDayTimestamp(event.time)) {
@@ -164,6 +167,14 @@ class MyDayPresenter @Inject constructor(
                 if (!bFuture) {
                     bFuture = true
                     result.add(TimeEventModel("на будущее"))
+                }
+            }
+            if (bToday && !bNowPoint) {
+                val now = Calendar.getInstance()
+                if (event.time > now.timeInMillis) {
+                    val strTime = "${now.get(Calendar.HOUR_OF_DAY)}:${now.get(Calendar.MINUTE)}"
+                    result.add(TimeNowModel(strTime))
+                    bNowPoint = true
                 }
             }
             result.add(event)
