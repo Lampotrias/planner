@@ -34,6 +34,8 @@ class EventItemDelegateAdapter : DelegateAdapter<DisplayableItem> {
             holder.name = item.name
             holder.time = format.format(Date(item.time))
             holder.groupName = item.groupName
+
+            if (item.isExpired) holder.setExpired()
         }
     }
 
@@ -60,5 +62,9 @@ class EventItemDelegateAdapter : DelegateAdapter<DisplayableItem> {
             set(value) {
                 binding.groupName.text = value
             }
+
+        fun setExpired() {
+            binding.root.alpha = 0.3f
+        }
     }
 }
