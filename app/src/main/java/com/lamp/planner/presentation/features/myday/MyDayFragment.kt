@@ -37,7 +37,9 @@ class MyDayFragment : BaseFragment(R.layout.fragment_my_day), MyDayView {
             EventDialog.EVENT_DIALOG_RESULT,
             this,
             FragmentResultListener { _: String, result: Bundle ->
-                mPresenter.processSaveEvent(result[EventDialog.EVENT_DIALOG_PARAM_OBJ] as EventTransferObject)
+                val eventObj =
+                    result.getParcelable(EventDialog.EVENT_DIALOG_PARAM_OBJ) as? EventTransferObject
+                eventObj?.let { mPresenter.processSaveEvent(it) }
             })
     }
 

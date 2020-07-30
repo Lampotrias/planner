@@ -9,7 +9,8 @@ data class EventModel(
     var name: String,
     var time: Long,
     var groupName: String,
-    var format: String = DateFormat.FULL.toString()
+    var format: String = DateFormat.FULL.toString(),
+    var image: Int?
 ) : DisplayableItem {
     val isExpired: Boolean
         get() = time < Calendar.getInstance().timeInMillis

@@ -14,44 +14,54 @@
         android:layout_width="@dimen/event_logo_image_size"
         android:layout_height="@dimen/event_logo_image_size"
         android:contentDescription="@string/cd_picture_of_event"
-        android:padding="@dimen/grid_1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/itemName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textAppearance="?attr/textAppearanceSubtitle2"
-        android:textColor="@color/color_on_surface_emphasis_high"
-        app:layout_constraintStart_toEndOf="@+id/eventImage"
-        tools:text="Play football!"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/itemTime"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:textAllCaps="true"
-        android:textAppearance="?attr/textAppearanceCaption"
-        android:textColor="?attr/colorOnSurface"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/eventImage"
-        app:layout_constraintTop_toBottomOf="@id/itemName"
-        tools:text="ВС, 25 ИЮН. 2020 Г." />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/groupName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textAppearance="?attr/textAppearanceOverline"
-        android:textColor="?attr/colorPrimary"
-        app:layout_constraintStart_toEndOf="@id/eventImage"
-        app:layout_constraintTop_toBottomOf="@id/itemTime"
-        tools:text="Входящие задачи" />
+        <TextView
+            android:id="@+id/itemName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="?attr/textAppearanceSubtitle2"
+            android:textColor="@color/color_on_surface_emphasis_high"
+            app:layout_constraintStart_toEndOf="@+id/eventImage"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Play football!" />
+
+        <TextView
+            android:id="@+id/itemTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textAllCaps="true"
+            android:textAppearance="?attr/textAppearanceCaption"
+            android:textColor="?attr/colorOnSurface"
+            app:layout_constraintStart_toEndOf="@id/eventImage"
+            app:layout_constraintTop_toBottomOf="@id/itemName"
+            tools:text="ВС, 25 ИЮН. 2020 Г." />
+
+        <TextView
+            android:id="@+id/groupName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="?attr/textAppearanceOverline"
+            android:textColor="?attr/colorPrimary"
+            app:layout_constraintStart_toEndOf="@id/eventImage"
+            app:layout_constraintTop_toBottomOf="@id/itemTime"
+            tools:text="Входящие задачи" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

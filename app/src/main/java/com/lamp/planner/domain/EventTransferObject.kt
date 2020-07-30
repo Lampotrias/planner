@@ -8,6 +8,7 @@ import java.util.Calendar
 
 data class EventTransferObject(
     var name: String,
+    var image: Int = -1,
     var groupId: Long,
     var groupName: String,
     var day: Int,
@@ -42,6 +43,7 @@ data class EventTransferObject(
 
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
+        parcel.readInt(),
         parcel.readLong(),
         parcel.readString()!!,
         parcel.readInt(),
@@ -55,6 +57,7 @@ data class EventTransferObject(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
+        parcel.writeInt(image)
         parcel.writeLong(groupId)
         parcel.writeString(groupName)
         parcel.writeInt(day)

@@ -51,13 +51,10 @@ class MyDayPresenter @Inject constructor(
         notificationHelper.cancelNotify(1)
     }
 
-    override fun provideState(state: Int) {
-        Timber.e("state= %s", state.toString())
-    }
+    override fun provideState(state: Int) {}
 
     override fun provideOffset(offset: Float) {
         viewState.showAnimationFab(offset)
-        Timber.e("Offset= %s", offset.toString())
     }
 
     override fun onDestroy() {
@@ -83,7 +80,8 @@ class MyDayPresenter @Inject constructor(
                 event.allDay,
                 TimeZone.getDefault().rawOffset,
                 event.groupId,
-                event.notifyTime
+                event.notifyTime,
+                if (event.image != -1) event.image else null
             )
         ) { it.fold(this::handleError, this::successSaveEvent) }
     }
@@ -109,10 +107,11 @@ class MyDayPresenter @Inject constructor(
         list.map {
             eventsModel.add(
                 EventModel(
-                    it.id,
-                    it.name,
-                    it.time,
-                    "Входящие задачи"
+                    id = it.id,
+                    name = it.name,
+                    time = it.time,
+                    groupName = "Входящие задачи",
+                    image = it.image
                 )
             )
         }

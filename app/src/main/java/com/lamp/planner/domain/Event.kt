@@ -6,10 +6,12 @@ data class Event(
     var id: Long,
     var name: String,
     var time: Long,
-    val allDay: Int,
+    var allDay: Int,
     var zoneOffset: Int,
-    val groupId: Long,
-    var notifyTime: Long
+    var groupId: Long,
+    var notifyTime: Long,
+    var image: Int?
 ) {
-    fun toEventEntity() = EventEntity(id, name, time, allDay, zoneOffset, groupId, notifyTime)
+    fun toEventEntity() =
+        EventEntity(id, name, time, allDay, zoneOffset, groupId, notifyTime, image)
 }

@@ -20,6 +20,7 @@ import com.lamp.planner.domain.Group
 import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.extention.navigate
 import com.lamp.planner.presentation.base.BaseDialog
+import com.lamp.planner.presentation.features.ImagesTools
 import com.lamp.planner.presentation.features.calendardialog.CalendarDialog
 import com.lamp.planner.presentation.features.calendardialog.CalendarDialog.Companion.CALENDAR_DIALOG_RESULT_EVENT_OBJ
 import com.lamp.planner.presentation.features.grouplistdialog.GroupListDialog
@@ -126,7 +127,7 @@ class EventDialog @Inject constructor() : BaseDialog(),
     }
 
     override fun setImage(imageId: Int) {
-        val imageResId = getImageById(imageId)
+        val imageResId = ImagesTools.getImageById(requireContext(), imageId)
         if (imageResId > 0) binding.customIcon.setImageResource(imageResId)
     }
 
@@ -166,12 +167,5 @@ class EventDialog @Inject constructor() : BaseDialog(),
 
     override fun handleFailure(failure: Failure?) {
         notify(prepareFailure(failure))
-    }
-
-    private fun getImageById(imageId: Int): Int {
-        val imagesRes = requireContext().resources.obtainTypedArray(R.array.all_images)
-        val imageResId = imagesRes.getResourceId(imageId, -1)
-        imagesRes.recycle()
-        return imageResId
     }
 }

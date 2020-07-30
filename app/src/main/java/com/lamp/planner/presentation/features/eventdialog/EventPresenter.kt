@@ -42,6 +42,7 @@ class EventPresenter @Inject constructor(
             groupName = group.name
         }
         saveObjectAndDrawDialog(eventObj)
+        setImage(group.picture)
     }
 
     fun setInputNavArgs(eventDialogArgs: EventDialogArgs) {
@@ -52,6 +53,7 @@ class EventPresenter @Inject constructor(
                 cacheGroups = groups
                 val group = groups.firstOrNull() { it.default } ?: groups.first()
                 saveObjectAndDrawDialog(getActualEventObject(group))
+                setImage(group.picture)
             }
             getGroupsInteractor(None()) { it.fold(this::handleError, success) }
         }
@@ -93,6 +95,7 @@ class EventPresenter @Inject constructor(
         calendar.set(Calendar.MINUTE, 0)
         return EventTransferObject(
             "",
+            -1,
             group.id,
             group.name,
             calendar.get(Calendar.DAY_OF_MONTH),
@@ -106,6 +109,7 @@ class EventPresenter @Inject constructor(
     }
 
     fun setImage(imageId: Int) {
+        eventObj.image = imageId
         viewState.setImage(imageId)
     }
 }

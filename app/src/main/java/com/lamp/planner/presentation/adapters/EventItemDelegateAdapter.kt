@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lamp.planner.databinding.HolderEventListBinding
 import com.lamp.planner.presentation.DisplayableItem
+import com.lamp.planner.presentation.features.ImagesTools
 import com.lamp.planner.presentation.features.myday.model.EventModel
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -34,6 +35,7 @@ class EventItemDelegateAdapter : DelegateAdapter<DisplayableItem> {
             holder.name = item.name
             holder.time = format.format(Date(item.time))
             holder.groupName = item.groupName
+            item.image?.let { holder.setImage(it) }
 
             if (item.isExpired) holder.setExpired()
         }
@@ -62,6 +64,11 @@ class EventItemDelegateAdapter : DelegateAdapter<DisplayableItem> {
             set(value) {
                 binding.groupName.text = value
             }
+
+        fun setImage(imageId: Int) {
+            val imageResId = ImagesTools.getImageById(binding.root.context, imageId)
+            binding.eventImage.setImageResource(imageResId)
+        }
 
         fun setExpired() {
             binding.root.alpha = 0.3f
