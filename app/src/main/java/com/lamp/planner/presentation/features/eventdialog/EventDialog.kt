@@ -24,6 +24,7 @@ import com.lamp.planner.presentation.features.calendardialog.CalendarDialog
 import com.lamp.planner.presentation.features.calendardialog.CalendarDialog.Companion.CALENDAR_DIALOG_RESULT_EVENT_OBJ
 import com.lamp.planner.presentation.features.grouplistdialog.GroupListDialog
 import com.lamp.planner.presentation.features.grouplistdialog.GroupListDialog.Companion.GROUPS_DIALOG_PARAM_OBJ
+import com.lamp.planner.presentation.features.imagedialog.ImageDialog
 import dagger.hilt.android.AndroidEntryPoint
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
@@ -63,6 +64,14 @@ class EventDialog @Inject constructor() : BaseDialog(),
                 this.dialog?.show()
             })
 
+        parentFragmentManager.setFragmentResultListener(
+            ImageDialog.IMAGE_SELECTOR_REQUEST_KEY,
+            this,
+            FragmentResultListener { _: String, result: Bundle ->
+                val imageId = result.getInt(ImageDialog.IMAGE_SELECTOR_RESULT_IMAGE)
+                mPresenter.setImage(imageId)
+            })
+
         // Back stack from groups
         parentFragmentManager.setFragmentResultListener(
             GroupListDialog.GROUPS_DIALOG_REQUEST_KEY,
@@ -77,20 +86,8 @@ class EventDialog @Inject constructor() : BaseDialog(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUserEvents()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.dialog_event_add, container, false)
-    }
-
-    private fun setUserEvents() {
         binding.apply {
-            customIcon.setOnClickListener {}
+            customIcon.setOnClickListener { mPresenter.clickPicture() }
             timeEvent.setOnClickListener { mPresenter.onTimeClick() }
             groupEvent.setOnClickListener { mPresenter.onGroupSelectClick() }
             nameEvent.addTextChangedListener(object : TextWatcher {
@@ -101,6 +98,14 @@ class EventDialog @Inject constructor() : BaseDialog(),
                 }
             })
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.dialog_event_add, container, false)
     }
 
     override fun close(eventObj: EventTransferObject) {
@@ -114,6 +119,15 @@ class EventDialog @Inject constructor() : BaseDialog(),
     override fun showCalendarPopupDialog(navDirections: NavDirections) {
         this.navigate(navDirections)
         this.dialog?.hide()
+    }
+
+    override fun showImageDialog(navDirections: NavDirections) {
+        navigate(navDirections)
+    }
+
+    override fun setImage(imageId: Int) {
+        val imageResId = getImageById(imageId)
+        if (imageResId > 0) binding.customIcon.setImageResource(imageResId)
     }
 
     override fun showGroupsPopupDialog(navDirections: NavDirections) {
@@ -152,5 +166,12 @@ class EventDialog @Inject constructor() : BaseDialog(),
 
     override fun handleFailure(failure: Failure?) {
         notify(prepareFailure(failure))
+    }
+
+    private fun getImageById(imageId: Int): Int {
+        val imagesRes = requireContext().resources.obtainTypedArray(R.array.all_images)
+        val imageResId = imagesRes.getResourceId(imageId, -1)
+        imagesRes.recycle()
+        return imageResId
     }
 }

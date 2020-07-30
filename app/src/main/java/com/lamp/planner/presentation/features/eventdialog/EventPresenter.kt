@@ -17,6 +17,11 @@ class EventPresenter @Inject constructor(
     private lateinit var eventObj: EventTransferObject
     private lateinit var cacheGroups: List<Group>
 
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        viewState.setImage(0)
+    }
+
     private fun saveObjectAndDrawDialog(event: EventTransferObject) {
         eventObj = event
         viewState.showFormattedTime(eventObj.strDate, eventObj.getStrTime(), eventObj.allDay)
@@ -50,6 +55,11 @@ class EventPresenter @Inject constructor(
             }
             getGroupsInteractor(None()) { it.fold(this::handleError, success) }
         }
+    }
+
+    fun clickPicture() {
+        val navDirections = EventDialogDirections.actionEventDialogToImageDialog2()
+        viewState.showImageDialog(navDirections)
     }
 
     fun clickSubmit() {
@@ -93,5 +103,9 @@ class EventPresenter @Inject constructor(
             Constants.ALL_DAY_Y,
             NotifyTimeInterval.NONE
         )
+    }
+
+    fun setImage(imageId: Int) {
+        viewState.setImage(imageId)
     }
 }

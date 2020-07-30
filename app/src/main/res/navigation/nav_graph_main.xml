@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_eventDialog_to_groupListDialog2"
             app:destination="@id/groupListDialog" />
+        <action
+            android:id="@+id/action_eventDialog_to_imageDialog2"
+            app:destination="@id/imageDialog2" />
     </dialog>
     <dialog
         android:id="@+id/groupListDialog"
@@ -63,4 +66,9 @@
     <action
         android:id="@+id/action_global_my_day"
         app:destination="@id/my_day" />
+    <dialog
+        android:id="@+id/imageDialog2"
+        android:name="com.lamp.planner.presentation.features.imagedialog.ImageDialog"
+        android:label="ImageDialog"
+        tools:layout="@layout/dialog_image_selector" />
 </navigation>

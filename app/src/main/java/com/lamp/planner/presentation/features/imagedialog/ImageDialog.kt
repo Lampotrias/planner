@@ -27,7 +27,7 @@ class ImageDialog : BaseDialog() {
     }
 
     private fun getImagesList(): List<Int> {
-        val imagesRes = binding.root.resources.obtainTypedArray(R.array.all_images)
+        val imagesRes = resources.obtainTypedArray(R.array.all_images)
         val end = imagesRes.length() - 1
         imagesRes.recycle()
         return (0..end).toList()

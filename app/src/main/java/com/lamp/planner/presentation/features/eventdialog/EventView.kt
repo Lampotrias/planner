@@ -15,6 +15,12 @@ interface EventView : MvpView {
     fun showCalendarPopupDialog(navDirections: NavDirections)
 
     @AddToEnd
+    fun showImageDialog(navDirections: NavDirections)
+
+    @AddToEnd
+    fun setImage(imageId: Int)
+
+    @AddToEnd
     fun showGroupsPopupDialog(navDirections: NavDirections)
 
     @AddToEnd
