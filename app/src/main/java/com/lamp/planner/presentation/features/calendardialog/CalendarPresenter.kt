@@ -1,7 +1,13 @@
 package com.lamp.planner.presentation.features.calendardialog
 
 import com.lamp.planner.domain.Constants
+import com.lamp.planner.domain.DayRepeat
 import com.lamp.planner.domain.EventTransferObject
+import com.lamp.planner.domain.MonthRepeat
+import com.lamp.planner.domain.None
+import com.lamp.planner.domain.RepeatInterval
+import com.lamp.planner.domain.WeekRepeat
+import com.lamp.planner.domain.YearRepeat
 import com.lamp.planner.domain.utils.CalendarUtils
 import com.lamp.planner.presentation.base.BasePresenter
 import com.lamp.planner.presentation.features.NotifyTimeInterval
@@ -65,5 +71,20 @@ class CalendarPresenter @Inject constructor() : BasePresenter<CalendarView>() {
 
     fun setReminder(timeInterval: NotifyTimeInterval) {
         eventObj.reminderInterval = timeInterval.also { viewState.updateReminderStatus(it) }
+    }
+
+    fun setRepeat(repeat: RepeatInterval) {
+        when (repeat) {
+            is None -> Timber.tag("repeatType").e("None")
+            is DayRepeat -> Timber.tag("repeatType").e("DayRepeat")
+            is WeekRepeat -> Timber.tag("repeatType").e("WeekRepeat")
+            is MonthRepeat -> Timber.tag("repeatType").e("MonthRepeat")
+            is YearRepeat -> Timber.tag("repeatType").e("YearRepeat")
+        }
+    }
+
+    fun clickRepeat() {
+        val navDirections = CalendarDialogDirections.actionCalendarDialogToRepeatDialog()
+        viewState.navigateRepeatDialog(navDirections)
     }
 }

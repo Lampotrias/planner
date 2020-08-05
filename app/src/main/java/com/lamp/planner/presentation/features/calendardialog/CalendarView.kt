@@ -27,6 +27,9 @@ interface CalendarView : MvpView {
     @Skip
     fun navigateReminderDialog(navDirections: NavDirections)
 
+    @Skip
+    fun navigateRepeatDialog(navDirections: NavDirections)
+
     @AddToEnd
     fun updateReminderStatus(timeInterval: NotifyTimeInterval)
 }

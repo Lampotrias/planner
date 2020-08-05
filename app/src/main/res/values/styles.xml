@@ -39,4 +39,21 @@
 
     </style>
 
+    <style name="RepeatTextView">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">?attr/listPreferredItemHeight</item>
+        <item name="android:paddingStart">30dp</item>
+        <item name="android:paddingEnd">30dp</item>
+        <item name="android:drawableEnd">@drawable/ic_settings_black_24dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
+    </style>
+
+    <style name="RepeatImageSettings">
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
+        <item name="android:src">@drawable/ic_settings_black_24dp</item>
+    </style>
+
 </resources>

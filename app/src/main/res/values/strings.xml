@@ -34,4 +34,11 @@
     <string name="notify_interval_1hour">1 час</string>
     <string name="notify_interval_3hour">3 часа</string>
     <string name="notify_interval_1day">1 день</string>
+    <string name="repeat_every_day">каждый день</string>
+    <string name="repeat_every_week">каждую неделю</string>
+    <string name="repeat_every_month">каждый месяц</string>
+    <string name="repeat_every_year">каждый год</string>
+    <string name="repeat_none">не повторять</string>
+    <string name="repeat_each">повтор каждые</string>
+    <string name="stop_after">остановить после</string>
 </resources>

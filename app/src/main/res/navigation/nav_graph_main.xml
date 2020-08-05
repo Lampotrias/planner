@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_calendarDialog_to_notificationDialog"
             app:destination="@id/notificationDialog" />
+        <action
+            android:id="@+id/action_calendarDialog_to_repeatDialog"
+            app:destination="@id/repeatDialog" />
 
     </dialog>
     <dialog
@@ -71,4 +74,22 @@
         android:name="com.lamp.planner.presentation.features.imagedialog.ImageDialog"
         android:label="ImageDialog"
         tools:layout="@layout/dialog_image_selector" />
+    <dialog
+        android:id="@+id/repeatDialog"
+        android:name="com.lamp.planner.presentation.features.repeatdialog.RepeatDialog"
+        android:label="RepeatDialog"
+        tools:layout="@layout/dialog_repeat">
+        <action
+            android:id="@+id/action_repeatDialog_to_repeatParamsDialog"
+            app:destination="@id/repeatParamsDialog" />
+    </dialog>
+    <dialog
+        android:id="@+id/repeatParamsDialog"
+        android:name="com.lamp.planner.presentation.features.repeatdialog.RepeatParamsDialog"
+        android:label="RepeatParamsDialog"
+        tools:layout="@layout/dialog_repeat_param">
+        <argument
+            android:name="repeatInterval"
+            app:argType="com.lamp.planner.domain.RepeatInterval" />
+    </dialog>
 </navigation>

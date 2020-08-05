@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.FragmentResultListener
 import androidx.fragment.app.setFragmentResult
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.navArgs
@@ -15,12 +14,14 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.lamp.planner.R
 import com.lamp.planner.databinding.DialogCalendarBinding
 import com.lamp.planner.domain.EventTransferObject
+import com.lamp.planner.domain.RepeatInterval
 import com.lamp.planner.domain.excetion.Failure
 import com.lamp.planner.extention.navigate
 import com.lamp.planner.presentation.base.BaseDialog
 import com.lamp.planner.presentation.features.NotifyIntervalTools
 import com.lamp.planner.presentation.features.NotifyTimeInterval
 import com.lamp.planner.presentation.features.notificationdialog.NotificationDialog
+import com.lamp.planner.presentation.features.repeatdialog.RepeatDialog
 import dagger.hilt.android.AndroidEntryPoint
 import moxy.ktx.moxyPresenter
 import java.util.Calendar
@@ -52,11 +53,20 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
         parentFragmentManager.setFragmentResultListener(
             NotificationDialog.NOTIFY_SET_DIALOG_REQUEST_KEY,
             this,
-            FragmentResultListener { _: String, result: Bundle ->
+            { _: String, result: Bundle ->
                 val timestamp =
                     result.getSerializable(NotificationDialog.NOTIFY_SET_DIALOG_RESULT_INTERVAL) as? NotifyTimeInterval
                         ?: NotifyTimeInterval.NONE
                 mPresenter.setReminder(timestamp)
+            })
+
+        parentFragmentManager.setFragmentResultListener(
+            RepeatDialog.REPEAT_DIALOG_REQUEST_KEY,
+            this,
+            { _: String, result: Bundle ->
+                val repeatInterval =
+                    result.getSerializable(RepeatDialog.REPEAT_DIALOG_REPEAT_OBJ) as? RepeatInterval
+                repeatInterval?.let { mPresenter.setRepeat(it) }
             })
     }
 
@@ -64,6 +74,7 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
         super.onViewCreated(view, savedInstanceState)
         binding.submitButton.setOnClickListener { mPresenter.clickSubmit() }
         binding.reminder.setOnClickListener { mPresenter.clickReminder() }
+        binding.repeat.setOnClickListener { mPresenter.clickRepeat() }
         binding.calendar.setOnDateChangeListener { _, year, month, day ->
             mPresenter.setDate(
                 year,
@@ -110,7 +121,7 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
         binding.textToTime.setOnClickListener {
             TimePickerDialog(
                 requireContext(),
-                TimePickerDialog.OnTimeSetListener { _, hours, minutes ->
+                { _, hours, minutes ->
                     mPresenter.setTime(
                         hours,
                         minutes
@@ -134,6 +145,10 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
     }
 
     override fun navigateReminderDialog(navDirections: NavDirections) {
+        navigate(navDirections)
+    }
+
+    override fun navigateRepeatDialog(navDirections: NavDirections) {
         navigate(navDirections)
     }
 

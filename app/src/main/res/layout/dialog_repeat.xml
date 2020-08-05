@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="?attr/listPreferredItemHeight"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/grid_3">
+
+        <TextView
+            android:id="@+id/repeatNone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/repeat_none"
+            android:textAppearance="?attr/textAppearanceHeadline6" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="?attr/listPreferredItemHeight"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/grid_3">
+
+        <TextView
+            android:id="@+id/repeatDay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/repeat_every_day"
+            android:textAppearance="?attr/textAppearanceHeadline6" />
+
+        <ImageView
+            android:id="@+id/repeatDayParams"
+            style="@style/RepeatImageSettings"
+            android:contentDescription="@string/todo" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="?attr/listPreferredItemHeight"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/grid_3">
+
+        <TextView
+            android:id="@+id/repeatWeek"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/repeat_every_week"
+            android:textAppearance="?attr/textAppearanceHeadline6" />
+
+        <ImageView
+            android:id="@+id/repeatWeekParams"
+            style="@style/RepeatImageSettings"
+            android:contentDescription="@string/todo" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="?attr/listPreferredItemHeight"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/grid_3">
+
+        <TextView
+            android:id="@+id/repeatMonth"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/repeat_every_month"
+            android:textAppearance="?attr/textAppearanceHeadline6" />
+
+        <ImageView
+            android:id="@+id/repeatMonthParams"
+            style="@style/RepeatImageSettings"
+            android:contentDescription="@string/todo" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="?attr/listPreferredItemHeight"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/grid_3">
+
+        <TextView
+            android:id="@+id/repeatYear"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/repeat_every_year"
+            android:textAppearance="?attr/textAppearanceHeadline6" />
+
+        <ImageView
+            android:id="@+id/repeatYearParams"
+            style="@style/RepeatImageSettings"
+            android:contentDescription="@string/todo" />
+    </LinearLayout>
+</LinearLayout>
