@@ -1,71 +1,83 @@
 package com.lamp.planner.domain
 
-import android.view.ViewGroup
 import java.io.Serializable
+import java.text.SimpleDateFormat
+import java.util.Date
 
-sealed class RepeatInterval : Serializable
+sealed class RepeatTypes : TypesInfo {
+    object Always : RepeatTypes() {
+        override fun getStatusText(): String = "Повторение без ограничений"
+    }
 
-object None : RepeatInterval()
-class DayRepeat(var string: String) : RepeatInterface, RepeatInterval() {
-    var params: RepeatParams = CountRepeat(1)
+    class UntilCount(val count: Int = 1) : RepeatTypes() {
+        override fun getStatusText(): String = "$count повторений"
+    }
+
+    class UntilDate(val untilDate: Long) : RepeatTypes() {
+        override fun getStatusText(): String {
+            val format = SimpleDateFormat.getDateInstance()
+            val strDate = format.format(Date(untilDate))
+            return "Повторение до $strDate"
+        }
+    }
+}
+
+interface TypesInfo {
+    fun getStatusText(): String
+}
+
+abstract class RepeatInterval : Serializable {
+    abstract var type: RepeatTypes
+    abstract var repeatInterval: Int
+    abstract fun getNextAlarm(): Long
+    abstract fun getPeriodName(): String
+}
+
+object None : RepeatInterval() {
+    override var type: RepeatTypes = RepeatTypes.Always
+    override var repeatInterval = 1
+    override fun getNextAlarm(): Long = 0L
+    override fun getPeriodName(): String = ""
+}
+
+class DayRepeat : RepeatInterval() {
+    override var type: RepeatTypes = RepeatTypes.Always
+    override var repeatInterval: Int = 1
     override fun getNextAlarm(): Long {
         return 0L
     }
 
     override fun getPeriodName() = "День"
-    override fun getLayoutParam(): ViewGroup {
-        TODO("Not yet implemented")
-    }
 }
 
-class WeekRepeat(var string: String) : RepeatInterface, RepeatInterval() {
+class WeekRepeat : RepeatInterval() {
+    override var type: RepeatTypes = RepeatTypes.Always
+    override var repeatInterval: Int = 1
     override fun getNextAlarm(): Long {
         return 0L
     }
 
     override fun getPeriodName() = "Неделя"
-    override fun getLayoutParam(): ViewGroup {
-        TODO("Not yet implemented")
-    }
 }
 
-class MonthRepeat(var string: String) : RepeatInterface, RepeatInterval() {
+class MonthRepeat : RepeatInterval() {
+    override var type: RepeatTypes = RepeatTypes.Always
+    override var repeatInterval: Int = 1
     override fun getNextAlarm(): Long {
         return 0L
     }
 
     override fun getPeriodName() = "Месяц"
-    override fun getLayoutParam(): ViewGroup {
-        TODO("Not yet implemented")
-    }
 }
 
-class YearRepeat(var string: String) : RepeatInterface, RepeatInterval() {
+class YearRepeat : RepeatInterval() {
+    override var type: RepeatTypes = RepeatTypes.Always
+    override var repeatInterval: Int = 1
     override fun getNextAlarm(): Long {
         return 0L
     }
 
     override fun getPeriodName() = "Год"
-    override fun getLayoutParam(): ViewGroup {
-        TODO("Not yet implemented")
-    }
-}
-
-sealed class RepeatParams
-class Always(val value: Int) : RepeatParams()
-class CountRepeat(val value: Int) : RepeatParams()
-class UntilDate(val value: Int) : RepeatParams()
-
-fun test1(test: RepeatParams) = when (test) {
-    is CountRepeat -> ""
-    is UntilDate -> ""
-    is Always -> ""
-}
-
-interface RepeatInterface : Serializable {
-    fun getNextAlarm(): Long
-    fun getPeriodName(): String
-    fun getLayoutParam(): ViewGroup
 }
 
 enum class CustomDayRepeatEnum {

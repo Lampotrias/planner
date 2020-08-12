@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/valueCount"
+            android:id="@+id/valueRepeatInterval"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -41,11 +41,11 @@
             android:textAppearance="@style/TextAppearance.MyApp.Button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/valueCount"
+            app:layout_constraintTop_toBottomOf="@+id/valueRepeatInterval"
             tools:text="месяц" />
 
         <SeekBar
-            android:id="@+id/counterSeek"
+            android:id="@+id/repeatIntervalSeek"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginHorizontal="50dp"
@@ -53,6 +53,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/valueName" />
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            app:layout_constraintBottom_toTopOf="@id/separator"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/repeatIntervalSeek"
+            tools:text="без ограничений" />
 
         <View
             android:id="@+id/separator"
@@ -64,7 +75,7 @@
             android:background="?attr/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/counterSeek" />
+            app:layout_constraintTop_toBottomOf="@+id/status" />
 
         <LinearLayout
             android:id="@+id/repeatButtonArea"
@@ -77,25 +88,25 @@
             app:layout_constraintTop_toBottomOf="@id/separator">
 
             <ImageView
-                android:id="@+id/inclusive"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:id="@+id/alwaysMode"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_weight="1"
                 android:contentDescription="@string/todo"
                 android:src="@drawable/ic_baseline_all_inclusive_24" />
 
             <ImageView
-                android:id="@+id/untilDate"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:id="@+id/untilDateMode"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_weight="1"
                 android:contentDescription="@string/todo"
                 android:src="@drawable/ic_baseline_event_24" />
 
             <ImageView
-                android:id="@+id/counter"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:id="@+id/untilCounterMode"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_weight="1"
                 android:contentDescription="@string/todo"
                 android:src="@drawable/ic_baseline_drag_indicator_24" />
@@ -120,15 +131,15 @@
             android:layout_marginVertical="16dp"
             android:contentDescription="@string/todo"
             android:src="@drawable/ic_1circle"
-            android:tint="?attr/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/separator1" />
+            app:layout_constraintTop_toBottomOf="@+id/separator1"
+            app:tint="?attr/colorPrimary" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/selectRepeatCountContainer"
+        android:id="@+id/ChildContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone">
@@ -145,7 +156,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/valueRepeat"
+            android:id="@+id/valueCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -163,15 +174,16 @@
             android:textAppearance="@style/TextAppearance.MyApp.Button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/valueRepeat"
-            tools:text="повторений" />
+            android:text="@string/repeat_param_count"
+            app:layout_constraintTop_toBottomOf="@+id/valueCount" />
 
         <SeekBar
-            android:id="@+id/repeatSeek"
+            android:id="@+id/countSeek"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginHorizontal="50dp"
             android:layout_marginTop="32dp"
+            android:max="100"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/valueRepeatName" />
@@ -186,19 +198,19 @@
             android:background="?attr/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/repeatSeek" />
+            app:layout_constraintTop_toBottomOf="@+id/countSeek" />
 
         <ImageView
-            android:id="@+id/submitButtonRepeat"
+            android:id="@+id/submitChildDialog"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginVertical="16dp"
             android:contentDescription="@string/todo"
             android:src="@drawable/ic_1circle"
-            android:tint="?attr/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/separator2" />
+            app:layout_constraintTop_toBottomOf="@+id/separator2"
+            app:tint="?attr/colorPrimary" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

@@ -18,8 +18,15 @@ import com.lamp.planner.domain.WeekRepeat
 import com.lamp.planner.domain.YearRepeat
 import com.lamp.planner.extention.navigate
 import com.lamp.planner.presentation.base.BaseDialog
+import dagger.hilt.android.AndroidEntryPoint
+import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
-class RepeatDialog : BaseDialog() {
+@AndroidEntryPoint
+class RepeatDialog : BaseDialog(), RepeatView {
+    @Inject
+    lateinit var presenterProvider: RepeatPresenter
+    private val mPresenter by moxyPresenter { presenterProvider }
 
     private val binding by viewBinding {
         DialogRepeatBinding.bind(it.requireView())
@@ -28,6 +35,18 @@ class RepeatDialog : BaseDialog() {
     companion object {
         const val REPEAT_DIALOG_REQUEST_KEY = "REPEAT_DIALOG_REQUEST_KEY"
         const val REPEAT_DIALOG_REPEAT_OBJ = "REPEAT_DIALOG_REPEAT_OBJ"
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        parentFragmentManager.setFragmentResultListener(
+            RepeatParamsDialog.REPEAT_PARAMS_DIALOG_REQUEST_KEY,
+            this,
+            { _: String, result: Bundle ->
+                val interval =
+                    result.getSerializable(RepeatParamsDialog.REPEAT_PARAMS_DIALOG_REPEAT_OBJ) as? RepeatInterval
+                interval?.let { close(it) }
+            })
     }
 
     override fun setSizeDialog() = SizeF(0.9f, 0f)
@@ -43,18 +62,18 @@ class RepeatDialog : BaseDialog() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.repeatNone.setOnClickListener { close(None) }
-        binding.repeatDay.setOnClickListener { close(DayRepeat("111")) }
-        binding.repeatWeek.setOnClickListener { close(WeekRepeat("test1123")) }
-        binding.repeatMonth.setOnClickListener { close(MonthRepeat("teww@")) }
-        binding.repeatYear.setOnClickListener { close(YearRepeat("sdf")) }
+        binding.repeatDay.setOnClickListener { close(makeDay()) }
+        binding.repeatWeek.setOnClickListener { close(makeWeek()) }
+        binding.repeatMonth.setOnClickListener { close(makeMonth()) }
+        binding.repeatYear.setOnClickListener { close(makeYear()) }
 
-        binding.repeatDayParams.setOnClickListener { }
-        binding.repeatWeekParams.setOnClickListener { }
-        binding.repeatMonthParams.setOnClickListener { }
-        binding.repeatYearParams.setOnClickListener { }
+        binding.repeatDayParams.setOnClickListener { makeDay().also { openParams(it) } }
+        binding.repeatWeekParams.setOnClickListener { makeWeek().also { openParams(it) } }
+        binding.repeatMonthParams.setOnClickListener { makeMonth().also { openParams(it) } }
+        binding.repeatYearParams.setOnClickListener { makeYear().also { openParams(it) } }
     }
 
-    fun openParams(repeatInterval: RepeatInterval) {
+    private fun openParams(repeatInterval: RepeatInterval) {
         val navDirections =
             RepeatDialogDirections.actionRepeatDialogToRepeatParamsDialog(repeatInterval)
         navigate(navDirections)
@@ -66,5 +85,11 @@ class RepeatDialog : BaseDialog() {
             bundleOf(REPEAT_DIALOG_REPEAT_OBJ to repeatInterval)
         )
         dialog?.dismiss()
+//        findNavController().popBackStack()
     }
+
+    private fun makeDay() = DayRepeat()
+    private fun makeWeek() = WeekRepeat()
+    private fun makeMonth() = MonthRepeat()
+    private fun makeYear() = YearRepeat()
 }

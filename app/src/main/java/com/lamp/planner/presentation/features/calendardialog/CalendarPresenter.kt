@@ -6,6 +6,7 @@ import com.lamp.planner.domain.EventTransferObject
 import com.lamp.planner.domain.MonthRepeat
 import com.lamp.planner.domain.None
 import com.lamp.planner.domain.RepeatInterval
+import com.lamp.planner.domain.RepeatTypes
 import com.lamp.planner.domain.WeekRepeat
 import com.lamp.planner.domain.YearRepeat
 import com.lamp.planner.domain.utils.CalendarUtils
@@ -74,13 +75,22 @@ class CalendarPresenter @Inject constructor() : BasePresenter<CalendarView>() {
     }
 
     fun setRepeat(repeat: RepeatInterval) {
+
         when (repeat) {
             is None -> Timber.tag("repeatType").e("None")
-            is DayRepeat -> Timber.tag("repeatType").e("DayRepeat")
+            is DayRepeat -> Timber.tag("repeatType").e("DayRepeat}")
             is WeekRepeat -> Timber.tag("repeatType").e("WeekRepeat")
             is MonthRepeat -> Timber.tag("repeatType").e("MonthRepeat")
             is YearRepeat -> Timber.tag("repeatType").e("YearRepeat")
         }
+
+        when (val params = repeat.type) {
+            is RepeatTypes.Always -> Timber.tag("params").e("Always")
+            is RepeatTypes.UntilDate -> Timber.tag("params").e(params.untilDate.toString())
+            is RepeatTypes.UntilCount -> Timber.tag("params").e(params.count.toString())
+        }
+        Timber.tag("repeatCount").e(repeat.repeatInterval.toString())
+        Timber.tag("params").e(repeat.type.toString())
     }
 
     fun clickRepeat() {

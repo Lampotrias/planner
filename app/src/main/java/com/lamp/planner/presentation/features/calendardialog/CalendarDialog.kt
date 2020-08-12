@@ -52,22 +52,22 @@ class CalendarDialog @Inject constructor() : BaseDialog(),
         mPresenter.setInputNavArgs(args)
         parentFragmentManager.setFragmentResultListener(
             NotificationDialog.NOTIFY_SET_DIALOG_REQUEST_KEY,
-            this,
-            { _: String, result: Bundle ->
-                val timestamp =
-                    result.getSerializable(NotificationDialog.NOTIFY_SET_DIALOG_RESULT_INTERVAL) as? NotifyTimeInterval
-                        ?: NotifyTimeInterval.NONE
-                mPresenter.setReminder(timestamp)
-            })
+            this
+        ) { _: String, result: Bundle ->
+            val timestamp =
+                result.getSerializable(NotificationDialog.NOTIFY_SET_DIALOG_RESULT_INTERVAL) as? NotifyTimeInterval
+                    ?: NotifyTimeInterval.NONE
+            mPresenter.setReminder(timestamp)
+        }
 
         parentFragmentManager.setFragmentResultListener(
             RepeatDialog.REPEAT_DIALOG_REQUEST_KEY,
-            this,
-            { _: String, result: Bundle ->
-                val repeatInterval =
-                    result.getSerializable(RepeatDialog.REPEAT_DIALOG_REPEAT_OBJ) as? RepeatInterval
-                repeatInterval?.let { mPresenter.setRepeat(it) }
-            })
+            this
+        ) { _: String, result: Bundle ->
+            val repeatInterval =
+                result.getSerializable(RepeatDialog.REPEAT_DIALOG_REPEAT_OBJ) as? RepeatInterval
+            repeatInterval?.let { mPresenter.setRepeat(it) }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

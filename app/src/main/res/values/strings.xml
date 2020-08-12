@@ -41,4 +41,5 @@
     <string name="repeat_none">не повторять</string>
     <string name="repeat_each">повтор каждые</string>
     <string name="stop_after">остановить после</string>
+    <string name="repeat_param_count">повторений</string>
 </resources>
