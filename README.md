@@ -37,7 +37,7 @@ This project takes advantage of many popular libraries, plugins and tools of the
 - [Firebase Authentication](https://firebase.google.com/docs/auth) - Firebase Authentication provides backend services, easy-to-use SDKs, and ready-made UI libraries to authenticate users to app
 
 # Design
-In terms of design has been followed recommendations android [material design](https://developer.android.com/guide/topics/ui/look-and-feel) comprehensive guide for visual design across platforms and devices
+In terms of design has been followed recommendations android [material design](https://developer.android.com/guide/topics/ui/look-and-feel) comprehensive guide for visual design across platforms and devices. Support [Dark theme](https://developer.android.com/guide/topics/ui/look-and-feel/darktheme).
 
    [Navigation component]: <https://developer.android.com/guide/navigation/navigation-getting-started>
    [Android architecture components]: <https://developer.android.com/topic/libraries/architecture/>
